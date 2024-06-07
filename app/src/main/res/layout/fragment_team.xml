@@ -15,6 +15,7 @@
         android:text="@string/team"
         android:textSize="@dimen/text_size_22"
         android:textColor="?attr/black_white"
+        android:textFontWeight="500"
         android:fontFamily="@font/ys_text_medium" />
 
     <TextView
@@ -25,6 +26,7 @@
         android:text="@string/working_on_the_application"
         android:textSize="@dimen/text_size_32"
         android:textColor="?attr/black_white"
+        android:textFontWeight="700"
         android:fontFamily="@font/ys_text_bold" />
 
     <TextView
@@ -35,6 +37,7 @@
         android:text="@string/said"
         android:textSize="@dimen/text_size_16"
         android:textColor="?attr/black_white"
+        android:textFontWeight="500"
         android:fontFamily="@font/ys_text_medium" />
 
     <TextView
@@ -45,6 +48,7 @@
         android:text="@string/nikita"
         android:textSize="@dimen/text_size_16"
         android:textColor="?attr/black_white"
+        android:textFontWeight="500"
         android:fontFamily="@font/ys_text_medium"/>
 
     <TextView
@@ -55,6 +59,7 @@
         android:text="@string/evgeniy"
         android:textSize="@dimen/text_size_16"
         android:textColor="?attr/black_white"
+        android:textFontWeight="500"
         android:fontFamily="@font/ys_text_medium"/>
 
     <TextView
@@ -65,6 +70,7 @@
         android:text="@string/vladislav"
         android:textSize="@dimen/text_size_16"
         android:textColor="?attr/black_white"
+        android:textFontWeight="500"
         android:fontFamily="@font/ys_text_medium"/>
 
 </LinearLayout>
