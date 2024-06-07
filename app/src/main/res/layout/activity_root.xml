@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".root.ui.RootActivity"
-    android:background="?attr/white_black">
+    android:background="?attr/white_black"
+    tools:context=".root.ui.RootActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_view"
@@ -20,5 +20,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/navigation_graph" />
+
+    <View
+        android:id="@+id/delimiter"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_size_1"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@id/bottom_Navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_Navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/white_black"
+        android:fontFamily="@font/ys_text_regular"
+        android:textSize="@dimen/text_size_12"
+        app:itemIconTint="@drawable/selector_navigation_color"
+        app:itemTextColor="@drawable/selector_navigation_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
