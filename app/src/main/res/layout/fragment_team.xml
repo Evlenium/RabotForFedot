@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/team_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginStart="@dimen/dimens_size_16"
+    android:background="?attr/white_black">
+
+    <TextView
+        android:id="@+id/team_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_size_24"
+        android:text="@string/team"
+        android:textSize="@dimen/text_size_22"
+        android:textColor="?attr/black_white"
+        android:textFontWeight="500"
+        android:fontFamily="@font/ys_text_medium" />
+
+    <TextView
+        android:id="@+id/working_on_the_application_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_size_20"
+        android:text="@string/working_on_the_application"
+        android:textSize="@dimen/text_size_32"
+        android:textColor="?attr/black_white"
+        android:textFontWeight="700"
+        android:fontFamily="@font/ys_text_bold" />
+
+    <TextView
+        android:id="@+id/said_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_size_16"
+        android:text="@string/said"
+        android:textSize="@dimen/text_size_16"
+        android:textColor="?attr/black_white"
+        android:textFontWeight="500"
+        android:fontFamily="@font/ys_text_medium" />
+
+    <TextView
+        android:id="@+id/nikita_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_size_16"
+        android:text="@string/nikita"
+        android:textSize="@dimen/text_size_16"
+        android:textColor="?attr/black_white"
+        android:textFontWeight="500"
+        android:fontFamily="@font/ys_text_medium"/>
+
+    <TextView
+        android:id="@+id/evgeniy_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_size_16"
+        android:text="@string/evgeniy"
+        android:textSize="@dimen/text_size_16"
+        android:textColor="?attr/black_white"
+        android:textFontWeight="500"
+        android:fontFamily="@font/ys_text_medium"/>
+
+    <TextView
+        android:id="@+id/vladislav_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_size_16"
+        android:text="@string/vladislav"
+        android:textSize="@dimen/text_size_16"
+        android:textColor="?attr/black_white"
+        android:textFontWeight="500"
+        android:fontFamily="@font/ys_text_medium"/>
+
+</LinearLayout>
