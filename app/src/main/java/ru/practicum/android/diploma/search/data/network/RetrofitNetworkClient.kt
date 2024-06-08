@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.search.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -57,6 +58,7 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
                 val searchResponse = searchAPI.getVacancies(searchRequest.expression, searchRequest.filters)
                 searchResponse.apply { result = OK_REQUEST }
             } catch (exception: IOException) {
+                Log.e("exception", "$exception")
                 Response().apply { result = INTERNAL_SERVER_ERROR }
             }
         }
@@ -68,6 +70,7 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
                 val searchDetailsResponse = searchAPI.getVacancyDetails(searchDetailsRequest.id)
                 searchDetailsResponse.apply { result = OK_REQUEST }
             } catch (exception: IOException) {
+                Log.e("exception", "$exception")
                 Response().apply { result = INTERNAL_SERVER_ERROR }
             }
         }
