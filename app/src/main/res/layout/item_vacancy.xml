@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/dimens_size_16"
+    android:paddingTop="@dimen/dimens_size_9"
+    android:paddingBottom="@dimen/dimens_size_9"
     android:orientation="horizontal">
 
     <!-- Логотип компании !-->

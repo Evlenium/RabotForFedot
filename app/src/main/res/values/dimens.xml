@@ -22,4 +22,5 @@
     <dimen name="dimens_size_60">60dp</dimen>
     <dimen name="dimens_size_64">64dp</dimen>
     <dimen name="dimens_size_76">76dp</dimen>
+    <dimen name="dimens_size_27">27dp</dimen>
 </resources>

@@ -11,33 +11,23 @@
     tools:ignore="HardcodedText">
 
     <!-- Заголовок "поиск вакансий" + иконка фильтр -->
-
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/search_toolbar"
+        style="@style/ToolbarAppStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/dimens_size_16"
-        android:layout_marginTop="@dimen/dimens_size_24"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:fontFamily="@font/ys_text_medium"
-            android:text="@string/search_vacancies"
-            android:textColor="?attr/black_white"
-            android:textFontWeight="500"
-            android:textSize="@dimen/text_size_22" />
+        android:title="@string/search_vacancies"
+        app:title="@string/search_vacancies">
 
         <ImageView
             android:id="@+id/filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/dimens_size_16"
             android:src="@drawable/icon_filter" />
+    </androidx.appcompat.widget.Toolbar>
 
-    </LinearLayout>
 
     <!-- Поле ввода поискового запроса !-->
 
@@ -46,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimens_size_56"
         android:layout_marginHorizontal="@dimen/dimens_size_16"
-        android:layout_marginTop="@dimen/dimens_size_24"
+        android:layout_marginTop="@dimen/dimens_size_27"
         android:background="@drawable/shape_search_field_background"
         android:orientation="horizontal">
 
@@ -71,7 +61,7 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progress_bar"
+        android:id="@+id/center_progress_bar"
         style="@style/ProgressBarStyle"
         android:layout_height="0dp"
         android:layout_gravity="center"
@@ -109,6 +99,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dimens_size_16"
+        android:layout_marginTop="@dimen/dimens_size_8"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/bottom_progress_bar"
+        style="@style/ProgressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dimens_size_22"
         tools:visibility="gone" />
 </LinearLayout>
