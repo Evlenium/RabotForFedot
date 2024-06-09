@@ -5,4 +5,5 @@ import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 interface SearchInteractor {
     suspend fun searchVacancies(expression: String, filters: Map<String, String>): Flow<Pair<List<Vacancy>?, String?>>
+    /* suspend fun getNumbersOfVacancies(expression: String, filters: Map<String, String>): Flow<Int?> */
 }
