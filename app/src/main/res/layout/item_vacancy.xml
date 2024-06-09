@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/dimens_size_16"
+    android:orientation="horizontal">
+
+    <!-- Логотип компании !-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/vacancy_cover_card_view"
+        android:layout_width="@dimen/dimens_size_48"
+        android:layout_height="@dimen/dimens_size_48"
+        android:foreground="@drawable/logo_foreground"
+        app:cardCornerRadius="@dimen/dimens_size_12"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:id="@+id/playlist_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/white_black"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_android_placeholder"
+            tools:src="@tools:sample/avatars" />
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Название вакансии, компания, зп !-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimens_size_12"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/vacancy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_22"
+            android:textColor="?attr/black_white"
+            android:fontFamily="@font/ys_text_medium"
+            android:textFontWeight="500"
+            tools:text="Здесь будет текст вакансии, он может быть большим, или маленьким, впрочем я не знаю, Пермь"/>
+
+        <TextView
+            android:id="@+id/employer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ItemVacancyDetailsStyle"
+            tools:text="Название компании"/>
+
+        <TextView
+            android:id="@+id/salary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ItemVacancyDetailsStyle"
+            tools:text="от 1000000 Р"/>
+
+    </LinearLayout>
+
+</LinearLayout>
