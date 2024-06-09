@@ -10,16 +10,13 @@
     tools:context=".favorite.ui.FavoriteFragment"
     tools:ignore="HardcodedText">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/search_toolbar"
+        style="@style/ToolbarAppStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/dimens_size_16"
-        android:layout_marginTop="@dimen/dimens_size_24"
-        android:fontFamily="@font/ys_text_medium"
-        android:text="@string/favorites"
-        android:textColor="?attr/black_white"
-        android:textFontWeight="500"
-        android:textSize="@dimen/text_size_22" />
+        android:title="@string/favorites"
+        app:title="@string/favorites" />
 
     <!-- плейсхолдер картинка и текст !-->
 
