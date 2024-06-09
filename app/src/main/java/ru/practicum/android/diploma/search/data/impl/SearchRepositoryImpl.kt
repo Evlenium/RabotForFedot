@@ -28,7 +28,6 @@ class SearchRepositoryImpl(
                     convertor.map(vacancyDTO)
                 }, numberOfVacancies = response.numberOfVacancies))
             )
-
             Constants.NOT_FOUND -> emit(Resource.Error(resourceProvider.getErrorEmptyListVacancy()))
             Constants.SERVER_ERROR -> emit(Resource.Error(resourceProvider.getErrorServer()))
             Constants.CONNECTION_ERROR -> emit(Resource.Error(resourceProvider.getErrorInternetConnection()))
