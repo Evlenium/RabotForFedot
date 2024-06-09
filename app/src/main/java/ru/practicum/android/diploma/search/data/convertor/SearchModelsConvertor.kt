@@ -1,12 +1,10 @@
-package ru.practicum.android.diploma.search.data
+package ru.practicum.android.diploma.search.data.convertor
 
-import ru.practicum.android.diploma.search.data.dto.model.EmployerDTO
-import ru.practicum.android.diploma.search.data.dto.model.VacancyDTO
+import ru.practicum.android.diploma.search.data.model.EmployerDTO
+import ru.practicum.android.diploma.search.data.model.VacancyDTO
 import ru.practicum.android.diploma.search.domain.model.Employer
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 
-/* над названием класса возможно стоит подумать */
-/*возможно стоит подобрать модификатор доступа аналогичный "protected" в java, но не уверен */
 class SearchModelsConvertor {
     fun map(vacancyDTO: VacancyDTO): Vacancy {
         return Vacancy(
@@ -19,12 +17,13 @@ class SearchModelsConvertor {
             salaryTo = vacancyDTO.salary?.to
         )
     }
+
     private fun map(employerDTO: EmployerDTO?): Employer {
         return Employer(
-            employerDTO?.name,
-            employerDTO?.logoUrls?.n90,
-            employerDTO?.logoUrls?.n240,
-            employerDTO?.logoUrls?.original
+            name = employerDTO?.name,
+            logoUrl90 = employerDTO?.logoUrls?.n90,
+            logoUrl240 = employerDTO?.logoUrls?.n240,
+            logoOriginal = employerDTO?.logoUrls?.original
         )
     }
 }

@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.di
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ru.practicum.android.diploma.search.data.impl.SearchRepositoryImpl
-import ru.practicum.android.diploma.search.domain.SearchRepository
+import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.sharing.data.ExternalNavigator
 import ru.practicum.android.diploma.sharing.data.ResourceProvider
 
