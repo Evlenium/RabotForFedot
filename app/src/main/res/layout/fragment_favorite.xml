@@ -1,25 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_black"
-    tools:context=".favorite.ui.FavoriteFragment"
+    android:orientation="vertical"
+    tools:context=".search.ui.SearchFragment"
     tools:ignore="HardcodedText">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ИЗБРАННОЕ"
+        android:layout_marginHorizontal="@dimen/dimens_size_16"
+        android:layout_marginTop="@dimen/dimens_size_24"
+        android:fontFamily="@font/ys_text_medium"
+        android:text="@string/favorites"
         android:textColor="?attr/black_white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textFontWeight="500"
+        android:textSize="@dimen/text_size_22" />
+
+    <!-- плейсхолдер картинка и текст !-->
+
+    <LinearLayout
+        android:id="@+id/placeholder_view_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/dimens_size_16"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:visibility="gone">
+
+        <ImageView
+            android:id="@+id/placeholder_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:src="@drawable/placeholder_empty_favorite_list" />
+
+        <TextView
+            android:id="@+id/placeholder_text_view"
+            style="@style/PlaceholderTextStyle"
+            tools:text="Placeholder text" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favorites_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimens_size_16"
+        android:layout_marginTop="@dimen/dimens_size_16"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:visibility="visible" />
+</LinearLayout>
