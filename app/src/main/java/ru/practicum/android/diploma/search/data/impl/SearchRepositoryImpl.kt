@@ -24,9 +24,10 @@ class SearchRepositoryImpl(
         val response = networkClient.doRequest(SearchRequest(expression, filters))
         when (response.result) {
             Constants.SUCCESS -> emit(
-                (Resource.Success((response as SearchResponse).vacancies.map { vacancyDTO ->
-                    convertor.map(vacancyDTO)
-                }, numberOfVacancies = response.numberOfVacancies))
+                Resource.Success(
+                    (response as SearchResponse).vacancies.map { vacancyDTO -> convertor.map(vacancyDTO) },
+                    numberOfVacancies = response.numberOfVacancies
+                )
             )
             Constants.NOT_FOUND -> emit(Resource.Error(resourceProvider.getErrorEmptyListVacancy()))
             Constants.SERVER_ERROR -> emit(Resource.Error(resourceProvider.getErrorServer()))
