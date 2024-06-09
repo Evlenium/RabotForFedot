@@ -15,5 +15,5 @@ val repositoryModule = module {
             checkConnection = get(),
         )
     }
-    single<SearchRepository> { SearchRepositoryImpl(get(), get()) }
+    single<SearchRepository> { SearchRepositoryImpl(get(), get(), get()) }
 }
