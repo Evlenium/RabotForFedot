@@ -9,7 +9,6 @@
 
     <!-- Логотип компании !-->
     <androidx.cardview.widget.CardView
-        android:id="@+id/vacancy_cover_card_view"
         android:layout_width="@dimen/dimens_size_48"
         android:layout_height="@dimen/dimens_size_48"
         android:foreground="@drawable/logo_foreground"
