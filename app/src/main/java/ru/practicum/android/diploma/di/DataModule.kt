@@ -5,7 +5,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.practicum.android.diploma.search.data.convertor.SearchModelsConvertor
+import ru.practicum.android.diploma.convertor.ModelsConvertor
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.search.data.network.SearchAPI
@@ -31,7 +31,7 @@ val dataModule = module {
             .create(SearchAPI::class.java)
     }
 
-    single<NetworkClient> { RetrofitNetworkClient(service = get(), resourceProvider = get(), checkConnection = get()) }
-    single<SearchModelsConvertor> { SearchModelsConvertor() }
+    single<NetworkClient> { RetrofitNetworkClient(service = get(), resourceProvider = get()) }
+    single<ModelsConvertor> { ModelsConvertor() }
     factory { CheckConnection(get()) }
 }
