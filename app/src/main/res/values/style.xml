@@ -17,7 +17,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">@dimen/dimens_size_56</item>
-        <!--<item name="android:layout_marginHorizontal">@dimen/dimens_size_16</item>!-->
+        <item name="android:layout_marginHorizontal">@dimen/dimens_size_16</item>
         <item name="android:background">@drawable/shape_search_field_background</item>
         <item name="android:fontFamily">@font/ys_text_regular</item>
         <item name="android:fontWeight">400</item>
@@ -26,10 +26,8 @@
         <item name="android:textColorHint">?attr/gray_white</item>
         <item name="android:inputType">text</item>
         <item name="android:imeOptions">actionDone</item>
-        <item name="android:paddingHorizontal">@dimen/dimens_size_16</item>
         <item name="singleLine">true</item>
         <item name="android:textCursorDrawable">@drawable/shape_search_field_cursor</item>
-        <!--<item name="android:drawableEnd">@drawable/icon_search</item>!-->
         <item name="android:drawableTint">@color/black</item>
     </style>
 
@@ -71,7 +69,7 @@
     </style>
 
     <style name="ItemVacancyDetailsStyle">
-        <!--<item name="android:layout_width">0dp</item> !-->
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <!--<item name="android:layout_marginHorizontal">@dimen/dimens_size_12</item> !-->
         <item name="android:textSize">16sp</item>

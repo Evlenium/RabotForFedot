@@ -15,31 +15,38 @@ interface SearchAPI {
 
     @Headers(
         "Authorization: Bearer $TOKEN",
-        "HH-User-Agent: название приложения"
+        "HH-User-Agent: Работа для Федота",
+        allowUnsafeNonAsciiValues = true
     )
     @GET("/vacancies?entity=vacancy")
-    fun getVacancies(@Query("text") searchRequest: String, @QueryMap filters: Map<String, String>): SearchResponse
+    suspend fun getVacancies(
+        @Query("text") searchRequest: String,
+        @QueryMap filters: Map<String, String>,
+    ): SearchResponse
 
     @Headers(
         "Authorization: Bearer $TOKEN",
-        "HH-User-Agent: название приложения"
+        "HH-User-Agent: Работа для Федота",
+        allowUnsafeNonAsciiValues = true
     )
     @GET("/vacancies/{vacancy_id}")
-    fun getVacancyDetails(@Path("vacancy_id") vacancyId: String): DetailsResponse
+    suspend fun getVacancyDetails(@Path("vacancy_id") vacancyId: String): DetailsResponse
 
     @Headers(
         "Authorization: Bearer $TOKEN",
-        "HH-User-Agent: название приложения"
+        "HH-User-Agent: Работа для Федота",
+        allowUnsafeNonAsciiValues = true
     )
     @GET("/industries")
-    fun getIndustries(): SearchIndustriesResponse
+    suspend fun getIndustries(): SearchIndustriesResponse
 
     @Headers(
         "Authorization: Bearer $TOKEN",
-        "HH-User-Agent: название приложения"
+        "HH-User-Agent: Работа для Федота",
+        allowUnsafeNonAsciiValues = true
     )
     @GET("/areas")
-    fun getAreas(): List<SearchAreaResponse>
+    suspend fun getAreas(): List<SearchAreaResponse>
 
     companion object {
         const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
