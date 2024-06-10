@@ -7,11 +7,15 @@ import ru.practicum.android.diploma.details.data.dto.SearchDetailsRequest
 import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.dto.SearchRequest
 import ru.practicum.android.diploma.sharing.data.ResourceProvider
+import ru.practicum.android.diploma.util.CheckConnection
 import ru.practicum.android.diploma.util.Constants
 import java.io.IOException
 
-class RetrofitNetworkClient(private val service: SearchAPI, private val resourceProvider: ResourceProvider) :
-    NetworkClient {
+class RetrofitNetworkClient(
+    private val service: SearchAPI,
+    private val resourceProvider: ResourceProvider,
+    private val checkConnection: CheckConnection
+) : NetworkClient {
     override suspend fun doRequest(dto: Any): Response {
         return if (!resourceProvider.checkInternetConnection()) {
             Response().apply {
@@ -40,14 +44,22 @@ class RetrofitNetworkClient(private val service: SearchAPI, private val resource
         }
     }
 
-    private suspend fun doSearchDetailsRequest(searchDetailsRequest: SearchDetailsRequest): Response {
-        return withContext(Dispatchers.IO) {
-            try {
-                val searchDetailsResponse = service.getVacancyDetails(searchDetailsRequest.id)
-                searchDetailsResponse.apply { result = Constants.SUCCESS }
-            } catch (exception: IOException) {
-                Log.e("exception", "$exception")
-                Response().apply { result = Constants.SERVER_ERROR }
+    override suspend fun doSearchDetailsRequest(searchDetailsRequest: SearchDetailsRequest): Response {
+        return when {
+            !checkConnection.isInternetAvailable() -> {
+                Response().apply { result = Constants.CONNECTION_ERROR }
+            }
+
+            else -> {
+                withContext(Dispatchers.IO) {
+                    try {
+                        val searchDetailsResponse = service.getVacancyDetails(searchDetailsRequest.id)
+                        searchDetailsResponse.apply { result = Constants.SUCCESS }
+                    } catch (exception: IOException) {
+                        Log.e("exception", "$exception")
+                        Response().apply { result = Constants.SERVER_ERROR }
+                    }
+                }
             }
         }
     }
