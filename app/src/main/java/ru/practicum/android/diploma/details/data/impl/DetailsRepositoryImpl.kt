@@ -35,10 +35,8 @@ class DetailsRepositoryImpl(
     private fun handleConnectionError(): Resource.Error<Vacancy> =
         Resource.Error(resourceProvider.getErrorInternetConnection())
 
-
     private fun handleServerError(): Resource.Error<Vacancy> =
         Resource.Error(resourceProvider.getErrorServer())
-
 
     private fun handleSuccessResponse(response: DetailsResponse): Resource.Success<Vacancy> {
         val vacancy = createVacancyFromResponse(response)
