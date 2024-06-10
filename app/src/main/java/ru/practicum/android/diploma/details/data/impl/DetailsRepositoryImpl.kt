@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.details.domain.api.DetailsRepository
 import ru.practicum.android.diploma.search.data.model.ContactsDTO
 import ru.practicum.android.diploma.search.data.model.EmployerDTO
 import ru.practicum.android.diploma.search.data.model.SalaryDTO
-import ru.practicum.android.diploma.search.data.model.Vacancy
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.domain.model.Contacts
 import ru.practicum.android.diploma.search.domain.model.Employer
