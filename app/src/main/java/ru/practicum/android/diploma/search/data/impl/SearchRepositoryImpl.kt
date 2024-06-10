@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.search.data.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.practicum.android.diploma.search.data.convertor.SearchModelsConvertor
+import ru.practicum.android.diploma.convertor.ModelsConvertor
 import ru.practicum.android.diploma.search.data.dto.SearchRequest
 import ru.practicum.android.diploma.search.data.dto.SearchResponse
 import ru.practicum.android.diploma.search.data.network.NetworkClient
@@ -13,15 +13,15 @@ import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.Resource
 
 class SearchRepositoryImpl(
-    private val networkClient: NetworkClient,
+    private val client: NetworkClient,
     private val resourceProvider: ResourceProvider,
-    private val convertor: SearchModelsConvertor
+    private val convertor: ModelsConvertor
 ) : SearchRepository {
     override suspend fun searchVacancies(
         expression: String,
         filters: Map<String, String>
     ): Flow<Resource<ServerVacanciesResponse>> = flow {
-        val response = networkClient.doRequest(SearchRequest(expression, filters))
+        val response = client.doRequest(SearchRequest(expression, filters))
         when (response.result) {
             Constants.SUCCESS -> emit(
                 Resource.Success(
