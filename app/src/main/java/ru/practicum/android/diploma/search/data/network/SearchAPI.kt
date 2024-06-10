@@ -5,6 +5,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
+import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.details.data.dto.DetailsResponse
 import ru.practicum.android.diploma.filter.area.data.SearchAreaResponse
 import ru.practicum.android.diploma.filter.industry.data.SearchIndustriesResponse
@@ -41,6 +42,6 @@ interface SearchAPI {
     fun getAreas(): List<SearchAreaResponse>
 
     companion object {
-        const val TOKEN = "Здесь будет токен"
+        const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
     }
 }
