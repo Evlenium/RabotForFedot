@@ -5,13 +5,10 @@ import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.details.data.dto.DetailsRequest
 import ru.practicum.android.diploma.details.data.dto.DetailsResponse
 import ru.practicum.android.diploma.details.domain.api.DetailsRepository
-import ru.practicum.android.diploma.search.data.model.ContactsDTO
 import ru.practicum.android.diploma.search.data.model.EmployerDTO
 import ru.practicum.android.diploma.search.data.model.SalaryDTO
 import ru.practicum.android.diploma.search.data.network.NetworkClient
-import ru.practicum.android.diploma.search.domain.model.Contacts
 import ru.practicum.android.diploma.search.domain.model.Employer
-import ru.practicum.android.diploma.search.domain.model.Phone
 import ru.practicum.android.diploma.search.domain.model.Salary
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.sharing.data.ResourceProvider
