@@ -6,11 +6,11 @@ import ru.practicum.android.diploma.details.data.dto.DetailsRequest
 import ru.practicum.android.diploma.details.data.dto.DetailsResponse
 import ru.practicum.android.diploma.details.domain.api.DetailsRepository
 import ru.practicum.android.diploma.search.data.model.ContactsDTO
-import ru.practicum.android.diploma.search.data.model.SalaryDTO
 import ru.practicum.android.diploma.search.data.model.EmployerDTO
-import ru.practicum.android.diploma.search.domain.model.Employer
+import ru.practicum.android.diploma.search.data.model.SalaryDTO
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.domain.model.Contacts
+import ru.practicum.android.diploma.search.domain.model.Employer
 import ru.practicum.android.diploma.search.domain.model.Phone
 import ru.practicum.android.diploma.search.domain.model.Salary
 import ru.practicum.android.diploma.search.domain.model.Vacancy
@@ -24,7 +24,7 @@ class DetailsRepositoryImpl(
 ) : DetailsRepository {
 
     override suspend fun searchDetails(id: String): Flow<Resource<Vacancy>> = flow {
-        val response = client.doSearchDetailsRequest(DetailsRequest(id))
+        val response = client.doRequest(DetailsRequest(id))
         when (response.result) {
             Constants.CONNECTION_ERROR -> emit(handleConnectionError())
             Constants.SUCCESS -> emit(handleSuccessResponse(response as DetailsResponse))

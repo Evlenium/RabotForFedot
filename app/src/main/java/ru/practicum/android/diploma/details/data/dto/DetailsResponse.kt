@@ -1,13 +1,13 @@
 package ru.practicum.android.diploma.details.data.dto
 
 import com.google.gson.annotations.SerializedName
-import ru.practicum.android.diploma.search.data.model.ExperienceDTO
-import ru.practicum.android.diploma.search.data.model.KeySkillDTO
 import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.model.AddressDTO
 import ru.practicum.android.diploma.search.data.model.AreaDTO
 import ru.practicum.android.diploma.search.data.model.ContactsDTO
 import ru.practicum.android.diploma.search.data.model.EmployerDTO
+import ru.practicum.android.diploma.search.data.model.ExperienceDTO
+import ru.practicum.android.diploma.search.data.model.KeySkillDTO
 import ru.practicum.android.diploma.search.data.model.ProfessionalRoleDTO
 import ru.practicum.android.diploma.search.data.model.SalaryDTO
 import ru.practicum.android.diploma.search.data.model.ScheduleDTO
