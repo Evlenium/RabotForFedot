@@ -1,7 +1,10 @@
 package ru.practicum.android.diploma.search.data.model
 
+import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
+
 data class SalaryDTO(
-    val currency: String?,
-    val from: Int?,
-    val to: Int?
+    @SerializedName("currency") val currency: String?,
+    @SerializedName("from") val from: BigDecimal?,
+    @SerializedName("to") val to: BigDecimal?
 )

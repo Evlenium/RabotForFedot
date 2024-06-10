@@ -13,7 +13,7 @@ import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.Resource
 
 class SearchRepositoryImpl(
-    private val networkClient: NetworkClient,
+    private val client: NetworkClient,
     private val resourceProvider: ResourceProvider,
     private val convertor: SearchModelsConvertor
 ) : SearchRepository {
@@ -21,7 +21,7 @@ class SearchRepositoryImpl(
         expression: String,
         filters: Map<String, String>
     ): Flow<Resource<ServerVacanciesResponse>> = flow {
-        val response = networkClient.doRequest(SearchRequest(expression, filters))
+        val response = client.doRequest(SearchRequest(expression, filters))
         when (response.result) {
             Constants.SUCCESS -> emit(
                 Resource.Success(
