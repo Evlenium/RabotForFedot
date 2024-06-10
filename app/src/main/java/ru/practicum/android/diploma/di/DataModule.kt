@@ -31,6 +31,7 @@ val dataModule = module {
             .create(SearchAPI::class.java)
     }
 
-    single<NetworkClient> { RetrofitNetworkClient(service = get(), resourceProvider = get()) }
+    single<NetworkClient> { RetrofitNetworkClient(service = get(), resourceProvider = get(), checkConnection = get()) }
     single<SearchModelsConvertor> { SearchModelsConvertor() }
+    factory { CheckConnection(get()) }
 }
