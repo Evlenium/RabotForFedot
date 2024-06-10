@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.search.data.network
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.details.data.dto.SearchDetailsRequest
+import ru.practicum.android.diploma.details.data.dto.DetailsRequest
 import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.dto.SearchRequest
 import ru.practicum.android.diploma.sharing.data.ResourceProvider
@@ -24,7 +24,7 @@ class RetrofitNetworkClient(
         } else {
             when (dto) {
                 is SearchRequest -> doSearchRequest(dto)
-                is SearchDetailsRequest -> doSearchDetailsRequest(dto)
+                is DetailsRequest -> doSearchDetailsRequest(dto)
                 else -> {
                     Response().apply { result = Constants.NOT_FOUND }
                 }
@@ -44,7 +44,7 @@ class RetrofitNetworkClient(
         }
     }
 
-    override suspend fun doSearchDetailsRequest(searchDetailsRequest: SearchDetailsRequest): Response {
+    override suspend fun doSearchDetailsRequest(detailsRequest: DetailsRequest): Response {
         return when {
             !checkConnection.isInternetAvailable() -> {
                 Response().apply { result = Constants.CONNECTION_ERROR }
@@ -53,7 +53,7 @@ class RetrofitNetworkClient(
             else -> {
                 withContext(Dispatchers.IO) {
                     try {
-                        val searchDetailsResponse = service.getVacancyDetails(searchDetailsRequest.id)
+                        val searchDetailsResponse = service.getVacancyDetails(detailsRequest.id)
                         searchDetailsResponse.apply { result = Constants.SUCCESS }
                     } catch (exception: IOException) {
                         Log.e("exception", "$exception")

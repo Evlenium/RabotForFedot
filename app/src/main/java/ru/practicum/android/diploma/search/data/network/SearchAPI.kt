@@ -5,7 +5,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
-import ru.practicum.android.diploma.details.data.dto.SearchDetailsResponse
+import ru.practicum.android.diploma.details.data.dto.DetailsResponse
 import ru.practicum.android.diploma.filter.area.data.SearchAreaResponse
 import ru.practicum.android.diploma.filter.industry.data.SearchIndustriesResponse
 import ru.practicum.android.diploma.search.data.dto.SearchResponse
@@ -24,7 +24,7 @@ interface SearchAPI {
         "HH-User-Agent: название приложения"
     )
     @GET("/vacancies/{vacancy_id}")
-    fun getVacancyDetails(@Path("vacancy_id") vacancyId: String): SearchDetailsResponse
+    fun getVacancyDetails(@Path("vacancy_id") vacancyId: String): DetailsResponse
 
     @Headers(
         "Authorization: Bearer $TOKEN",
