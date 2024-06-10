@@ -2,19 +2,19 @@ package ru.practicum.android.diploma.convertor
 
 import ru.practicum.android.diploma.search.data.model.EmployerDTO
 import ru.practicum.android.diploma.search.data.model.SalaryDTO
-import ru.practicum.android.diploma.search.data.model.VacancyDTO
+import ru.practicum.android.diploma.search.data.model.SimpleVacancyDTO
 import ru.practicum.android.diploma.search.domain.model.Employer
 import ru.practicum.android.diploma.search.domain.model.Salary
-import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.search.domain.model.SimpleVacancy
 
 class ModelsConvertor {
-    fun map(vacancyDTO: VacancyDTO): Vacancy {
-        return Vacancy(
-            id = vacancyDTO.id,
-            name = vacancyDTO.name,
-            address = vacancyDTO.address?.city,
-            employer = map(vacancyDTO.employer),
-            salary = vacancyDTO.salary?.let { map(it) }
+    fun map(simpleVacancyDTO: SimpleVacancyDTO): SimpleVacancy {
+        return SimpleVacancy(
+            id = simpleVacancyDTO.id,
+            name = simpleVacancyDTO.name,
+            address = simpleVacancyDTO.address?.city,
+            employer = map(simpleVacancyDTO.employer),
+            salary = simpleVacancyDTO.salary?.let { map(it) }
         )
     }
 

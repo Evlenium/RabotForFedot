@@ -33,5 +33,4 @@ val dataModule = module {
 
     single<NetworkClient> { RetrofitNetworkClient(service = get(), resourceProvider = get()) }
     single<ModelsConvertor> { ModelsConvertor() }
-    factory { CheckConnection(get()) }
 }
