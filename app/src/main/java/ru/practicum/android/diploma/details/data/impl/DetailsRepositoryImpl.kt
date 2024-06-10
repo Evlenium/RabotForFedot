@@ -55,21 +55,6 @@ class DetailsRepositoryImpl(
         )
     }
 
-    private fun createContactsFromResponse(contacts: ContactsDTO?): Contacts {
-        return Contacts(
-            email = contacts?.email,
-            name = contacts?.name,
-            phones = contacts?.phones?.map { phone ->
-                Phone(
-                    phone?.city,
-                    phone?.comment,
-                    phone?.country,
-                    phone?.number
-                )
-            }
-        )
-    }
-
     private fun createEmployerFromResponse(employer: EmployerDTO?): Employer {
         return Employer(
             logoUrls = employer?.logoUrls?.original,
