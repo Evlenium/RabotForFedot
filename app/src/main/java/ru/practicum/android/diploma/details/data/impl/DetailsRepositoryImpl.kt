@@ -49,17 +49,9 @@ class DetailsRepositoryImpl(
         return Vacancy(
             id = response.id,
             address = response.address?.city,
-            alternateUrl = response.alternateUrl,
-            area = response.area?.name,
-            contacts = createContactsFromResponse(response.contacts),
-            description = response.description,
             employer = createEmployerFromResponse(response.employer),
-            experience = response.experience?.name,
-            keySkills = response.keySkills?.map { it.name },
             name = response.name,
-            professionalRoles = response.professionalRoles?.map { it.name },
-            salary = createSalaryFromResponse(response.salary),
-            schedule = response.schedule?.name
+            salary = createSalaryFromResponse(response.salary)
         )
     }
 
