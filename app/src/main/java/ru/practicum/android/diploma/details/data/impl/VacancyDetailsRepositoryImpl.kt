@@ -2,32 +2,32 @@ package ru.practicum.android.diploma.details.data.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.practicum.android.diploma.details.data.dto.DetailsRequest
-import ru.practicum.android.diploma.details.data.dto.DetailsResponse
-import ru.practicum.android.diploma.details.domain.api.DetailsRepository
+import ru.practicum.android.diploma.details.data.dto.VacancyDetailsRequest
+import ru.practicum.android.diploma.details.data.dto.VacancyDetailsResponse
+import ru.practicum.android.diploma.details.domain.api.VacancyDetailsRepository
 import ru.practicum.android.diploma.search.data.model.ContactsDTO
 import ru.practicum.android.diploma.search.data.model.EmployerDTO
 import ru.practicum.android.diploma.search.data.model.SalaryDTO
-import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.domain.model.Contacts
 import ru.practicum.android.diploma.search.domain.model.Employer
 import ru.practicum.android.diploma.search.domain.model.Phone
 import ru.practicum.android.diploma.search.domain.model.Salary
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.sharing.data.ResourceProvider
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.Resource
 
-class DetailsRepositoryImpl(
+class VacancyDetailsRepositoryImpl(
     private val client: NetworkClient,
-    private val resourceProvider: ResourceProvider
-) : DetailsRepository {
+    private val resourceProvider: ResourceProvider,
+) : VacancyDetailsRepository {
 
     override suspend fun searchDetails(id: String): Flow<Resource<Vacancy>> = flow {
-        val response = client.doRequest(DetailsRequest(id))
+        val response = client.doRequest(VacancyDetailsRequest(id))
         when (response.result) {
             Constants.CONNECTION_ERROR -> emit(handleConnectionError())
-            Constants.SUCCESS -> emit(handleSuccessResponse(response as DetailsResponse))
+            Constants.SUCCESS -> emit(handleSuccessResponse(response as VacancyDetailsResponse))
             else -> emit(handleServerError())
         }
     }
@@ -38,12 +38,12 @@ class DetailsRepositoryImpl(
     private fun handleServerError(): Resource.Error<Vacancy> =
         Resource.Error(resourceProvider.getErrorServer())
 
-    private fun handleSuccessResponse(response: DetailsResponse): Resource.Success<Vacancy> {
+    private fun handleSuccessResponse(response: VacancyDetailsResponse): Resource.Success<Vacancy> {
         val vacancy = createVacancyFromResponse(response)
         return Resource.Success(vacancy)
     }
 
-    private fun createVacancyFromResponse(response: DetailsResponse) = Vacancy(
+    private fun createVacancyFromResponse(response: VacancyDetailsResponse) = Vacancy(
         id = response.id,
         address = response.address?.city,
         alternateUrl = response.alternateUrl,

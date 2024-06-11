@@ -7,4 +7,12 @@ class SharingInteractorImpl(private val externalNavigator: ExternalNavigator) : 
     override fun shareVacancy(url: String) {
         externalNavigator.shareLink(url)
     }
+
+    override fun writeToEmployer(email: String) {
+        externalNavigator.openEmail(email)
+    }
+
+    override fun callPhoneNumber(phone: String) {
+        externalNavigator.callPhoneNumber(phone)
+    }
 }

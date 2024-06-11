@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.search.data.model.ProfessionalRoleDTO
 import ru.practicum.android.diploma.search.data.model.SalaryDTO
 import ru.practicum.android.diploma.search.data.model.ScheduleDTO
 
-data class DetailsResponse(
+data class VacancyDetailsResponse(
     @SerializedName("id") val id: String,
     @SerializedName("address") val address: AddressDTO?,
     @SerializedName("area") val area: AreaDTO?,
@@ -25,5 +25,5 @@ data class DetailsResponse(
     @SerializedName("name") val name: String,
     @SerializedName("professional_roles") val professionalRoles: List<ProfessionalRoleDTO>?,
     @SerializedName("salary") val salary: SalaryDTO?,
-    @SerializedName("schedule") val schedule: ScheduleDTO?
+    @SerializedName("schedule") val schedule: ScheduleDTO?,
 ) : Response()

@@ -2,8 +2,8 @@ package ru.practicum.android.diploma.di
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
-import ru.practicum.android.diploma.details.data.impl.DetailsRepositoryImpl
-import ru.practicum.android.diploma.details.domain.api.DetailsRepository
+import ru.practicum.android.diploma.details.data.impl.VacancyDetailsRepositoryImpl
+import ru.practicum.android.diploma.details.domain.api.VacancyDetailsRepository
 import ru.practicum.android.diploma.search.data.impl.SearchRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.sharing.data.ExternalNavigator
@@ -18,5 +18,5 @@ val repositoryModule = module {
         )
     }
     single<SearchRepository> { SearchRepositoryImpl(client = get(), resourceProvider = get(), convertor = get()) }
-    single<DetailsRepository> { DetailsRepositoryImpl(client = get(), resourceProvider = get()) }
+    single<VacancyDetailsRepository> { VacancyDetailsRepositoryImpl(client = get(), resourceProvider = get()) }
 }
