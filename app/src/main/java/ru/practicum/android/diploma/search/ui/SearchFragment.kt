@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -51,6 +52,8 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         scrollListener()
         searchAdapterReset()
+        binding.placeholderViewGroup.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+        binding.placeholderViewGroup.animate()
         binding.apply {
             textInputEndIcon.setOnClickListener {
                 textInputEditText.setText("")
@@ -108,6 +111,7 @@ class SearchFragment : Fragment() {
                         binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
                         inputTextFromSearch = s.toString()
                         binding.vacancyMessageTextView.isVisible = false
+                        binding.placeholderViewGroup.isVisible = false
                         searchAdapterReset()
                         viewModel.searchDebounce(inputTextFromSearch!!)
                     } else if (s.trim().isEmpty()) {
