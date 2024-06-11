@@ -61,6 +61,13 @@ class SearchFragment : Fragment() {
                     showPlaceholderSearch()
                 }
             }
+            val editText = viewModel.lastText
+            if (editText.isNotEmpty()) {
+                textInputEditText.setText(editText)
+                textInputEndIcon.setImageResource(R.drawable.icon_close)
+                textInputEndIcon.isVisible = true
+                viewModel.searchDebounce(editText)
+            }
         }
         inputEditTextInit()
         viewModel.observeState().observe(viewLifecycleOwner) {
@@ -249,16 +256,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun clickDebounce(): Boolean {
-        var isClickAllowed = true
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            viewLifecycleOwner.lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
-                isClickAllowed = true
-            }
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(CLICK_DEBOUNCE_DELAY)
         }
-        return current
+        return true
     }
 
     private fun hideKeyboard(activity: Activity) {

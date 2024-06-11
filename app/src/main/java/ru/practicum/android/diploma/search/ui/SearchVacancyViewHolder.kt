@@ -1,18 +1,12 @@
 package ru.practicum.android.diploma.search.ui
 
-import android.annotation.SuppressLint
-import android.content.res.Resources
-import android.util.TypedValue
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
-import ru.practicum.android.diploma.search.domain.model.Salary
 import ru.practicum.android.diploma.search.domain.model.SimpleVacancy
-import ru.practicum.android.diploma.util.Currency
-import java.text.NumberFormat
-import java.util.Locale
+import ru.practicum.android.diploma.util.Creator
 
 class SearchVacancyViewHolder(
     private val binding: ItemVacancyBinding,
@@ -28,56 +22,15 @@ class SearchVacancyViewHolder(
     fun bind(model: SimpleVacancy) {
         binding.vacancyTitle.text = model.name
         binding.employer.text = model.employer!!.name
-        binding.salary.text = getSalary(model.salary)
+        binding.salary.text = Creator.getSalary(context = itemView.context, salary = model.salary)
 
         Glide.with(itemView)
             .load(model.employer.logoUrls)
             .placeholder(R.drawable.icon_android_placeholder)
             .centerCrop()
-            .transform(RoundedCorners(dpToPx(RADIUS_IN_DP)))
+            .transform(RoundedCorners(Creator.dpToPx(RADIUS_IN_DP)))
             .into(binding.vacancyCover)
     }
-
-    @SuppressLint("StringFormatMatches")
-    private fun getSalary(salary: Salary?): String {
-        val locale = Locale("ru")
-        val numberFormat = NumberFormat.getInstance(locale)
-
-        val currencySymbol = salary?.currency?.let { currencyCode ->
-            val currency = Currency.fromCode(currencyCode)
-            currency?.symbol ?: currencyCode
-        } ?: ""
-
-        return when {
-            salary == null -> itemView.context.getString(R.string.salary_not_specified)
-            salary.from != null && salary.to != null -> itemView.context.getString(
-                R.string.salary_from_to,
-                numberFormat.format(salary.from),
-                numberFormat.format(salary.to),
-                currencySymbol
-            )
-
-            salary.from != null -> itemView.context.getString(
-                R.string.salary_from,
-                numberFormat.format(salary.from),
-                currencySymbol
-            )
-
-            salary.to != null -> itemView.context.getString(
-                R.string.salary_to,
-                numberFormat.format(salary.to),
-                currencySymbol
-            )
-
-            else -> itemView.context.getString(R.string.salary_not_specified)
-        }
-    }
-
-    private fun dpToPx(dp: Int): Int = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        dp.toFloat(),
-        Resources.getSystem().displayMetrics
-    ).toInt()
 
     companion object {
         private const val RADIUS_IN_DP = 8

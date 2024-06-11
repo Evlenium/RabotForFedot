@@ -1,3 +1,5 @@
 package ru.practicum.android.diploma.search.data.model
 
-data class AddressDTO(val city: String?)
+import com.google.gson.annotations.SerializedName
+
+data class AddressDTO(@SerializedName("raw") val city: String?)

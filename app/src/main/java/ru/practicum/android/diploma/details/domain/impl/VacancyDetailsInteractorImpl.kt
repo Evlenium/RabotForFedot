@@ -2,12 +2,12 @@ package ru.practicum.android.diploma.details.domain.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.practicum.android.diploma.details.domain.api.DetailsInteractor
-import ru.practicum.android.diploma.details.domain.api.DetailsRepository
+import ru.practicum.android.diploma.details.domain.api.VacancyDetailsInteractor
+import ru.practicum.android.diploma.details.domain.api.VacancyDetailsRepository
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.util.Resource
 
-class DetailsInteractorImpl(private val repository: DetailsRepository) : DetailsInteractor {
+class VacancyDetailsInteractorImpl(private val repository: VacancyDetailsRepository) : VacancyDetailsInteractor {
     override suspend fun searchDetails(id: String): Flow<Pair<Vacancy?, String?>> {
         return repository.searchDetails(id).map { result ->
             when (result) {

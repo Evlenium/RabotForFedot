@@ -21,6 +21,17 @@ val dataModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .client(
                 OkHttpClient.Builder()
+                    .addInterceptor { chain ->
+                        chain.run {
+                            proceed(
+                                request()
+                                    .newBuilder()
+                                    .addHeader("Authorization", SearchAPI.TOKEN)
+                                    .addHeader("HH-User-Agent", "RabotforFedot")
+                                    .build()
+                            )
+                        }
+                    }
                     .addInterceptor(
                         HttpLoggingInterceptor()
                             .setLevel(HttpLoggingInterceptor.Level.BODY)
