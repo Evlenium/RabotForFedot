@@ -37,7 +37,7 @@ class VacancyDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val vacancyId = requireArguments().getString(ARGS_VACANCY_ID)
-        if (vacancyId != null) { viewModel.searchRequest(vacancyId) }
+        if (vacancyId != null) viewModel.searchRequest(vacancyId)
         viewModel.observeVacancy().observe(viewLifecycleOwner) { render(it) }
         binding.favoriteButton.setOnClickListener { viewModel.onFavoriteClicked() }
     }
