@@ -5,6 +5,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.practicum.android.diploma.convertor.DbConverter
 import ru.practicum.android.diploma.convertor.ModelsConvertor
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
@@ -44,4 +45,5 @@ val dataModule = module {
 
     single<NetworkClient> { RetrofitNetworkClient(service = get(), resourceProvider = get()) }
     single<ModelsConvertor> { ModelsConvertor() }
+    single<DbConverter> { DbConverter() }
 }
