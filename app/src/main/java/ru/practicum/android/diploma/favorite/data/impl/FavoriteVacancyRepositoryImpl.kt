@@ -26,8 +26,7 @@ class FavoriteVacancyRepositoryImpl(
 
     override suspend fun getVacancyFromFavoriteList(id: String): Vacancy {
         val entity = appDatabase.favoriteVacancyDao().getItem(id.toInt())
-        val item = dbConverter.map(entity)
-        return item
+        return dbConverter.map(entity)
     }
 
     override fun getAllFavoriteVacancies(): Flow<List<SimpleVacancy>> = flow {
@@ -38,8 +37,7 @@ class FavoriteVacancyRepositoryImpl(
     }
 
     override suspend fun isVacancyFavorite(id: String): Boolean {
-        val isFavorite = appDatabase.favoriteVacancyDao().isItemExists(id.toInt())
-        return isFavorite
+        return appDatabase.favoriteVacancyDao().isItemExists(id.toInt())
     }
 
     private fun convertFromVacancyEntity(entityList: List<FavoriteVacancyEntity>): List<Vacancy> {
