@@ -9,15 +9,30 @@
     android:background="?attr/white_black"
     tools:context=".favorite.ui.FavoriteFragment">
 
-    <Toolbar
-        android:id="@+id/favorites_toolbar"
-        style="@style/ToolbarAppStyle"
-        android:title="@string/favorites"
+    <LinearLayout
+        android:id="@+id/header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimens_size_16"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/header_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_text_medium"
+            android:gravity="center_vertical"
+            android:paddingVertical="@dimen/dimens_size_19"
+            android:text="@string/favorites"
+            android:textColor="?attr/black_white"
+            android:textSize="@dimen/text_size_22" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:paddingHorizontal="@dimen/dimens_size_16"
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -26,7 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/favorites_toolbar"
+        app:layout_constraintTop_toBottomOf="@id/header_container"
         tools:visibility="gone" />
 
     <LinearLayout

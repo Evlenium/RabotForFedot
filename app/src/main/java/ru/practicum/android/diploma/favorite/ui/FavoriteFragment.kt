@@ -37,7 +37,6 @@ class FavoriteFragment : Fragment() {
         view.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         view.animate()
 
-        binding.favoritesToolbar.setTitleTextAppearance(requireContext(), R.style.ToolbarAppStyle)
         adapter = SearchVacancyAdapter { vacancy -> onClickDebounce(vacancy) }
         binding.recyclerView.adapter = adapter
 
