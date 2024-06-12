@@ -15,4 +15,9 @@ class FilterRegionFragment : Fragment() {
         _binding = FragmentFilterRegionBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.buttonBack.setOnClickListener { parentFragmentManager.popBackStack() }
+    }
 }
