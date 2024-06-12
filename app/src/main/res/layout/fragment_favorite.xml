@@ -1,52 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_black"
-    android:orientation="vertical"
-    tools:context=".favorite.ui.FavoriteFragment"
-    tools:ignore="HardcodedText">
+    tools:context=".favorite.ui.FavoriteFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/favorite_toolbar"
+    <Toolbar
+        android:id="@+id/favorites_toolbar"
         style="@style/ToolbarAppStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:title="@string/favorites"
-        app:title="@string/favorites" />
-
-    <!-- плейсхолдер картинка и текст !-->
-
-    <LinearLayout
-        android:id="@+id/placeholder_view_group"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/dimens_size_16"
-        android:gravity="center"
-        android:orientation="vertical"
-        tools:visibility="gone">
-
-        <ImageView
-            android:id="@+id/placeholder_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:src="@drawable/placeholder_empty_favorite_list" />
-
-        <TextView
-            android:id="@+id/placeholder_text_view"
-            style="@style/PlaceholderTextStyle"
-            tools:text="Placeholder text" />
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favorites_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/dimens_size_16"
+        android:id="@+id/recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/dimens_size_16"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:visibility="visible" />
-</LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/favorites_toolbar"
+        tools:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/placeholder_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/placeholder_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/placeholder_empty_favorite_list" />
+
+        <TextView
+            android:id="@+id/placeholder_message"
+            style="@style/PlaceholderTextStyle"
+            android:gravity="center"
+            tools:text="Список пуст" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="@dimen/dimens_size_36"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
