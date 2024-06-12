@@ -4,6 +4,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ru.practicum.android.diploma.details.data.impl.VacancyDetailsRepositoryImpl
 import ru.practicum.android.diploma.details.domain.api.VacancyDetailsRepository
+import ru.practicum.android.diploma.favorite.data.impl.FavoriteVacancyRepositoryImpl
+import ru.practicum.android.diploma.favorite.domain.api.FavoriteVacancyRepository
 import ru.practicum.android.diploma.search.data.impl.SearchRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.sharing.data.ExternalNavigator
@@ -19,4 +21,5 @@ val repositoryModule = module {
     }
     single<SearchRepository> { SearchRepositoryImpl(client = get(), resourceProvider = get(), convertor = get()) }
     single<VacancyDetailsRepository> { VacancyDetailsRepositoryImpl(client = get(), resourceProvider = get()) }
+    single<FavoriteVacancyRepository> { FavoriteVacancyRepositoryImpl(appDatabase = get(), dbConverter = get()) }
 }
