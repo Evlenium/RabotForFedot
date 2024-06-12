@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -36,11 +37,16 @@ class VacancyDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val vacancyId = requireArguments().getString(ARGS_VACANCY_ID)
-        if (vacancyId != null) {
-            viewModel.searchRequest(vacancyId)
-        }
+        if (vacancyId != null) viewModel.searchRequest(vacancyId)
         viewModel.observeVacancy().observe(viewLifecycleOwner) { render(it) }
-        binding.favoriteButton.setOnClickListener {
+        binding.favoriteButton.setOnClickListener { viewModel.onFavoriteClicked() }
+    }
+
+    private fun updateFavoriteFlag(isFavorite: Boolean): Int {
+        return if (isFavorite) {
+            R.drawable.icon_favorite_on
+        } else {
+            R.drawable.icon_favorite_off
         }
     }
 
@@ -146,6 +152,13 @@ class VacancyDetailsFragment : Fragment() {
         when (state) {
             is StateLoadVacancy.Content -> {
                 showContent(state.data)
+                binding.favoriteButton.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        updateFavoriteFlag(state.isFavorite),
+                        null
+                    )
+                )
             }
 
             is StateLoadVacancy.Error -> {
@@ -172,7 +185,7 @@ class VacancyDetailsFragment : Fragment() {
             vacancyDetailsNestedScrollView.isVisible = false
             placeholderContainer.isVisible = true
             placeholderMessage.text = message
-            placeholderImage.setImageResource(R.drawable.placeholder_error_server_vacancy_search)
+            placeholderImage.setImageResource(R.drawable.placeholder_no_internet)
         }
     }
 
