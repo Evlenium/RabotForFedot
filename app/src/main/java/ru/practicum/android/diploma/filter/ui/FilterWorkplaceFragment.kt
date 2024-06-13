@@ -15,4 +15,11 @@ class FilterWorkplaceFragment : Fragment() {
         _binding = FragmentFilterWorkplaceBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.buttonBack.setOnClickListener { parentFragmentManager.popBackStack() }
+
+    }
 }

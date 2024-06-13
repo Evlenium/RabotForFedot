@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.filter.area.data
 
 import com.google.gson.annotations.SerializedName
-import ru.practicum.android.diploma.filter.area.data.model.AreaDTO
+import ru.practicum.android.diploma.search.data.model.AreaDTO
 
 data class SearchAreaResponse(
     val id: String,
