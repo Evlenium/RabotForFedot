@@ -24,5 +24,5 @@ val repositoryModule = module {
     single<SearchRepository> { SearchRepositoryImpl(client = get(), resourceProvider = get(), convertor = get()) }
     single<VacancyDetailsRepository> { VacancyDetailsRepositoryImpl(client = get(), resourceProvider = get()) }
     single<FavoriteVacancyRepository> { FavoriteVacancyRepositoryImpl(appDatabase = get(), dbConverter = get()) }
-    single<IndustriesRepository> {IndustriesRepositoryImpl(client = get(), resourceProvider = get())}
+    single<IndustriesRepository> { IndustriesRepositoryImpl(client = get(), resourceProvider = get()) }
 }
