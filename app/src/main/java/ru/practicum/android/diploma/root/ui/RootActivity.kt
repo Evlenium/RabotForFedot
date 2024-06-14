@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 import java.util.Locale
@@ -44,7 +43,6 @@ class RootActivity : AppCompatActivity() {
             }
         }
         bottomNavigation.setupWithNavController(navController)
-        BuildConfig.HH_ACCESS_TOKEN //for check
     }
 
     override fun attachBaseContext(base: Context) {
