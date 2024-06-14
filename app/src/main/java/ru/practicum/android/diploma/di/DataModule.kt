@@ -14,6 +14,7 @@ import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.search.data.network.SearchAPI
 import ru.practicum.android.diploma.util.CheckConnection
+import ru.practicum.android.diploma.util.Constants
 
 val dataModule = module {
 
@@ -21,7 +22,7 @@ val dataModule = module {
 
     single<SearchAPI> {
         Retrofit.Builder()
-            .baseUrl("https://api.hh.ru")
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(
                 OkHttpClient.Builder()
@@ -30,8 +31,8 @@ val dataModule = module {
                             proceed(
                                 request()
                                     .newBuilder()
-                                    .addHeader("Authorization", SearchAPI.TOKEN)
-                                    .addHeader("HH-User-Agent", "RabotforFedot")
+                                    .addHeader(Constants.AUTO_BEARER, SearchAPI.TOKEN)
+                                    .addHeader(Constants.HH_USER_AGENT, Constants.APPLICATION_NAME)
                                     .build()
                             )
                         }

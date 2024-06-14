@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 import java.util.Locale
@@ -44,7 +43,6 @@ class RootActivity : AppCompatActivity() {
             }
         }
         bottomNavigation.setupWithNavController(navController)
-        networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
     }
 
     override fun attachBaseContext(base: Context) {
@@ -59,9 +57,5 @@ class RootActivity : AppCompatActivity() {
         configuration.setLocale(ruLocale)
         configuration.setLayoutDirection(ruLocale)
         return context.createConfigurationContext(configuration)
-    }
-
-    private fun networkRequestExample(accessToken: String) {
-        // ...
     }
 }
