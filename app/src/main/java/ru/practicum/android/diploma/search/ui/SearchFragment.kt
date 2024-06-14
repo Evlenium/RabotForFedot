@@ -54,15 +54,17 @@ class SearchFragment : Fragment() {
         searchAdapterReset()
         binding.placeholderViewGroup.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         binding.placeholderViewGroup.animate()
-        binding.apply {
+        with(binding) {
             textInputEndIcon.setOnClickListener {
                 textInputEditText.setText("")
+                textInputEndIcon.setImageResource(R.drawable.icon_search)
+                viewModel.lastText = ""
                 activity?.window?.currentFocus?.let { view ->
                     val imm =
                         requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                     imm?.hideSoftInputFromWindow(view.windowToken, 0)
-                    showPlaceholderSearch()
                 }
+                showPlaceholderSearch()
             }
             val editText = viewModel.lastText
             if (editText.isNotEmpty()) {
@@ -107,14 +109,15 @@ class SearchFragment : Fragment() {
             beforeTextChanged = { s, start, count, after -> },
             onTextChanged = { s, start, before, count ->
                 if (s != null) {
-                    if (s.trim().isNotEmpty() && viewModel.lastText != s.toString()) {
+                    val stringIsNotEmpty = s.trim().isNotEmpty()
+                    if (stringIsNotEmpty && viewModel.lastText != s.toString()) {
                         binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
                         inputTextFromSearch = s.toString()
                         binding.vacancyMessageTextView.isVisible = false
                         binding.placeholderViewGroup.isVisible = false
                         searchAdapterReset()
                         viewModel.searchDebounce(inputTextFromSearch!!)
-                    } else if (s.trim().isEmpty()) {
+                    } else if (stringIsNotEmpty && viewModel.lastText.isEmpty()) {
                         binding.textInputEndIcon.setImageResource(R.drawable.icon_search)
                         showPlaceholderSearch()
                         binding.vacancyMessageTextView.visibility = View.GONE
@@ -185,6 +188,7 @@ class SearchFragment : Fragment() {
     private fun showPlaceholderSearch() {
         with(binding) {
             centerProgressBar.isVisible = false
+            vacancyMessageTextView.isVisible = false
             bottomProgressBar.isVisible = false
             placeholderViewGroup.isVisible = true
             placeholderTextView.isVisible = false

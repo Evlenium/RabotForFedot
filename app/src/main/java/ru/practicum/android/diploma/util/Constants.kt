@@ -1,6 +1,12 @@
 package ru.practicum.android.diploma.util
 
 object Constants {
+
+    const val APPLICATION_NAME = "RabotforFedot"
+    const val BASE_URL = "https://api.hh.ru"
+    const val HH_USER_AGENT = "HH-User-Agent"
+    const val AUTO_BEARER = "AuthorizationBearer"
+
     const val CONNECTION_ERROR = -1
     const val SUCCESS = 200
     const val NOT_FOUND = 400

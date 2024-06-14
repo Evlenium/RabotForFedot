@@ -44,7 +44,7 @@ class RootActivity : AppCompatActivity() {
             }
         }
         bottomNavigation.setupWithNavController(navController)
-        networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
+        BuildConfig.HH_ACCESS_TOKEN //for check
     }
 
     override fun attachBaseContext(base: Context) {
@@ -59,9 +59,5 @@ class RootActivity : AppCompatActivity() {
         configuration.setLocale(ruLocale)
         configuration.setLayoutDirection(ruLocale)
         return context.createConfigurationContext(configuration)
-    }
-
-    private fun networkRequestExample(accessToken: String) {
-        // ...
     }
 }
