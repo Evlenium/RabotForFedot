@@ -1,12 +1,13 @@
 package ru.practicum.android.diploma.search.data.network
 
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.details.data.dto.VacancyDetailsResponse
-import ru.practicum.android.diploma.filter.area.data.SearchAreaResponse
+import ru.practicum.android.diploma.filter.area.data.dto.SearchAreaResponse
 import ru.practicum.android.diploma.filter.industry.data.dto.SearchIndustriesResponse
 import ru.practicum.android.diploma.search.data.dto.SearchResponse
 
@@ -21,7 +22,7 @@ interface SearchAPI {
     suspend fun getVacancyDetails(@Path("vacancy_id") vacancyId: String): VacancyDetailsResponse
 
     @GET("/industries")
-    suspend fun getIndustries(): SearchIndustriesResponse
+    suspend fun getIndustries(): Response<List<SearchIndustriesResponse>>
 
     @GET("/areas")
     suspend fun getAreas(): List<SearchAreaResponse>
