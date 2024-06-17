@@ -4,6 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.details.data.dto.VacancyDetailsRequest
+import ru.practicum.android.diploma.filter.area.data.dto.SearchAreaResponse
 import ru.practicum.android.diploma.filter.industry.data.dto.SearchIndustriesResponse
 import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.dto.SearchRequest
@@ -13,7 +14,7 @@ import java.io.IOException
 
 class RetrofitNetworkClient(
     private val service: SearchAPI,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
 ) : NetworkClient {
     override suspend fun doRequest(dto: Any): Response {
         return if (!resourceProvider.checkInternetConnection()) {
@@ -28,6 +29,12 @@ class RetrofitNetworkClient(
                     Response().apply { result = Constants.NOT_FOUND }
                 }
             }
+        }
+    }
+
+    override suspend fun doSearchAreaRequest(): retrofit2.Response<List<SearchAreaResponse>> {
+        return withContext(Dispatchers.IO) {
+            service.getAreas()
         }
     }
 

@@ -25,7 +25,7 @@ interface SearchAPI {
     suspend fun getIndustries(): Response<List<SearchIndustriesResponse>>
 
     @GET("/areas")
-    suspend fun getAreas(): List<SearchAreaResponse>
+    suspend fun getAreas(): Response<List<SearchAreaResponse>>
 
     companion object {
         const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
