@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.filter.area.data
+package ru.practicum.android.diploma.filter.area.data.dto
 
 import com.google.gson.annotations.SerializedName
 import ru.practicum.android.diploma.search.data.model.AreaDTO
