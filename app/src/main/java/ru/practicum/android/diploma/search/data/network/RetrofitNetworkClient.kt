@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.details.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.filter.area.data.dto.SearchAreaResponse
 import ru.practicum.android.diploma.filter.industry.data.dto.SearchIndustriesRequest
+import ru.practicum.android.diploma.filter.industry.data.dto.SearchIndustriesResponse
 import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.dto.SearchRequest
 import ru.practicum.android.diploma.sharing.data.ResourceProvider
@@ -25,7 +26,6 @@ class RetrofitNetworkClient(
             when (dto) {
                 is SearchRequest -> doSearchRequest(dto)
                 is VacancyDetailsRequest -> doSearchDetailsRequest(dto)
-                is SearchIndustriesRequest -> doSearchIndustriesRequest()
                 else -> {
                     Response().apply { result = Constants.NOT_FOUND }
                 }
@@ -63,15 +63,9 @@ class RetrofitNetworkClient(
         }
     }
 
-    private suspend fun doSearchIndustriesRequest(): Response {
+    override suspend fun doSearchIndustriesRequest(): retrofit2.Response<List<SearchIndustriesResponse>> {
         return withContext(Dispatchers.IO) {
-            try {
-                val searchIndustriesResponse = service.getIndustries()
-                searchIndustriesResponse.apply { result = Constants.SUCCESS }
-            } catch (exception: IOException) {
-                Log.e("exception", "$exception")
-                Response().apply { result = Constants.SERVER_ERROR }
-            }
+            service.getIndustries()
         }
     }
 }

@@ -22,7 +22,7 @@ interface SearchAPI {
     suspend fun getVacancyDetails(@Path("vacancy_id") vacancyId: String): VacancyDetailsResponse
 
     @GET("/industries")
-    suspend fun getIndustries(): SearchIndustriesResponse
+    suspend fun getIndustries(): Response<List<SearchIndustriesResponse>>
 
     @GET("/areas")
     suspend fun getAreas(): Response<List<SearchAreaResponse>>
