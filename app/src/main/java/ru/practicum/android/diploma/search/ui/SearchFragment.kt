@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.search.ui
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -27,37 +29,56 @@ import ru.practicum.android.diploma.details.ui.VacancyDetailsFragment
 import ru.practicum.android.diploma.search.domain.model.FilterSearch
 import ru.practicum.android.diploma.search.domain.model.SimpleVacancy
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
-import ru.practicum.android.diploma.search.presentation.model.VacanciesState
+import ru.practicum.android.diploma.search.presentation.VacanciesState
 import ru.practicum.android.diploma.util.Constants
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
-    private val binding: FragmentSearchBinding
-        get() = _binding!!
+    private val binding: FragmentSearchBinding get() = _binding!!
     private var inputTextFromSearch: String? = null
     private var searchAdapter: SearchVacancyAdapter? = null
-
     private val viewModel by viewModel<SearchViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
+    private val filterSearch by lazy(LazyThreadSafetyMode.NONE) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable(ARGS_FILTER, FilterSearch::class.java)
+        } else {
+            arguments?.getParcelable(ARGS_FILTER)
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        binding.searchRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.searchRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (arguments != null) {
+            viewModel.setFilterSearch(filterSearch)
+            val isWorkplaceFilter = filterSearch?.countryId != null || filterSearch?.regionId != null
+            val isIndustryFilter = filterSearch?.industryId != null
+            val isSalaryFilter = filterSearch?.expectedSalary != null || filterSearch?.isOnlyWithSalary != false
+
+            if (isWorkplaceFilter || isIndustryFilter || isSalaryFilter) {
+                binding.filterButton.setImageResource(R.drawable.icon_filter_on)
+            } else {
+                binding.filterButton.setImageResource(R.drawable.icon_filter_off)
+            }
+        }
+
         scrollListener()
         searchAdapterReset()
+        setupToolbar()
+
         binding.placeholderViewGroup.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         binding.placeholderViewGroup.animate()
+
         with(binding) {
             textInputEndIcon.setOnClickListener {
+                viewModel.clearText()
                 textInputEditText.setText("")
                 textInputEndIcon.setImageResource(R.drawable.icon_search)
                 viewModel.lastText = ""
@@ -68,8 +89,8 @@ class SearchFragment : Fragment() {
                 }
                 showPlaceholderSearch()
             }
-            val editText = viewModel.lastText
-            if (editText.isNotEmpty()) {
+            val editText = viewModel.getText()
+            if (!editText.isNullOrEmpty()) {
                 textInputEditText.setText(editText)
                 textInputEndIcon.setImageResource(R.drawable.icon_close)
                 textInputEndIcon.isVisible = true
@@ -77,9 +98,7 @@ class SearchFragment : Fragment() {
             }
         }
         inputEditTextInit()
-        viewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
-        }
+        viewModel.observeState().observe(viewLifecycleOwner) { render(it) }
         binding.filterButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterSettingsFragment
@@ -128,6 +147,7 @@ class SearchFragment : Fragment() {
             },
             afterTextChanged = { s ->
                 inputTextFromSearch = s.toString()
+                viewModel.saveText(inputTextFromSearch!!)
             }
         )
 
@@ -263,6 +283,15 @@ class SearchFragment : Fragment() {
             placeholderViewGroup.isVisible = false
             searchRecyclerView.isVisible = true
         }
+    }
+
+    private fun setupToolbar() {
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.searchToolbar)
+        (activity as? AppCompatActivity)?.supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(false)
+            title = getString(R.string.search_vacancies)
+        }
+        binding.searchToolbar.setTitleTextAppearance(requireContext(), R.style.ToolbarAppStyle)
     }
 
     private fun clickDebounce(): Boolean {

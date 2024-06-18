@@ -6,16 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
+import ru.practicum.android.diploma.search.domain.model.FilterSearch
 import ru.practicum.android.diploma.search.domain.model.SimpleVacancy
-import ru.practicum.android.diploma.search.presentation.model.FilterSearch
-import ru.practicum.android.diploma.search.presentation.model.VacanciesState
 import ru.practicum.android.diploma.sharing.domain.api.ResourceInteractor
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
     private val searchInteractor: SearchInteractor,
-    private val resourceInteractor: ResourceInteractor,
+    private val resourceInteractor: ResourceInteractor
 ) : ViewModel() {
     var lastText: String = ""
     private var currentPage = 0
@@ -158,6 +157,22 @@ class SearchViewModel(
             renderState(VacanciesState.Loading)
             searchRequest(request)
         }
+    }
+
+    fun saveText(inputTextFromSearch: String) {
+        resourceInteractor.addToShared(inputTextFromSearch)
+    }
+
+    fun getText(): String? {
+        return resourceInteractor.getShared()
+    }
+
+    fun clearText() {
+        resourceInteractor.clearShared()
+    }
+
+    fun setFilterSearch(filterSearch: FilterSearch?) {
+        this.filterSearch = filterSearch
     }
 
     companion object {

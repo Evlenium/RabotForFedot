@@ -23,6 +23,7 @@ val repositoryModule = module {
         ResourceProvider(
             context = androidContext(),
             checkConnection = get(),
+            sharedPreferences = get()
         )
     }
     single<SearchRepository> { SearchRepositoryImpl(client = get(), resourceProvider = get(), convertor = get()) }
