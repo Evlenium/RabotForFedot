@@ -15,8 +15,8 @@ class FilterSettingsRepositoryImpl(
 
     override fun getFilter(): Filter? {
         val filter = storage.getFilter()
-        return if (filter.isEmpty() || filter == "null") null
-        else gson.fromJson(filter, Filter::class.java)
+        return if (filter.isEmpty() || filter == "null") { null }
+        else { gson.fromJson(filter, Filter::class.java) }
     }
 
     override fun updateIndustry(industry: Industry) {
