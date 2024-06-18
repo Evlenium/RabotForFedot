@@ -9,7 +9,7 @@ class ResourceProvider(
     private val context: Context,
     private val checkConnection: CheckConnection,
     private val sharedPreferences: SharedPreferences
-    ) {
+) {
     fun getErrorInternetConnection(): String {
         return context.getString(R.string.no_internet)
     }
