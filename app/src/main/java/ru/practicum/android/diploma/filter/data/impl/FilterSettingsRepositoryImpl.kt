@@ -15,25 +15,9 @@ class FilterSettingsRepositoryImpl(
 
     override fun getFilter(): Filter? {
         val filter = storage.getFilter()
-        return if (filter.isEmpty() || filter == "null") {
-            null
-        } else if (checkFilter(gson.fromJson(filter, Filter::class.java))) {
-            null
-        } else {
-            gson.fromJson(filter, Filter::class.java)
-        }
+        return if (filter.isEmpty() || filter == "null") null
+        else gson.fromJson(filter, Filter::class.java)
     }
-
-    fun checkFilter(filter: Filter): Boolean =
-        with(filter) {
-            isOnlyWithSalary == null &&
-                countryName == null &&
-                regionName == null &&
-                regionId == null &&
-                industryName == null &&
-                industryId == null &&
-                expectedSalary == null
-        }
 
     override fun updateIndustry(industry: Industry) {
         val filter = getFilter()

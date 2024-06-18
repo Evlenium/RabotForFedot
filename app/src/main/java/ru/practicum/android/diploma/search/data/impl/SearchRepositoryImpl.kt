@@ -21,7 +21,9 @@ class SearchRepositoryImpl(
         expression: String,
         filters: Map<String, String>
     ): Flow<Resource<ServerVacanciesResponse>> = flow {
+
         val response = client.doRequest(SearchRequest(expression, filters))
+
         when (response.result) {
             Constants.SUCCESS -> emit(
                 Resource.Success(

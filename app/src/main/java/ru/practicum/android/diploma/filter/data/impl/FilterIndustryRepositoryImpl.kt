@@ -14,6 +14,7 @@ class FilterIndustryRepositoryImpl(
     private val client: NetworkClient,
     private val resourceProvider: ResourceProvider
 ) : FilterIndustryRepository {
+
     override suspend fun getIndustries(): Flow<Resource<List<Industry>>> = flow {
         val retrofitResponse = client.doSearchIndustriesRequest()
         val searchIndustriesResponseList = retrofitResponse.body()
