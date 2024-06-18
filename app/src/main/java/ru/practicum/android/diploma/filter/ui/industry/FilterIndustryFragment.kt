@@ -17,8 +17,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterIndustryBinding
 import ru.practicum.android.diploma.filter.presentation.industry.FilterIndustryViewModel
-import ru.practicum.android.diploma.filter.presentation.industry.model.IndustriesState
-import ru.practicum.android.diploma.filter.presentation.industry.model.IndustryState
+import ru.practicum.android.diploma.filter.presentation.industry.IndustriesState
+import ru.practicum.android.diploma.filter.presentation.industry.IndustryState
 import ru.practicum.android.diploma.filter.ui.FilterSettingsFragment
 import ru.practicum.android.diploma.search.domain.model.Industry
 import java.util.Locale

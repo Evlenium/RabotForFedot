@@ -8,8 +8,6 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.details.presentation.model.StateLoadVacancy
 import ru.practicum.android.diploma.filter.domain.api.FilterIndustryInteractor
 import ru.practicum.android.diploma.filter.domain.api.FilterSettingsInteractor
-import ru.practicum.android.diploma.filter.presentation.industry.model.IndustriesState
-import ru.practicum.android.diploma.filter.presentation.industry.model.IndustryState
 import ru.practicum.android.diploma.search.domain.model.Industry
 
 class FilterIndustryViewModel(

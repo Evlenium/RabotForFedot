@@ -3,10 +3,10 @@ package ru.practicum.android.diploma.filter.data.impl
 import com.google.gson.Gson
 import ru.practicum.android.diploma.filter.data.api.FilterSettingsStorage
 import ru.practicum.android.diploma.filter.domain.api.FilterSettingsRepository
-import ru.practicum.android.diploma.search.domain.model.Industry
 import ru.practicum.android.diploma.search.domain.model.Area
 import ru.practicum.android.diploma.search.domain.model.Country
 import ru.practicum.android.diploma.search.domain.model.Filter
+import ru.practicum.android.diploma.search.domain.model.Industry
 
 class FilterSettingsRepositoryImpl(
     private val storage: FilterSettingsStorage,

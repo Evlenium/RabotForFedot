@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.filter.presentation.industry.model
+package ru.practicum.android.diploma.filter.presentation.industry
 
 import ru.practicum.android.diploma.search.domain.model.Industry
 
