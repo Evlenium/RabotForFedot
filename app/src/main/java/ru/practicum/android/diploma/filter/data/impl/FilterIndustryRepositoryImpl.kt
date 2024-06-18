@@ -1,17 +1,19 @@
-package ru.practicum.android.diploma.filter.industry.data.impl
+package ru.practicum.android.diploma.filter.data.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.practicum.android.diploma.filter.industry.domain.api.IndustriesRepository
-import ru.practicum.android.diploma.filter.industry.domain.model.Industry
+import ru.practicum.android.diploma.filter.domain.api.FilterIndustryRepository
 import ru.practicum.android.diploma.search.data.model.IndustryDTO
 import ru.practicum.android.diploma.search.data.network.NetworkClient
+import ru.practicum.android.diploma.search.domain.model.Industry
 import ru.practicum.android.diploma.sharing.data.ResourceProvider
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.Resource
 
-class IndustriesRepositoryImpl(private val client: NetworkClient, private val resourceProvider: ResourceProvider) :
-    IndustriesRepository {
+class FilterIndustryRepositoryImpl(
+    private val client: NetworkClient,
+    private val resourceProvider: ResourceProvider
+) : FilterIndustryRepository {
     override suspend fun getIndustries(): Flow<Resource<List<Industry>>> = flow {
         val retrofitResponse = client.doSearchIndustriesRequest()
         val searchIndustriesResponseList = retrofitResponse.body()

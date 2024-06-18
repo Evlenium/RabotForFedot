@@ -20,6 +20,7 @@ import ru.practicum.android.diploma.filter.presentation.CheckBoxState
 import ru.practicum.android.diploma.filter.presentation.FilterSettingsViewModel
 import ru.practicum.android.diploma.filter.presentation.FilterState
 import ru.practicum.android.diploma.filter.presentation.IndustryState
+import ru.practicum.android.diploma.filter.ui.industry.FilterIndustryFragment
 import ru.practicum.android.diploma.search.ui.SearchFragment
 
 class FilterSettingsFragment : Fragment() {

@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.filter.domain.api
 
-import ru.practicum.android.diploma.filter.industry.domain.model.Industry
+import ru.practicum.android.diploma.search.domain.model.Industry
 import ru.practicum.android.diploma.search.domain.model.Area
 import ru.practicum.android.diploma.search.domain.model.Country
 import ru.practicum.android.diploma.search.domain.model.Filter

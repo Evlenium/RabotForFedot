@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.search.data.network
 
 import ru.practicum.android.diploma.filter.area.data.dto.SearchAreaResponse
-import ru.practicum.android.diploma.filter.industry.data.dto.SearchIndustriesResponse
+import ru.practicum.android.diploma.filter.data.dto.SearchIndustriesResponse
 import ru.practicum.android.diploma.search.data.dto.Response
 
 interface NetworkClient {

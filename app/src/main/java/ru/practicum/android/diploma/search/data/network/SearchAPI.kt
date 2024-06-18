@@ -8,7 +8,7 @@ import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.details.data.dto.VacancyDetailsResponse
 import ru.practicum.android.diploma.filter.area.data.dto.SearchAreaResponse
-import ru.practicum.android.diploma.filter.industry.data.dto.SearchIndustriesResponse
+import ru.practicum.android.diploma.filter.data.dto.SearchIndustriesResponse
 import ru.practicum.android.diploma.search.data.dto.SearchResponse
 
 interface SearchAPI {
