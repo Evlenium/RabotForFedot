@@ -7,6 +7,8 @@ import ru.practicum.android.diploma.favorite.domain.api.FavoriteVacancyInteracto
 import ru.practicum.android.diploma.favorite.domain.impl.FavoriteVacancyInteractorImpl
 import ru.practicum.android.diploma.filter.area.domain.api.AreasInteractor
 import ru.practicum.android.diploma.filter.area.domain.impl.AreasInteractorImpl
+import ru.practicum.android.diploma.filter.domain.api.FilterSettingsInteractor
+import ru.practicum.android.diploma.filter.domain.impl.FilterSettingsInteractorImpl
 import ru.practicum.android.diploma.filter.industry.domain.api.IndustriesInteractor
 import ru.practicum.android.diploma.filter.industry.domain.impl.IndustriesInteractorImpl
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
@@ -22,6 +24,7 @@ val interactorModule = module {
     factory<SearchInteractor> { SearchInteractorImpl(searchRepository = get()) }
     factory<VacancyDetailsInteractor> { VacancyDetailsInteractorImpl(repository = get()) }
     factory<FavoriteVacancyInteractor> { FavoriteVacancyInteractorImpl(repository = get()) }
+    factory<FilterSettingsInteractor> { FilterSettingsInteractorImpl(repository = get()) }
     factory<IndustriesInteractor> { IndustriesInteractorImpl(industriesRepository = get()) }
     factory<AreasInteractor> { AreasInteractorImpl(areasRepository = get()) }
 }

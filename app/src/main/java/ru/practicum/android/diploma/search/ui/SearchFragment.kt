@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -23,6 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.details.ui.VacancyDetailsFragment
+import ru.practicum.android.diploma.search.domain.model.FilterSearch
 import ru.practicum.android.diploma.search.domain.model.SimpleVacancy
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.search.presentation.model.VacanciesState
@@ -287,6 +289,12 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
+        private const val ARGS_FILTER = "from_workplace"
+        fun createArgsFilter(createFilterFromShared: FilterSearch): Bundle =
+            bundleOf(
+                ARGS_FILTER to createFilterFromShared,
+            )
+
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
