@@ -74,7 +74,7 @@
     </fragment>
     <fragment
         android:id="@+id/filterCountryFragment"
-        android:name="ru.practicum.android.diploma.filter.area.ui.FilterCountryFragment"
+        android:name="ru.practicum.android.diploma.filter.area.ui.country.FilterCountryFragment"
         android:label="fragment_filter_country"
         tools:layout="@layout/fragment_filter_country">
         <action
@@ -87,7 +87,7 @@
     </fragment>
     <fragment
         android:id="@+id/filterRegionFragment"
-        android:name="ru.practicum.android.diploma.filter.area.ui.FilterRegionFragment"
+        android:name="ru.practicum.android.diploma.filter.area.ui.region.FilterRegionFragment"
         android:label="fragment_filter_region"
         tools:layout="@layout/fragment_filter_region">
         <action
