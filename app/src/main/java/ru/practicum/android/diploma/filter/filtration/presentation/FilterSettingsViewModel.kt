@@ -10,7 +10,8 @@ import ru.practicum.android.diploma.search.domain.model.FilterSearch
 class FilterSettingsViewModel(
     private val interactor: FilterSettingsInteractor,
 ) : ViewModel() {
-    private val stateLiveDataFiltration = MutableLiveData<FilterState>()
+    val stateLiveDataFiltration = MutableLiveData<FullFilterState>()
+    val stateLiveDataChanged = MutableLiveData<ChangeFilterState>()
     private val stateLiveDataArea = MutableLiveData<AreaState>()
     private val stateLiveDataSalary = MutableLiveData<SalaryState>()
     private val stateLiveDataIndustry = MutableLiveData<IndustryState>()
@@ -20,7 +21,8 @@ class FilterSettingsViewModel(
         interactor.getFilter()?.expectedSalary
     }
 
-    fun observeFiltrationState(): LiveData<FilterState> = stateLiveDataFiltration
+    fun observeFiltrationState(): LiveData<FullFilterState> = stateLiveDataFiltration
+    fun observeFiltrationStateChanged(): LiveData<ChangeFilterState> = stateLiveDataChanged
     fun observeAreaState(): LiveData<AreaState> = stateLiveDataArea
     fun observeIndustryState(): LiveData<IndustryState> = stateLiveDataIndustry
     fun observeCheckboxState(): LiveData<CheckBoxState> = stateLiveDataCheckBox
@@ -52,7 +54,9 @@ class FilterSettingsViewModel(
             stateLiveDataCheckBox.postValue(CheckBoxState.IsCheck(onlyWithSalary))
         }
         if (checkOnNull(country, region, industry, salary, onlyWithSalary)) {
-            stateLiveDataFiltration.postValue(FilterState.EmptyFilters)
+            stateLiveDataFiltration.postValue(FullFilterState.EmptyFilters)
+        } else {
+            stateLiveDataFiltration.postValue(FullFilterState.NonEmptyFilters)
         }
     }
 
@@ -120,18 +124,22 @@ class FilterSettingsViewModel(
         setIndustryIsEmpty()
         setSalaryIsEmpty()
         setCheckboxOnlyWithSalary(false)
-        stateLiveDataFiltration.postValue(FilterState.EmptyFilters)
+        stateLiveDataFiltration.postValue(FullFilterState.EmptyFilters)
     }
 
     fun setChangedState() {
-        stateLiveDataFiltration.postValue(FilterState.ChangedFilter)
+        stateLiveDataChanged.postValue(ChangeFilterState.ChangedFilter)
     }
 
-    fun getFilter(): Filter? = interactor.getFilter()
+    fun setStateNoChanged() {
+        stateLiveDataChanged.postValue(ChangeFilterState.NoChangeFilters)
+    }
 
     fun getIndustryFilterId(): String? {
         val filter = interactor.getFilter()
         val industryId = filter?.industryId
         return industryId
     }
+
+    fun getFilter(): Filter? = interactor.getFilter()
 }

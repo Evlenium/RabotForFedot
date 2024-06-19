@@ -1,8 +1,13 @@
 package ru.practicum.android.diploma.filter.filtration.presentation
 
-sealed interface FilterState {
-    object EmptyFilters : FilterState
-    object ChangedFilter : FilterState
+sealed interface FullFilterState {
+    object EmptyFilters : FullFilterState
+    object NonEmptyFilters : FullFilterState
+}
+
+sealed interface ChangeFilterState {
+    object ChangedFilter : ChangeFilterState
+    object NoChangeFilters : ChangeFilterState
 }
 
 sealed interface AreaState {

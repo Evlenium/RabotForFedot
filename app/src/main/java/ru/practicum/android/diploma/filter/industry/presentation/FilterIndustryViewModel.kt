@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.details.presentation.model.StateLoadVacancy
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
 import ru.practicum.android.diploma.filter.industry.domain.api.FilterIndustryInteractor
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustriesState
@@ -25,7 +24,7 @@ class FilterIndustryViewModel(
 
     fun searchRequest() {
         viewModelScope.launch {
-            StateLoadVacancy.Loading
+            IndustriesState.Loading
             industryInteractor
                 .getIndustries()
                 .collect { pair ->

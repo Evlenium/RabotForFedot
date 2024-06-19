@@ -16,9 +16,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterSettingsBinding
 import ru.practicum.android.diploma.filter.filtration.presentation.AreaState
+import ru.practicum.android.diploma.filter.filtration.presentation.ChangeFilterState
 import ru.practicum.android.diploma.filter.filtration.presentation.CheckBoxState
 import ru.practicum.android.diploma.filter.filtration.presentation.FilterSettingsViewModel
-import ru.practicum.android.diploma.filter.filtration.presentation.FilterState
+import ru.practicum.android.diploma.filter.filtration.presentation.FullFilterState
 import ru.practicum.android.diploma.filter.filtration.presentation.IndustryState
 import ru.practicum.android.diploma.filter.industry.ui.FilterIndustryFragment
 import ru.practicum.android.diploma.search.ui.SearchFragment
@@ -55,7 +56,15 @@ class FilterSettingsFragment : Fragment() {
         viewModel.observeAreaState().observe(viewLifecycleOwner) { renderArea(it) }
         viewModel.observeIndustryState().observe(viewLifecycleOwner) { renderIndustry(it) }
         viewModel.observeCheckboxState().observe(viewLifecycleOwner) { renderCheckBox(it) }
-        viewModel.observeFiltrationState().observe(viewLifecycleOwner) { render(it) }
+        viewModel.observeFiltrationState().observe(viewLifecycleOwner) { renderFullState(it) }
+        viewModel.observeFiltrationStateChanged().observe(viewLifecycleOwner) { renderChangedState(it) }
+    }
+
+    private fun renderChangedState(filterState: ChangeFilterState) {
+        when (filterState) {
+            is ChangeFilterState.ChangedFilter -> binding.applyFilterButton.isVisible = true
+            is ChangeFilterState.NoChangeFilters -> binding.applyFilterButton.isVisible = false
+        }
     }
 
     private fun renderIndustry(state: IndustryState) {
@@ -78,15 +87,11 @@ class FilterSettingsFragment : Fragment() {
         }
     }
 
-    private fun render(state: FilterState) {
+    private fun renderFullState(state: FullFilterState) {
         when (state) {
-            is FilterState.EmptyFilters -> showEmptyFilters()
-            is FilterState.ChangedFilter -> showApplyButton()
+            is FullFilterState.EmptyFilters -> binding.resetFilterButton.isVisible = false
+            is FullFilterState.NonEmptyFilters -> binding.resetFilterButton.isVisible = true
         }
-    }
-
-    private fun showApplyButton() {
-        binding.applyFilterButton.isVisible = true
     }
 
     private fun showWorkPlace(workPlace: String) {
@@ -98,7 +103,7 @@ class FilterSettingsFragment : Fragment() {
             viewModel.clearWorkplace()
         }
         binding.filtrationWorkPlaceTextView.text = workPlace
-        showFiltersMenu()
+        binding.resetFilterButton.isVisible = true
     }
 
     private fun setDefaultWorkplace() {
@@ -118,7 +123,7 @@ class FilterSettingsFragment : Fragment() {
             viewModel.setIndustryIsEmpty()
         }
         binding.filtrationIndustryTextView.text = industryName
-        showFiltersMenu()
+        binding.resetFilterButton.isVisible = true
     }
 
     private fun setDefaultIndustry() {
@@ -131,23 +136,19 @@ class FilterSettingsFragment : Fragment() {
 
     private fun setCheckBox(check: Boolean) {
         val lastState = viewModel.getFilter()?.isOnlyWithSalary
-        binding.applyFilterButton.isVisible = lastState != null && check != lastState
+        if (lastState != null && check != lastState) {
+            renderChangedState(ChangeFilterState.ChangedFilter)
+        } else if (viewModel.stateLiveDataFiltration.value == FullFilterState.EmptyFilters ||
+            viewModel.stateLiveDataChanged.value == null
+        ) {
+            renderChangedState(ChangeFilterState.NoChangeFilters)
+        }
         if (check) {
             binding.filtrationPayCheckbox.isChecked = true
-            showFiltersMenu()
-        } else {
-            binding.resetFilterButton.isVisible = false
+            renderFullState(FullFilterState.NonEmptyFilters)
+        } else if (viewModel.stateLiveDataFiltration.value == FullFilterState.EmptyFilters) {
+            renderFullState(FullFilterState.EmptyFilters)
         }
-    }
-
-    private fun showEmptyFilters() {
-        if (viewModel.salary == null) {
-            binding.resetFilterButton.isVisible = false
-        }
-    }
-
-    private fun showFiltersMenu() {
-        binding.resetFilterButton.isVisible = true
     }
 
     private fun setOnClickListeners() {
@@ -182,7 +183,6 @@ class FilterSettingsFragment : Fragment() {
                 viewModel.setSalaryIsEmpty()
                 filtrationPayCheckbox.isChecked = false
                 binding.salaryEditText.setText("")
-                binding.applyFilterButton.isVisible = false
                 binding.resetFilterButton.isVisible = false
             }
         }
@@ -208,7 +208,7 @@ class FilterSettingsFragment : Fragment() {
                     if (viewModel.salary.toString().isNotEmpty() && viewModel.salary.toString() != inputTextFromApply) {
                         viewModel.setChangedState()
                     }
-                    showFiltersMenu()
+                    binding.resetFilterButton.isVisible = true
                 } else {
                     binding.resetSalaryButton.isVisible = false
                     viewModel.setSalaryIsEmpty()
