@@ -48,8 +48,8 @@ class RetrofitNetworkClient(
                             response.forEach { searchAreaResponse -> industriesList.add(searchAreaResponse) }
                         }
                         Resource.Success(industriesList)
-                    } catch (ex: IOException) {
-                        Log.e(APP_EXCEPTION, "$ex")
+                    } catch (exceptionArea: IOException) {
+                        Log.e(AREA_EXCEPTION, "$exceptionArea")
                         Resource.Error(resourceProvider.getErrorServer())
                     }
                 }
@@ -62,8 +62,8 @@ class RetrofitNetworkClient(
             try {
                 val searchResponse = service.getVacancies(searchRequest.expression, searchRequest.filters)
                 searchResponse.apply { result = Constants.SUCCESS }
-            } catch (exception: IOException) {
-                Log.e(APP_EXCEPTION, "$exception")
+            } catch (exceptionSearch: IOException) {
+                Log.e(SEARCH_EXCEPTION, "$exceptionSearch")
                 Response().apply { result = Constants.SERVER_ERROR }
             }
         }
@@ -74,8 +74,8 @@ class RetrofitNetworkClient(
             try {
                 val searchDetailsResponse = service.getVacancyDetails(vacancyDetailsRequest.id)
                 searchDetailsResponse.apply { result = Constants.SUCCESS }
-            } catch (exception: IOException) {
-                Log.e(APP_EXCEPTION, "$exception")
+            } catch (exceptionDetails: IOException) {
+                Log.e(DETAILS_EXCEPTION, "$exceptionDetails")
                 Response().apply { result = Constants.SERVER_ERROR }
             }
         }
@@ -100,8 +100,8 @@ class RetrofitNetworkClient(
                             }
                         }
                         Resource.Success(industriesList)
-                    } catch (exception: IOException) {
-                        Log.e(APP_EXCEPTION, "$exception")
+                    } catch (exceptionIndustries: IOException) {
+                        Log.e(INDUSTRY_EXCEPTION, "$exceptionIndustries")
                         Resource.Error(resourceProvider.getErrorServer())
                     }
                 }
@@ -110,6 +110,9 @@ class RetrofitNetworkClient(
     }
 
     companion object {
-        const val APP_EXCEPTION = "app_exception"
+        const val SEARCH_EXCEPTION = "search_exception"
+        const val DETAILS_EXCEPTION = "details_exception"
+        const val AREA_EXCEPTION = "area_exception"
+        const val INDUSTRY_EXCEPTION = "industry_exception"
     }
 }
