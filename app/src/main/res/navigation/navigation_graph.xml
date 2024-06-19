@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/filterSettingsFragment"
-        android:name="ru.practicum.android.diploma.filter.ui.FilterSettingsFragment"
+        android:name="ru.practicum.android.diploma.filter.filtration.ui.FilterSettingsFragment"
         android:label="fragment_filter_settings"
         tools:layout="@layout/fragment_filter_settings">
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/filterWorkplaceFragment"
-        android:name="ru.practicum.android.diploma.filter.ui.FilterWorkplaceFragment"
+        android:name="ru.practicum.android.diploma.filter.area.ui.FilterWorkplaceFragment"
         android:label="fragment_filter_workplace"
         tools:layout="@layout/fragment_filter_workplace">
         <action
@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/filterIndustryFragment"
-        android:name="ru.practicum.android.diploma.filter.ui.industry.FilterIndustryFragment"
+        android:name="ru.practicum.android.diploma.filter.industry.ui.FilterIndustryFragment"
         android:label="fragment_filter_industry"
         tools:layout="@layout/fragment_filter_industry">
         <action
@@ -74,7 +74,7 @@
     </fragment>
     <fragment
         android:id="@+id/filterCountryFragment"
-        android:name="ru.practicum.android.diploma.filter.ui.FilterCountryFragment"
+        android:name="ru.practicum.android.diploma.filter.area.ui.FilterCountryFragment"
         android:label="fragment_filter_country"
         tools:layout="@layout/fragment_filter_country">
         <action
@@ -87,7 +87,7 @@
     </fragment>
     <fragment
         android:id="@+id/filterRegionFragment"
-        android:name="ru.practicum.android.diploma.filter.ui.FilterRegionFragment"
+        android:name="ru.practicum.android.diploma.filter.area.ui.FilterRegionFragment"
         android:label="fragment_filter_region"
         tools:layout="@layout/fragment_filter_region">
         <action

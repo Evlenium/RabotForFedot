@@ -7,10 +7,10 @@ import ru.practicum.android.diploma.favorite.domain.api.FavoriteVacancyInteracto
 import ru.practicum.android.diploma.favorite.domain.impl.FavoriteVacancyInteractorImpl
 import ru.practicum.android.diploma.filter.area.domain.api.AreasInteractor
 import ru.practicum.android.diploma.filter.area.domain.impl.AreasInteractorImpl
-import ru.practicum.android.diploma.filter.domain.api.FilterIndustryInteractor
-import ru.practicum.android.diploma.filter.domain.api.FilterSettingsInteractor
-import ru.practicum.android.diploma.filter.domain.impl.FilterIndustryInteractorImpl
-import ru.practicum.android.diploma.filter.domain.impl.FilterSettingsInteractorImpl
+import ru.practicum.android.diploma.filter.industry.domain.api.FilterIndustryInteractor
+import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
+import ru.practicum.android.diploma.filter.industry.domain.impl.FilterIndustryInteractorImpl
+import ru.practicum.android.diploma.filter.filtration.domain.impl.FilterSettingsInteractorImpl
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.impl.SearchInteractorImpl
 import ru.practicum.android.diploma.sharing.domain.api.ResourceInteractor
