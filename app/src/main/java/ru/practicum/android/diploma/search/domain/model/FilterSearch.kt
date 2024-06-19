@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.search.presentation.model
+package ru.practicum.android.diploma.search.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -9,5 +9,5 @@ class FilterSearch(
     val regionId: String? = null,
     val industryId: String? = null,
     val expectedSalary: Long? = null,
-    val isOnlyWithSalary: Boolean? = false,
+    val isOnlyWithSalary: Boolean? = false
 ) : Parcelable

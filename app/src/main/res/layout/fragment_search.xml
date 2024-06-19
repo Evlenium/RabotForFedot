@@ -23,7 +23,7 @@
             android:layout_gravity="end"
             android:layout_marginEnd="@dimen/dimens_size_16"
             android:clickable="true"
-            android:src="@drawable/icon_filter" />
+            android:src="@drawable/icon_filter_off" />
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout

@@ -1,8 +1,8 @@
 package ru.practicum.android.diploma.filter.industry.domain.api
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.filter.industry.domain.model.Industry
+import ru.practicum.android.diploma.search.domain.model.Industry
 
-interface IndustriesInteractor {
+interface FilterIndustryInteractor {
     suspend fun getIndustries(): Flow<Pair<List<Industry>?, String?>>
 }

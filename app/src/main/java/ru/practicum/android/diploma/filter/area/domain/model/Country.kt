@@ -1,8 +1,8 @@
 package ru.practicum.android.diploma.filter.area.domain.model
 
-data class ParentArea(
+data class Country(
     val id: String,
-    val childAreas: List<ChildArea>?,
+    val regions: List<Region>?,
     val parentRegionName: String,
-    val parentId: String?
+    val parentId: String?,
 )
