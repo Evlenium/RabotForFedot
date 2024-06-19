@@ -6,15 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.details.presentation.model.StateLoadVacancy
-import ru.practicum.android.diploma.filter.industry.domain.api.FilterIndustryInteractor
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
+import ru.practicum.android.diploma.filter.industry.domain.api.FilterIndustryInteractor
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustriesState
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustryState
 import ru.practicum.android.diploma.search.domain.model.Industry
 
 class FilterIndustryViewModel(
     private val industryInteractor: FilterIndustryInteractor,
-    private val filterInteractor: FilterSettingsInteractor
+    private val filterInteractor: FilterSettingsInteractor,
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<IndustriesState>()

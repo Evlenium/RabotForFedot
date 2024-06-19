@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterIndustryBinding
+import ru.practicum.android.diploma.filter.filtration.ui.FilterSettingsFragment
 import ru.practicum.android.diploma.filter.industry.presentation.FilterIndustryViewModel
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustriesState
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustryState
-import ru.practicum.android.diploma.filter.filtration.ui.FilterSettingsFragment
 import ru.practicum.android.diploma.search.domain.model.Industry
 import java.util.Locale
 
