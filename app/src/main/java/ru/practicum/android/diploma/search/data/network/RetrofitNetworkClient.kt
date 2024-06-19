@@ -48,8 +48,8 @@ class RetrofitNetworkClient(
                             response.forEach { searchAreaResponse -> industriesList.add(searchAreaResponse) }
                         }
                         Resource.Success(industriesList)
-                    } catch (exception: IOException) {
-                        Log.e(APP_EXCEPTION, "$exception")
+                    } catch (ex: IOException) {
+                        Log.e(APP_EXCEPTION, "$ex")
                         Resource.Error(resourceProvider.getErrorServer())
                     }
                 }
