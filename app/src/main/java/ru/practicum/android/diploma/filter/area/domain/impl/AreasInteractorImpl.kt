@@ -17,7 +17,6 @@ class AreasInteractorImpl(private val areasRepository: AreasRepository) : AreasI
             }
         }
     }
-
     override suspend fun getRegions(): Flow<Pair<List<Region>?, String?>> {
         return areasRepository.getRegions().map {
             when (it) {

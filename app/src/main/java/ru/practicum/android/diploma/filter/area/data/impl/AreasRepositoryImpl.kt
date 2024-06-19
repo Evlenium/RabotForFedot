@@ -92,4 +92,3 @@ class AreasRepositoryImpl(private val client: NetworkClient) :
             parentId = area?.parentId
         )
     }
-}
