@@ -6,7 +6,6 @@ object Constants {
     const val BASE_URL = "https://api.hh.ru"
     const val HH_USER_AGENT = "HH-User-Agent"
     const val AUTO_BEARER = "AuthorizationBearer"
-    const val APP_EXCEPTION = "exception"
 
     const val CONNECTION_ERROR = -1
     const val SUCCESS = 200

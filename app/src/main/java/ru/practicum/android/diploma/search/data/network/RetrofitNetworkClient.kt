@@ -49,7 +49,7 @@ class RetrofitNetworkClient(
                         }
                         Resource.Success(industriesList)
                     } catch (exception: IOException) {
-                        Log.e(Constants.APP_EXCEPTION, "$exception")
+                        Log.e(APP_EXCEPTION, "$exception")
                         Resource.Error(resourceProvider.getErrorServer())
                     }
                 }
@@ -63,7 +63,7 @@ class RetrofitNetworkClient(
                 val searchResponse = service.getVacancies(searchRequest.expression, searchRequest.filters)
                 searchResponse.apply { result = Constants.SUCCESS }
             } catch (exception: IOException) {
-                Log.e(Constants.APP_EXCEPTION, "$exception")
+                Log.e(APP_EXCEPTION, "$exception")
                 Response().apply { result = Constants.SERVER_ERROR }
             }
         }
@@ -75,7 +75,7 @@ class RetrofitNetworkClient(
                 val searchDetailsResponse = service.getVacancyDetails(vacancyDetailsRequest.id)
                 searchDetailsResponse.apply { result = Constants.SUCCESS }
             } catch (exception: IOException) {
-                Log.e(Constants.APP_EXCEPTION, "$exception")
+                Log.e(APP_EXCEPTION, "$exception")
                 Response().apply { result = Constants.SERVER_ERROR }
             }
         }
@@ -101,11 +101,15 @@ class RetrofitNetworkClient(
                         }
                         Resource.Success(industriesList)
                     } catch (exception: IOException) {
-                        Log.e(Constants.APP_EXCEPTION, "$exception")
+                        Log.e(APP_EXCEPTION, "$exception")
                         Resource.Error(resourceProvider.getErrorServer())
                     }
                 }
             }
         }
+    }
+
+    companion object {
+        const val APP_EXCEPTION = "app_exception"
     }
 }
