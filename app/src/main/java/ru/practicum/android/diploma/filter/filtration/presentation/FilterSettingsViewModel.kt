@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.search.domain.model.Filter
 import ru.practicum.android.diploma.search.domain.model.FilterSearch
 
 class FilterSettingsViewModel(
-    private val interactor: FilterSettingsInteractor,
+    private val filterSettingsInteractor: FilterSettingsInteractor,
 ) : ViewModel() {
     val stateLiveDataFiltration = MutableLiveData<FullFilterState>()
     val stateLiveDataChanged = MutableLiveData<ChangeFilterState>()
@@ -18,7 +18,7 @@ class FilterSettingsViewModel(
     val stateLiveDataCheckBox = MutableLiveData<CheckBoxState>()
 
     val salary by lazy(LazyThreadSafetyMode.NONE) {
-        interactor.getFilter()?.expectedSalary
+        filterSettingsInteractor.getFilter()?.expectedSalary
     }
 
     private var industryIsEmpty = true
@@ -45,14 +45,19 @@ class FilterSettingsViewModel(
     }
 
     fun updateFilterParametersFromShared() {
-        val industry = interactor.getFilter()?.industryName
-        val onlyWithSalary = interactor.getFilter()?.isOnlyWithSalary
-        val country = interactor.getFilter()?.countryName
-        val region = interactor.getFilter()?.regionName
-
+        val industry = filterSettingsInteractor.getFilter()?.industryName
+        val onlyWithSalary = filterSettingsInteractor.getFilter()?.isOnlyWithSalary
+        val country = filterSettingsInteractor.getFilter()?.countryName
+        val region = filterSettingsInteractor.getFilter()?.regionName
         updateWorkplaceFromShared(country, region)
-
         if (industry != null) setIndustry(industry)
+        if (country != null) {
+            if (region != null) {
+                setWorkplace("$country, $region")
+            } else {
+                setWorkplace("$country")
+            }
+        }
         if (salary != null) setSalary(salary.toString())
         if (onlyWithSalary != null) {
             stateLiveDataCheckBox.postValue(CheckBoxState.IsCheck(onlyWithSalary))
@@ -65,11 +70,11 @@ class FilterSettingsViewModel(
     }
 
     fun createFilterFromShared(): FilterSearch {
-        val industryId = interactor.getFilter()?.industryId
-        val onlyWithSalary = interactor.getFilter()?.isOnlyWithSalary
-        val countryId = interactor.getFilter()?.countryId
-        val regionId = interactor.getFilter()?.regionId
-        val salary = interactor.getFilter()?.expectedSalary
+        val industryId = filterSettingsInteractor.getFilter()?.industryId
+        val onlyWithSalary = filterSettingsInteractor.getFilter()?.isOnlyWithSalary
+        val countryId = filterSettingsInteractor.getFilter()?.countryId
+        val regionId = filterSettingsInteractor.getFilter()?.regionId
+        val salary = filterSettingsInteractor.getFilter()?.expectedSalary
         return FilterSearch(
             industryId = industryId,
             countryId = countryId,
@@ -94,9 +99,14 @@ class FilterSettingsViewModel(
         return salary == null && onlyWithSalary == null || onlyWithSalary == false
     }
 
+    private fun setWorkplace(workplace: String) {
+        stateLiveDataArea.postValue(AreaState.WorkPlaceState(workplace))
+        workplaceIsEmpty = false
+    }
+
     fun clearWorkplace() {
-        interactor.clearCountry()
-        interactor.clearArea()
+        filterSettingsInteractor.clearCountry()
+        filterSettingsInteractor.clearArea()
         workplaceIsEmpty = true
         stateLiveDataArea.postValue(AreaState.EmptyWorkplace)
     }
@@ -107,25 +117,25 @@ class FilterSettingsViewModel(
     }
 
     fun setIndustryIsEmpty() {
-        interactor.clearIndustry()
+        filterSettingsInteractor.clearIndustry()
         industryIsEmpty = true
         stateLiveDataIndustry.postValue(IndustryState.EmptyFilterIndustry)
     }
 
     fun setSalary(inputTextFromApply: String) {
         salaryIsEmpty = false
-        interactor.updateSalary(inputTextFromApply)
+        filterSettingsInteractor.updateSalary(inputTextFromApply)
         stateLiveDataSalary.postValue(SalaryState.FilterSalaryState(inputTextFromApply))
     }
 
     fun setSalaryIsEmpty() {
         salaryIsEmpty = true
-        interactor.clearSalary()
+        filterSettingsInteractor.clearSalary()
         stateLiveDataSalary.postValue(SalaryState.EmptyFilterSalary)
     }
 
     fun setCheckboxOnlyWithSalary(checkbox: Boolean) {
-        interactor.updateCheckBox(checkbox)
+        filterSettingsInteractor.updateCheckBox(checkbox)
     }
 
     fun clearAllFilters() {
@@ -140,8 +150,8 @@ class FilterSettingsViewModel(
     }
 
     fun checkFilters() {
-        val industryWorkplaceisEmpty = industryIsEmpty && workplaceIsEmpty
-        if (industryWorkplaceisEmpty
+        val industryWorkplaceIsEmpty = industryIsEmpty && workplaceIsEmpty
+        if (industryWorkplaceIsEmpty
             && salaryIsEmpty
             && stateLiveDataCheckBox.value == CheckBoxState.IsCheck(false)
         ) {
@@ -161,5 +171,5 @@ class FilterSettingsViewModel(
         return industryId
     }
 
-    fun getFilter(): Filter? = interactor.getFilter()
+    fun getFilter(): Filter? = filterSettingsInteractor.getFilter()
 }

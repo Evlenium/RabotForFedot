@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:background="?attr/white_black"
     android:orientation="vertical"
-    tools:context=".filter.area.ui.FilterRegionFragment"
+    tools:context=".filter.region.ui.RegionFragment"
     tools:ignore="HardcodedText">
 
     <LinearLayout
