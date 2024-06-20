@@ -99,10 +99,8 @@ class RegionViewModel(
         val regions = ArrayList<Area>()
         countryList.forEach { country ->
             country.areas?.forEach { area ->
-                area?.let {
-                    if (area.parentId != "1001") {
-                        regions.add(it)
-                    }
+                if (area!!.parentId != "1001") {
+                    regions.add(area)
                 }
             }
         }
