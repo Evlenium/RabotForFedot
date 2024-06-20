@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.filter.workplace.domain.api.AreasInteractor
 import ru.practicum.android.diploma.filter.country.presentation.model.CountryState
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
+import ru.practicum.android.diploma.filter.workplace.domain.api.AreasInteractor
 import ru.practicum.android.diploma.search.domain.model.Country
 
 class CountryViewModel(

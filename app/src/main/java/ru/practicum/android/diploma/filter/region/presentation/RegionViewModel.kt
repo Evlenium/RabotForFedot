@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.filter.workplace.domain.api.AreasInteractor
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
 import ru.practicum.android.diploma.filter.region.presentation.model.RegionState
+import ru.practicum.android.diploma.filter.workplace.domain.api.AreasInteractor
 import ru.practicum.android.diploma.search.domain.model.Area
 import ru.practicum.android.diploma.search.domain.model.Country
 
@@ -73,7 +73,22 @@ class RegionViewModel(
 
     private fun bindStateAllRegions(pair: Pair<List<Country>?, String?>) {
         if (pair.first != null) {
-            createContent(pair.first!!)
+            countryList.addAll(pair.first!!)
+            val regions = ArrayList<Area>()
+            countryList.forEach { country ->
+                country.areas?.forEach { area ->
+                    area?.let {
+                        if (area.parentId != "1001") {
+                            regions.add(it)
+                        }
+                    }
+                }
+            }
+            renderState(
+                RegionState.Content(
+                    regions = regions
+                )
+            )
         }
         when {
             pair.second != null -> {
@@ -84,25 +99,6 @@ class RegionViewModel(
                 )
             }
         }
-    }
-
-    private fun createContent(first: List<Country>) {
-        countryList.addAll(first)
-        val regions = ArrayList<Area>()
-        countryList.forEach { country ->
-            country.areas?.forEach { area ->
-                area?.let {
-                    if (area.parentId != "1001") {
-                        regions.add(it)
-                    }
-                }
-            }
-        }
-        renderState(
-            RegionState.Content(
-                regions = regions
-            )
-        )
     }
 
     fun getRegionCountry(): String {

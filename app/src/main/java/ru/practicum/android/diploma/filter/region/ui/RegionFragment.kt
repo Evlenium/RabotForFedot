@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterRegionBinding
-import ru.practicum.android.diploma.filter.workplace.ui.WorkplaceFragment
 import ru.practicum.android.diploma.filter.region.presentation.RegionViewModel
 import ru.practicum.android.diploma.filter.region.presentation.model.RegionState
+import ru.practicum.android.diploma.filter.workplace.ui.WorkplaceFragment
 import ru.practicum.android.diploma.search.domain.model.Area
 import java.util.Locale
 
