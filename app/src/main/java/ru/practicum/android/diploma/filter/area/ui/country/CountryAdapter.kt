@@ -33,7 +33,7 @@ class CountryAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         areas.getOrNull(position)?.let { area ->
-            (holder as CountryViewHolder).bind(area) //ТУТ
+            (holder as CountryViewHolder).bind(area)
         }
     }
 

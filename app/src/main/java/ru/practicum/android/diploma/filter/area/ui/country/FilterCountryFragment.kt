@@ -13,7 +13,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterCountryBinding
 import ru.practicum.android.diploma.filter.area.presentation.country.CountryViewModel
 import ru.practicum.android.diploma.filter.area.presentation.country.model.CountryState
-import ru.practicum.android.diploma.search.domain.model.Country
+import ru.practicum.android.diploma.filter.area.domain.model.Country
 
 class FilterCountryFragment : Fragment() {
     private var _binding: FragmentFilterCountryBinding? = null
@@ -57,7 +57,7 @@ class FilterCountryFragment : Fragment() {
         }
         with(mutableListOf<Country>()) {
             addAll(countries)
-            countryAdapter?.setItems(countries)//ТУТ
+            countryAdapter?.setItems(countries)
         }
     }
 
@@ -88,8 +88,8 @@ class FilterCountryFragment : Fragment() {
     private fun countryAdapterInit() {
         countryAdapter = null
         countryAdapter = CountryAdapter { country ->
-            if (country.name != null) { //ТУТ
-                viewModel.setCountryFilter(country) //ТУТ
+            if (country.name != null) {
+                viewModel.setCountryFilter(country)
                 findNavController().navigate(
                     R.id.action_filterCountryFragment_to_filterWorkplaceFragment,
                 )

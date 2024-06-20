@@ -6,13 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.filter.area.domain.api.AreasInteractor
+import ru.practicum.android.diploma.filter.area.domain.model.Country
+import ru.practicum.android.diploma.filter.area.domain.model.Region
 import ru.practicum.android.diploma.filter.area.presentation.region.model.RegionState
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
-import ru.practicum.android.diploma.search.domain.model.Area
-import ru.practicum.android.diploma.search.domain.model.Country
+
 
 class RegionViewModel(
-    private val searchAreasInteractor: AreasInteractor,//????????
+    private val searchAreasInteractor: AreasInteractor,
     private val filtrationInteractor: FilterSettingsInteractor,
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<RegionState>()
@@ -35,13 +36,13 @@ class RegionViewModel(
             searchAreasInteractor
                 .searchRegionsByCountryName(countryName)
                 .collect { pair ->
-                    bindState(pair)//ТУТ
+                    bindState(pair)
                 }
         }
     }
 
-    private fun bindState(pair: Pair<List<Area>?, String?>) {
-        val regions = ArrayList<Area>()
+    private fun bindState(pair: Pair<List<Region>?, String?>) {
+        val regions = ArrayList<Region>()
         if (pair.first != null) {
             regions.addAll(pair.first!!)
             renderState(
@@ -66,7 +67,7 @@ class RegionViewModel(
             searchAreasInteractor
                 .getRegions()
                 .collect { pair ->
-                    bindStateAllRegions(pair)//ТУТ
+                    bindStateAllRegions(pair)
                 }
         }
     }
@@ -88,7 +89,7 @@ class RegionViewModel(
 
     private fun createContent(first: List<Country>) {
         countryList.addAll(first)
-        val regions = ArrayList<Area>()
+        val regions = ArrayList<Region>()
         countryList.forEach { country ->
             country.areas?.forEach { area ->
                 area?.let { regions.add(it) }
@@ -112,8 +113,8 @@ class RegionViewModel(
         return stringRegionCountry
     }
 
-    fun setCountryFilter(area: Area) {
-        filtrationInteractor.updateArea(area)
+    fun setCountryFilter(region: Region) {
+        filtrationInteractor.updateArea(region)
     }
 
     private fun renderState(state: RegionState) {

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.filter.area.presentation.workplace.model.AreaState
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
 
-
 class PlaceOfWorkViewModel(private val filtrationInteractor: FilterSettingsInteractor) : ViewModel() {
     private val stateLiveData = MutableLiveData<AreaState>()
     fun observeState(): LiveData<AreaState> = stateLiveData

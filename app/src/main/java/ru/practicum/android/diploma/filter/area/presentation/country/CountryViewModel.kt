@@ -6,12 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.filter.area.domain.api.AreasInteractor
+import ru.practicum.android.diploma.filter.area.domain.model.Country
 import ru.practicum.android.diploma.filter.area.presentation.country.model.CountryState
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
-import ru.practicum.android.diploma.search.domain.model.Country
+
 
 class CountryViewModel(
-    private val searchAreasInteractor: AreasInteractor,// ПРОВЕРИТЬ
+    private val searchAreasInteractor: AreasInteractor,
     private val filtrationInteractor: FilterSettingsInteractor
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<CountryState>()
@@ -24,7 +25,7 @@ class CountryViewModel(
                 .collect { pair ->
                     val countries = ArrayList<Country>()
                     if (pair.first != null) {
-                        countries.addAll(pair.first!!)//ПОПРАВИТЬ
+                        countries.addAll(pair.first!!)
                         renderState(
                             CountryState.Content(
                                 countries = countries
