@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterCountryBinding
+import ru.practicum.android.diploma.filter.area.domain.model.Country
 import ru.practicum.android.diploma.filter.area.presentation.country.CountryViewModel
 import ru.practicum.android.diploma.filter.area.presentation.country.model.CountryState
-import ru.practicum.android.diploma.filter.area.domain.model.Country
 
 class FilterCountryFragment : Fragment() {
     private var _binding: FragmentFilterCountryBinding? = null

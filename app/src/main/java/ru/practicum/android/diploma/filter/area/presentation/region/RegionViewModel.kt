@@ -11,7 +11,6 @@ import ru.practicum.android.diploma.filter.area.domain.model.Region
 import ru.practicum.android.diploma.filter.area.presentation.region.model.RegionState
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
 
-
 class RegionViewModel(
     private val searchAreasInteractor: AreasInteractor,
     private val filtrationInteractor: FilterSettingsInteractor,
