@@ -4,7 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.details.data.dto.VacancyDetailsRequest
-import ru.practicum.android.diploma.filter.area.data.dto.SearchAreaResponse
+import ru.practicum.android.diploma.filter.workplace.data.dto.SearchAreaResponse
 import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.dto.SearchRequest
 import ru.practicum.android.diploma.search.data.model.IndustryDTO

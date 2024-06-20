@@ -101,6 +101,7 @@ class FilterSettingsFragment : Fragment() {
         binding.filtrationWorkPlaceImageView.setOnClickListener {
             viewModel.setChangedState()
             viewModel.clearWorkplace()
+            viewModel.checkFilters()
         }
         binding.filtrationWorkPlaceTextView.text = workPlace
         binding.resetFilterButton.isVisible = true
