@@ -140,8 +140,8 @@ class FilterSettingsViewModel(
     }
 
     fun checkFilters() {
-        if (industryIsEmpty
-            && workplaceIsEmpty
+        val industryWorkplaceisEmpty = industryIsEmpty && workplaceIsEmpty
+        if (industryWorkplaceisEmpty
             && salaryIsEmpty
             && stateLiveDataCheckBox.value == CheckBoxState.IsCheck(false)
         ) {
