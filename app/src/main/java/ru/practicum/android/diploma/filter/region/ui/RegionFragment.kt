@@ -121,6 +121,8 @@ class RegionFragment : Fragment() {
             placeholderContainer.isVisible = false
             recyclerView.isVisible = true
         }
+
+        listRegion = regions
         regionAdapter?.setItems(regions)
     }
 
