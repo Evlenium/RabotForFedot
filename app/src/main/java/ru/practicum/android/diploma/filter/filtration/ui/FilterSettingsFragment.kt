@@ -121,6 +121,7 @@ class FilterSettingsFragment : Fragment() {
         binding.filtrationIndustryImageView.setOnClickListener {
             viewModel.setChangedState()
             viewModel.setIndustryIsEmpty()
+            viewModel.checkFilters()
         }
         binding.filtrationIndustryTextView.text = industryName
         binding.resetFilterButton.isVisible = true
@@ -149,6 +150,7 @@ class FilterSettingsFragment : Fragment() {
         } else if (viewModel.stateLiveDataFiltration.value == FullFilterState.EmptyFilters) {
             renderFullState(FullFilterState.EmptyFilters)
         }
+        viewModel.checkFilters()
     }
 
     private fun setOnClickListeners() {

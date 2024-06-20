@@ -21,6 +21,10 @@ class FilterSettingsViewModel(
         interactor.getFilter()?.expectedSalary
     }
 
+    private var industryIsEmpty = true
+    private var workplaceIsEmpty = true
+    private var salaryIsEmpty = true
+
     fun observeFiltrationState(): LiveData<FullFilterState> = stateLiveDataFiltration
     fun observeFiltrationStateChanged(): LiveData<ChangeFilterState> = stateLiveDataChanged
     fun observeAreaState(): LiveData<AreaState> = stateLiveDataArea
@@ -93,24 +97,29 @@ class FilterSettingsViewModel(
     fun clearWorkplace() {
         interactor.clearCountry()
         interactor.clearArea()
+        workplaceIsEmpty = true
         stateLiveDataArea.postValue(AreaState.EmptyWorkplace)
     }
 
     private fun setIndustry(industry: String) {
         stateLiveDataIndustry.postValue(IndustryState.FilterIndustryState(industry))
+        industryIsEmpty = false
     }
 
     fun setIndustryIsEmpty() {
         interactor.clearIndustry()
+        industryIsEmpty = true
         stateLiveDataIndustry.postValue(IndustryState.EmptyFilterIndustry)
     }
 
     fun setSalary(inputTextFromApply: String) {
+        salaryIsEmpty = false
         interactor.updateSalary(inputTextFromApply)
         stateLiveDataSalary.postValue(SalaryState.FilterSalaryState(inputTextFromApply))
     }
 
     fun setSalaryIsEmpty() {
+        salaryIsEmpty = true
         interactor.clearSalary()
         stateLiveDataSalary.postValue(SalaryState.EmptyFilterSalary)
     }
@@ -120,6 +129,9 @@ class FilterSettingsViewModel(
     }
 
     fun clearAllFilters() {
+        industryIsEmpty = true
+        workplaceIsEmpty = true
+        salaryIsEmpty = true
         clearWorkplace()
         setIndustryIsEmpty()
         setSalaryIsEmpty()
@@ -127,16 +139,24 @@ class FilterSettingsViewModel(
         stateLiveDataFiltration.postValue(FullFilterState.EmptyFilters)
     }
 
+    fun checkFilters() {
+        if (industryIsEmpty
+            && workplaceIsEmpty
+            && salaryIsEmpty
+            && stateLiveDataCheckBox.value == CheckBoxState.IsCheck(false)
+        ) {
+            stateLiveDataFiltration.postValue(FullFilterState.EmptyFilters)
+        } else {
+            stateLiveDataFiltration.postValue(FullFilterState.NonEmptyFilters)
+        }
+    }
+
     fun setChangedState() {
         stateLiveDataChanged.postValue(ChangeFilterState.ChangedFilter)
     }
 
-    fun setStateNoChanged() {
-        stateLiveDataChanged.postValue(ChangeFilterState.NoChangeFilters)
-    }
-
     fun getIndustryFilterId(): String? {
-        val filter = interactor.getFilter()
+        val filter = getFilter()
         val industryId = filter?.industryId
         return industryId
     }

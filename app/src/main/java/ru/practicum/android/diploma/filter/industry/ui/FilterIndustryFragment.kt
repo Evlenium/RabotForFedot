@@ -59,9 +59,13 @@ class FilterIndustryFragment : Fragment() {
         }
         val backPath = R.id.action_filterIndustryFragment_to_filterSettingsFragment
         binding.selectButton.setOnClickListener {
+            viewModel.observeStateIndustry().observe(viewLifecycleOwner) {
+                saveIndustry(it)
+            }
+            val requireArgs = industryId != viewModel.getIndustryId()
             findNavController().navigate(
                 backPath,
-                FilterSettingsFragment.createArgsFromIndustry(true)
+                FilterSettingsFragment.createArgsFromIndustry(requireArgs)
             )
         }
         binding.buttonBack.setOnClickListener { findNavController().navigate(backPath) }
@@ -79,13 +83,15 @@ class FilterIndustryFragment : Fragment() {
         viewModel.observeState().observe(viewLifecycleOwner) { render(it) }
     }
 
+    private fun saveIndustry(state: IndustryState) {
+        when (state) {
+            is IndustryState.ContentIndustry -> viewModel.saveIndustry(state.industry)
+        }
+    }
+
     private fun renderIndustry(state: IndustryState) {
         when (state) {
-            is IndustryState.ContentIndustry -> {
-                binding.selectButton.isVisible = true
-                viewModel.saveIndustry(state.industry)
-            }
-
+            is IndustryState.ContentIndustry -> binding.selectButton.isVisible = true
             is IndustryState.Empty -> binding.selectButton.isVisible = false
         }
     }
@@ -146,6 +152,7 @@ class FilterIndustryFragment : Fragment() {
         if (!industryId.isNullOrEmpty()) {
             industries.forEachIndexed { index, industry ->
                 if (industry.id == industryId) {
+                    binding.selectButton.isVisible = true
                     industryAdapter?.setPosition(index)
                 }
             }
