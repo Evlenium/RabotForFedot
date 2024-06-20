@@ -23,8 +23,8 @@ class FilterIndustryViewModel(
     fun observeStateIndustry(): LiveData<IndustryState> = stateLiveDataIndustry
 
     fun searchRequest() {
+        stateLiveData.postValue(IndustriesState.Loading)
         viewModelScope.launch {
-            IndustriesState.Loading
             industryInteractor
                 .getIndustries()
                 .collect { pair ->
@@ -61,4 +61,6 @@ class FilterIndustryViewModel(
     fun saveIndustry(industry: Industry) {
         filterInteractor.updateIndustry(industry = industry)
     }
+
+    fun getIndustryId() = filterInteractor.getFilter()?.industryId
 }
