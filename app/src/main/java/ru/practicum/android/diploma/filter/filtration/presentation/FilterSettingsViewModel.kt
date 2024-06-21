@@ -150,6 +150,7 @@ class FilterSettingsViewModel(
         setIndustryIsEmpty()
         setSalaryIsEmpty()
         setCheckboxOnlyWithSalary(false)
+        stateLiveDataCheckBox.postValue(CheckBoxState.IsCheck(false))
         stateLiveDataFiltration.postValue(FullFilterState.EmptyFilters)
     }
 
