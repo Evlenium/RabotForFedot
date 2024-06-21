@@ -170,6 +170,8 @@ class FilterIndustryFragment : Fragment() {
                 if (!s.isNullOrEmpty()) {
                     inputTextFromSearch = s.toString()
                     containsMethod(inputTextFromSearch)
+                } else {
+                    industryAdapter?.setItems(listIndustries)
                 }
             },
             afterTextChanged = { s ->
