@@ -72,6 +72,7 @@ class SearchViewModel(
             lastText = changedText
             flagDebounce = true
             vacancySearchDebounce(changedText)
+            flagDebounce = false
         }
     }
 
