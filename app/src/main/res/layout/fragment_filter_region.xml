@@ -76,6 +76,7 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:paddingVertical="@dimen/dimens_size_20"
+                android:textColor="@color/black"
                 android:textColorHint="?attr/gray_white"
                 app:colorControlActivated="@color/blue" />
         </com.google.android.material.textfield.TextInputLayout>
