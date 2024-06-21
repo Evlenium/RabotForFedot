@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filter.filtration.ui
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -97,7 +99,7 @@ class FilterSettingsFragment : Fragment() {
     private fun showWorkPlace(workPlace: String) {
         binding.workPlaceHeader.isVisible = true
         binding.filtrationWorkPlaceImageView.setImageResource(R.drawable.icon_reset)
-        binding.filtrationWorkPlaceTextView.setTextColor(requireContext().getColor(R.color.text_color_selector))
+        binding.filtrationWorkPlaceTextView.setTextColor(requireContext().getColor(R.color.black_white_text_color_selector))
         binding.filtrationWorkPlaceImageView.setOnClickListener {
             viewModel.setChangedState()
             viewModel.clearWorkplace()
@@ -118,7 +120,7 @@ class FilterSettingsFragment : Fragment() {
     private fun showIndustry(industryName: String) {
         binding.industryHeader.isVisible = true
         binding.filtrationIndustryImageView.setImageResource(R.drawable.icon_reset)
-        binding.filtrationIndustryTextView.setTextColor(requireContext().getColor(R.color.text_color_selector))
+        binding.filtrationIndustryTextView.setTextColor(requireContext().getColor(R.color.black_white_text_color_selector))
         binding.filtrationIndustryImageView.setOnClickListener {
             viewModel.setChangedState()
             viewModel.setIndustryIsEmpty()
@@ -196,6 +198,11 @@ class FilterSettingsFragment : Fragment() {
             if (!binding.salaryEditText.text.isNullOrEmpty()) {
                 binding.resetSalaryButton.isVisible = hasFocus
             }
+
+            if (hasFocus) {
+                val textColorHint = ContextCompat.getColor(requireContext(), R.color.blue)
+                binding.salaryDescriptionField.setDefaultHintTextColor(ColorStateList.valueOf(textColorHint))
+            }
         }
     }
 
@@ -205,6 +212,13 @@ class FilterSettingsFragment : Fragment() {
             onTextChanged = { s, start, before, count -> },
             afterTextChanged = { s ->
                 if (!s.isNullOrEmpty()) {
+                    if (!binding.salaryEditText.hasFocus()) {
+                        val textColorHint = ContextCompat.getColor(requireContext(), R.color.black)
+                        binding.salaryDescriptionField.setDefaultHintTextColor(ColorStateList.valueOf(textColorHint))
+                    } else {
+                        val textColorHint = ContextCompat.getColor(requireContext(), R.color.blue)
+                        binding.salaryDescriptionField.setDefaultHintTextColor(ColorStateList.valueOf(textColorHint))
+                    }
                     binding.resetSalaryButton.isVisible = binding.salaryEditText.hasFocus()
                     inputTextFromApply = s.toString()
                     viewModel.setSalary(inputTextFromApply!!)
@@ -213,6 +227,8 @@ class FilterSettingsFragment : Fragment() {
                     }
                     binding.resetFilterButton.isVisible = true
                 } else {
+                    val textColorHint = ContextCompat.getColor(requireContext(), R.color.gray_white_text_color_selector)
+                    binding.salaryDescriptionField.setDefaultHintTextColor(ColorStateList.valueOf(textColorHint))
                     binding.resetSalaryButton.isVisible = false
                     viewModel.setSalaryIsEmpty()
                     viewModel.setChangedState()
