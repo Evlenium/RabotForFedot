@@ -14,6 +14,8 @@ import ru.practicum.android.diploma.convertor.ModelsConvertor
 import ru.practicum.android.diploma.favorite.data.db.AppDatabase
 import ru.practicum.android.diploma.filter.filtration.data.api.FilterSettingsStorage
 import ru.practicum.android.diploma.filter.filtration.data.impl.FilterSettingsStorageImpl
+import ru.practicum.android.diploma.filter.workplace.data.api.TemporaryShared
+import ru.practicum.android.diploma.filter.workplace.data.impl.TemporarySharedImpl
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.search.data.network.SearchAPI
@@ -63,5 +65,6 @@ val dataModule = module {
 
     single { androidContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE) }
     single<FilterSettingsStorage> { FilterSettingsStorageImpl(prefs = get()) }
+    single<TemporaryShared> { TemporarySharedImpl(sharedPreferences = get()) }
     factory { Gson() }
 }

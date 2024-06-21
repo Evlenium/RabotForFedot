@@ -4,16 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
+import ru.practicum.android.diploma.filter.workplace.domain.api.TemporarySharedInteractor
 import ru.practicum.android.diploma.filter.workplace.presentation.model.AreaState
+import ru.practicum.android.diploma.search.domain.model.Area
+import ru.practicum.android.diploma.search.domain.model.Country
 
-class WorkplaceViewModel(private val filtrationInteractor: FilterSettingsInteractor) : ViewModel() {
+class WorkplaceViewModel(
+    private val filtrationInteractor: FilterSettingsInteractor,
+    private val temporarySharedInteractor: TemporarySharedInteractor,
+) : ViewModel() {
     private val stateLiveData = MutableLiveData<AreaState>()
     fun observeState(): LiveData<AreaState> = stateLiveData
     private var countryName: String? = null
 
     fun updateInfoFromShared() {
-        val country = filtrationInteractor.getFilter()?.countryName
-        val region = filtrationInteractor.getFilter()?.regionName
+        val country = temporarySharedInteractor.getWorkplace()?.countryName
+        val region = temporarySharedInteractor.getWorkplace()?.regionName
         if (country != null && region != null) {
             stateLiveData.postValue(AreaState.FullArea(country, region))
         } else if (country != null) {
@@ -32,14 +38,33 @@ class WorkplaceViewModel(private val filtrationInteractor: FilterSettingsInterac
         }
     }
 
+    fun updateFilterShared() {
+        val workplace = temporarySharedInteractor.getWorkplace()
+        filtrationInteractor.updateArea(Area(id = workplace?.regionId, name = workplace?.regionName, null))
+        filtrationInteractor.updateCountry(
+            Country(
+                areas = null,
+                id = workplace?.countryId,
+                name = workplace?.countryName,
+                null
+            )
+        )
+    }
+
+    fun isTheSameWorkplace(): Boolean {
+        val workplace = temporarySharedInteractor.getWorkplace()
+        val filter = filtrationInteractor.getFilter()
+        return workplace?.countryId == filter?.countryId && workplace?.regionId == filter?.regionId
+    }
+
     fun cleanCountryData() {
-        filtrationInteractor.clearCountry()
-        filtrationInteractor.clearArea()
+        temporarySharedInteractor.clearCountry()
+        temporarySharedInteractor.clearArea()
         updateInfoFromShared()
     }
 
     fun cleanRegionData() {
-        filtrationInteractor.clearArea()
+        temporarySharedInteractor.clearArea()
         updateInfoFromShared()
     }
 

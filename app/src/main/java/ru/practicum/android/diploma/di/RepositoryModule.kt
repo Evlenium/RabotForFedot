@@ -6,12 +6,14 @@ import ru.practicum.android.diploma.details.data.impl.VacancyDetailsRepositoryIm
 import ru.practicum.android.diploma.details.domain.api.VacancyDetailsRepository
 import ru.practicum.android.diploma.favorite.data.impl.FavoriteVacancyRepositoryImpl
 import ru.practicum.android.diploma.favorite.domain.api.FavoriteVacancyRepository
-import ru.practicum.android.diploma.filter.workplace.data.impl.AreasRepositoryImpl
-import ru.practicum.android.diploma.filter.workplace.domain.api.AreasRepository
 import ru.practicum.android.diploma.filter.filtration.data.impl.FilterSettingsRepositoryImpl
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsRepository
 import ru.practicum.android.diploma.filter.industry.data.impl.FilterIndustryRepositoryImpl
 import ru.practicum.android.diploma.filter.industry.domain.api.FilterIndustryRepository
+import ru.practicum.android.diploma.filter.workplace.data.impl.AreasRepositoryImpl
+import ru.practicum.android.diploma.filter.workplace.data.impl.TemporarySharedRepositoryImpl
+import ru.practicum.android.diploma.filter.workplace.domain.api.AreasRepository
+import ru.practicum.android.diploma.filter.workplace.domain.api.TemporarySharedRepository
 import ru.practicum.android.diploma.search.data.impl.SearchRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.sharing.data.ExternalNavigator
@@ -32,4 +34,5 @@ val repositoryModule = module {
     single<FilterSettingsRepository> { FilterSettingsRepositoryImpl(storage = get(), gson = get()) }
     single<FilterIndustryRepository> { FilterIndustryRepositoryImpl(client = get()) }
     single<AreasRepository> { AreasRepositoryImpl(client = get()) }
+    single<TemporarySharedRepository> { TemporarySharedRepositoryImpl(storage = get(), gson = get()) }
 }

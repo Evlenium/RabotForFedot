@@ -60,9 +60,11 @@ class WorkplaceFragment : Fragment() {
             viewModel.cleanRegionData()
         }
         binding.selectButton.setOnClickListener {
+            val areItemsTheSame = viewModel.isTheSameWorkplace()
+            viewModel.updateFilterShared()
             findNavController().navigate(
                 R.id.action_filterWorkplaceFragment_to_filterSettingsFragment,
-                FilterSettingsFragment.createArgsFromWorkplace(true)
+                FilterSettingsFragment.createArgsFromWorkplace(!areItemsTheSame)
             )
         }
         viewModel.observeState().observe(viewLifecycleOwner) { state ->

@@ -5,15 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
 import ru.practicum.android.diploma.filter.region.presentation.model.RegionState
 import ru.practicum.android.diploma.filter.workplace.domain.api.AreasInteractor
+import ru.practicum.android.diploma.filter.workplace.domain.api.TemporarySharedInteractor
 import ru.practicum.android.diploma.search.domain.model.Area
 import ru.practicum.android.diploma.search.domain.model.Country
 
 class RegionViewModel(
     private val searchAreasInteractor: AreasInteractor,
-    private val filtrationInteractor: FilterSettingsInteractor,
+    private val temporarySharedInteractor: TemporarySharedInteractor,
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<RegionState>()
     private var parentId: String = ""
@@ -22,7 +22,7 @@ class RegionViewModel(
     fun observeState(): LiveData<RegionState> = stateLiveData
     fun searchRequest() {
         renderState(RegionState.Loading)
-        val countryName = filtrationInteractor.getFilter()?.countryName
+        val countryName = temporarySharedInteractor.getWorkplace()?.countryName
         if (countryName != null) {
             searchRegionsCountry(countryName)
         } else {
@@ -112,14 +112,14 @@ class RegionViewModel(
         countryList.forEach { country ->
             if (country.id.equals(parentId)) {
                 stringRegionCountry = country.name!!
-                filtrationInteractor.updateCountry(country = country)
+                temporarySharedInteractor.updateCountry(country = country)
             }
         }
         return stringRegionCountry
     }
 
     fun setCountryFilter(area: Area) {
-        filtrationInteractor.updateArea(area)
+        temporarySharedInteractor.updateRegion(area)
     }
 
     private fun renderState(state: RegionState) {
