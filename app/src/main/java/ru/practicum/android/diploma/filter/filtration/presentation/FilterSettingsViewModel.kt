@@ -4,11 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
+import ru.practicum.android.diploma.filter.workplace.domain.api.TemporarySharedInteractor
 import ru.practicum.android.diploma.search.domain.model.Filter
 import ru.practicum.android.diploma.search.domain.model.FilterSearch
 
 class FilterSettingsViewModel(
     private val filterSettingsInteractor: FilterSettingsInteractor,
+    private val temporarySharedInteractor: TemporarySharedInteractor,
 ) : ViewModel() {
     val stateLiveDataFiltration = MutableLiveData<FullFilterState>()
     val stateLiveDataChanged = MutableLiveData<ChangeFilterState>()
@@ -105,6 +107,8 @@ class FilterSettingsViewModel(
     }
 
     fun clearWorkplace() {
+        temporarySharedInteractor.clearCountry()
+        temporarySharedInteractor.clearArea()
         filterSettingsInteractor.clearCountry()
         filterSettingsInteractor.clearArea()
         workplaceIsEmpty = true
@@ -167,8 +171,7 @@ class FilterSettingsViewModel(
 
     fun getIndustryFilterId(): String? {
         val filter = getFilter()
-        val industryId = filter?.industryId
-        return industryId
+        return filter?.industryId
     }
 
     fun getFilter(): Filter? = filterSettingsInteractor.getFilter()
