@@ -39,9 +39,15 @@ class WorkplaceFragment : Fragment() {
         }
 
         val backPath = R.id.action_filterWorkplaceFragment_to_filterSettingsFragment
-        binding.buttonBack.setOnClickListener { findNavController().navigate(backPath) }
+        binding.buttonBack.setOnClickListener {
+            viewModel.cleanRegionData()
+            viewModel.cleanCountryData()
+            findNavController().navigate(backPath)
+        }
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                viewModel.cleanRegionData()
+                viewModel.cleanCountryData()
                 findNavController().navigate(backPath)
             }
         })

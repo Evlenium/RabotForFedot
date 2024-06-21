@@ -92,10 +92,11 @@ class SearchFragment : Fragment() {
             }
             val editText = viewModel.getText()
             if (!editText.isNullOrEmpty()) {
+                placeholderViewGroup.isVisible = false
                 textInputEditText.setText(editText)
                 textInputEndIcon.setImageResource(R.drawable.icon_close)
                 textInputEndIcon.isVisible = true
-                viewModel.searchDebounce(editText)
+                viewModel.downloadData(editText)
             }
         }
         inputEditTextInit()
@@ -185,10 +186,12 @@ class SearchFragment : Fragment() {
         when (state) {
             is VacanciesState.Content -> {
                 showContent(state.vacancies)
-                binding.vacancyMessageTextView.text = getString(
-                    R.string.search_results_count,
+                val textCounter = requireContext().resources.getQuantityString(
+                    R.plurals.plurals_vacancy,
+                    viewModel.totalVacanciesCount,
                     viewModel.totalVacanciesCount
                 )
+                binding.vacancyMessageTextView.text = textCounter
                 binding.vacancyMessageTextView.isVisible = true
             }
 

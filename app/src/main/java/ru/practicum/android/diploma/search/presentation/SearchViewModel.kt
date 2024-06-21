@@ -14,7 +14,7 @@ import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
     private val searchInteractor: SearchInteractor,
-    private val resourceInteractor: ResourceInteractor
+    private val resourceInteractor: ResourceInteractor,
 ) : ViewModel() {
     var lastText: String = ""
     private var currentPage = 0
@@ -153,8 +153,8 @@ class SearchViewModel(
     }
 
     fun downloadData(request: String) {
+        renderState(VacanciesState.Loading)
         if (!flagDebounce) {
-            renderState(VacanciesState.Loading)
             searchRequest(request)
         }
     }
