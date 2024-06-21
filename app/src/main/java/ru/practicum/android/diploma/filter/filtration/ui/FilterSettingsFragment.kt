@@ -217,6 +217,7 @@ class FilterSettingsFragment : Fragment() {
                     viewModel.setSalaryIsEmpty()
                     viewModel.setChangedState()
                 }
+                viewModel.checkFilters()
             }
         )
     }

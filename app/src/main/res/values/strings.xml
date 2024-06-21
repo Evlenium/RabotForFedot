@@ -52,13 +52,12 @@
     <string name="email">E-mail</string>
     <string name="phone">Телефон</string>
     <string name="comment">Комментарий</string>
-    <string name="search_results_count">Найдено %1$d вакансий</string>
     <string name="error_no_internet">Проверьте подключение к интернету</string>
 
     <plurals name="plurals_vacancy">
-        <item quantity="zero">вакансий</item>
-        <item quantity="one">%d вакансия</item>
-        <item quantity="few">%d вакансии</item>
-        <item quantity="other">%d вакансий</item>
+        <item quantity="zero">Таких вакансий нет</item>
+        <item quantity="one">Найдена %d вакансия</item>
+        <item quantity="few">Найдено %d вакансии</item>
+        <item quantity="other">Найдено %d вакансий</item>
     </plurals>
 </resources>
