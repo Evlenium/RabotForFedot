@@ -108,14 +108,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/salary_desctiption_field"
+        android:id="@+id/salary_description_field"
         style="@style/MyOutlinedBox"
         android:layout_marginTop="@dimen/dimens_size_24"
         android:background="@drawable/shape_filtration_background"
         android:gravity="center"
         android:hint="@string/expected_salary"
         android:paddingTop="@dimen/dimens_size_8"
-        android:textColorHint="?attr/gray_white"
+        android:textColorHint="?attr/gray_black"
         app:cursorColor="@color/blue"
         app:expandedHintEnabled="false"
         app:hintTextColor="@color/blue"
@@ -142,9 +142,9 @@
         android:contentDescription="RESET_BUTTON"
         android:src="@drawable/icon_close"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/salary_desctiption_field"
-        app:layout_constraintEnd_toEndOf="@id/salary_desctiption_field"
-        app:layout_constraintTop_toTopOf="@id/salary_desctiption_field"
+        app:layout_constraintBottom_toBottomOf="@id/salary_description_field"
+        app:layout_constraintEnd_toEndOf="@id/salary_description_field"
+        app:layout_constraintTop_toTopOf="@id/salary_description_field"
         app:tint="@color/black"
         tools:visibility="visible" />
 
@@ -156,7 +156,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/salary_desctiption_field">
+        app:layout_constraintTop_toBottomOf="@+id/salary_description_field">
 
         <TextView
             style="@style/FiltrationVacancyTextStyleRegular"

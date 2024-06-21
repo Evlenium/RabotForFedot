@@ -3,6 +3,7 @@
         <item name="white_black">@color/black</item>
         <item name="black_white">@color/white</item>
         <item name="gray_white">@color/white</item>
+        <item name="gray_black">@color/black</item>
         <item name="lightgray_gray">@color/gray</item>
         <item name="android:statusBarColor">@color/black</item>
     </style>
