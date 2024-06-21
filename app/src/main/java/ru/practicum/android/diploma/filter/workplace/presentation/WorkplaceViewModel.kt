@@ -59,8 +59,7 @@ class WorkplaceViewModel(
 
     fun cleanCountryData() {
         temporarySharedInteractor.clearCountry()
-        temporarySharedInteractor.clearArea()
-        updateInfoFromShared()
+        cleanRegionData()
     }
 
     fun cleanRegionData() {
