@@ -99,7 +99,9 @@ class FilterSettingsFragment : Fragment() {
     private fun showWorkPlace(workPlace: String) {
         binding.workPlaceHeader.isVisible = true
         binding.filtrationWorkPlaceImageView.setImageResource(R.drawable.icon_reset)
-        binding.filtrationWorkPlaceTextView.setTextColor(requireContext().getColor(R.color.black_white_text_color_selector))
+        binding.filtrationWorkPlaceTextView.setTextColor(
+            requireContext().getColor(R.color.black_white_text_color_selector)
+        )
         binding.filtrationWorkPlaceImageView.setOnClickListener {
             viewModel.setChangedState()
             viewModel.clearWorkplace()
@@ -120,7 +122,9 @@ class FilterSettingsFragment : Fragment() {
     private fun showIndustry(industryName: String) {
         binding.industryHeader.isVisible = true
         binding.filtrationIndustryImageView.setImageResource(R.drawable.icon_reset)
-        binding.filtrationIndustryTextView.setTextColor(requireContext().getColor(R.color.black_white_text_color_selector))
+        binding.filtrationIndustryTextView.setTextColor(
+            requireContext().getColor(R.color.black_white_text_color_selector)
+        )
         binding.filtrationIndustryImageView.setOnClickListener {
             viewModel.setChangedState()
             viewModel.setIndustryIsEmpty()
