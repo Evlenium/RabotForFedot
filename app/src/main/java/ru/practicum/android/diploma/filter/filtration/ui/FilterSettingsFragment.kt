@@ -232,11 +232,12 @@ class FilterSettingsFragment : Fragment() {
         val backPath = R.id.action_filterSettingsFragment_to_searchFragment
         binding.filtrationVacancyToolbar.setTitleTextAppearance(requireContext(), R.style.ToolbarAppStyle)
         binding.filtrationVacancyToolbar.setNavigationOnClickListener {
-            findNavController().navigate(backPath)
             viewModel.clearAllFilters()
+            findNavController().navigate(backPath)
         }
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                viewModel.clearAllFilters()
                 findNavController().navigate(backPath)
             }
         })
