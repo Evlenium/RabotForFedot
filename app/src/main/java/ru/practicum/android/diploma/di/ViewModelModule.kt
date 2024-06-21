@@ -4,11 +4,11 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.practicum.android.diploma.details.presentation.VacancyDetailsViewModel
 import ru.practicum.android.diploma.favorite.presentation.FavoriteViewModel
-import ru.practicum.android.diploma.filter.workplace.presentation.WorkplaceViewModel
 import ru.practicum.android.diploma.filter.country.presentation.CountryViewModel
 import ru.practicum.android.diploma.filter.filtration.presentation.FilterSettingsViewModel
 import ru.practicum.android.diploma.filter.industry.presentation.FilterIndustryViewModel
 import ru.practicum.android.diploma.filter.region.presentation.RegionViewModel
+import ru.practicum.android.diploma.filter.workplace.presentation.WorkplaceViewModel
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 
 val viewModelModule = module {
@@ -24,7 +24,7 @@ val viewModelModule = module {
             favoriteInteractor = get()
         )
     }
-    viewModel { RegionViewModel(searchAreasInteractor = get(), filtrationInteractor = get()) }
-    viewModel { CountryViewModel(searchAreasInteractor = get(), filtrationInteractor = get()) }
-    viewModel { WorkplaceViewModel(filtrationInteractor = get()) }
+    viewModel { RegionViewModel(searchAreasInteractor = get(), temporarySharedInteractor = get()) }
+    viewModel { CountryViewModel(searchAreasInteractor = get(), temporarySharedInteractor = get()) }
+    viewModel { WorkplaceViewModel(filtrationInteractor = get(), temporarySharedInteractor = get()) }
 }
