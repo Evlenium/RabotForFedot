@@ -134,6 +134,8 @@ class RegionFragment : Fragment() {
                 if (!s.isNullOrEmpty()) {
                     inputTextFromSearch = s.toString()
                     containsMethod(inputTextFromSearch)
+                } else {
+                    regionAdapter?.setItems(listRegion)
                 }
             },
             afterTextChanged = { s ->

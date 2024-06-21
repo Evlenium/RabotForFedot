@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/filter_region_container"
@@ -55,11 +54,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dimens_size_16"
             android:layout_marginVertical="@dimen/dimens_size_8"
-            android:textColorHint="?attr/gray_white"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:cursorColor="@color/blue"
-            app:hintTextColor="@color/blue"
+            app:hintEnabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -78,6 +76,8 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:paddingVertical="@dimen/dimens_size_20"
+                android:textColor="@color/black"
+                android:textColorHint="?attr/gray_white"
                 app:colorControlActivated="@color/blue" />
         </com.google.android.material.textfield.TextInputLayout>
 
