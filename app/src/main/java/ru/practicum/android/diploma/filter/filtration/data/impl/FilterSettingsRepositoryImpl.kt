@@ -10,13 +10,16 @@ import ru.practicum.android.diploma.search.domain.model.Industry
 
 class FilterSettingsRepositoryImpl(
     private val storage: FilterSettingsStorage,
-    private val gson: Gson
+    private val gson: Gson,
 ) : FilterSettingsRepository {
 
     override fun getFilter(): Filter? {
         val filter = storage.getFilter()
-        return if (filter.isEmpty() || filter == "null") { null
-        } else { gson.fromJson(filter, Filter::class.java) }
+        return if (filter.isEmpty() || filter == "null") {
+            Filter(isOnlyWithSalary = false)
+        } else {
+            gson.fromJson(filter, Filter::class.java)
+        }
     }
 
     override fun updateIndustry(industry: Industry) {
