@@ -9,13 +9,37 @@
     tools:context=".filter.filtration.ui.FilterSettingsFragment"
     tools:ignore="hardcodedText">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/filtration_vacancy_toolbar"
-        style="@style/ToolbarAppStyle"
+    <LinearLayout
+        android:id="@+id/header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimens_size_16"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/filtering_settings" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/dimens_size_16"
+            android:clickable="true"
+            android:src="@drawable/icon_back" />
+
+        <TextView
+            android:id="@+id/header_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dimens_size_4"
+            android:fontFamily="@font/ys_text_medium"
+            android:gravity="center_vertical"
+            android:paddingVertical="@dimen/dimens_size_19"
+            android:text="@string/filtering_settings"
+            android:textColor="?attr/black_white"
+            android:textSize="@dimen/text_size_22" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/filtration_work_place"
@@ -24,7 +48,7 @@
         android:layout_marginTop="@dimen/dimens_size_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filtration_vacancy_toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/header_container">
 
         <TextView
             android:id="@+id/work_place_header"

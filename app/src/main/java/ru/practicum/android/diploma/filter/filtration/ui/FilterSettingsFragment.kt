@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -29,7 +28,6 @@ import ru.practicum.android.diploma.search.ui.SearchFragment
 class FilterSettingsFragment : Fragment() {
     private var _binding: FragmentFilterSettingsBinding? = null
     private val binding get() = _binding!!
-
     private var inputTextFromApply: String? = null
     private val viewModel by viewModel<FilterSettingsViewModel>()
 
@@ -102,11 +100,7 @@ class FilterSettingsFragment : Fragment() {
         binding.filtrationWorkPlaceTextView.setTextColor(
             requireContext().getColor(R.color.black_white_text_color_selector)
         )
-        binding.filtrationWorkPlaceImageView.setOnClickListener {
-            viewModel.setChangedState()
-            viewModel.clearWorkplace()
-            viewModel.checkFilters()
-        }
+        binding.filtrationWorkPlaceImageView.setOnClickListener { viewModel.resetWorkplace() }
         binding.filtrationWorkPlaceTextView.text = workPlace
         binding.resetFilterButton.isVisible = true
     }
@@ -125,11 +119,7 @@ class FilterSettingsFragment : Fragment() {
         binding.filtrationIndustryTextView.setTextColor(
             requireContext().getColor(R.color.black_white_text_color_selector)
         )
-        binding.filtrationIndustryImageView.setOnClickListener {
-            viewModel.setChangedState()
-            viewModel.setIndustryIsEmpty()
-            viewModel.checkFilters()
-        }
+        binding.filtrationIndustryImageView.setOnClickListener { viewModel.resetIndustry() }
         binding.filtrationIndustryTextView.text = industryName
         binding.resetFilterButton.isVisible = true
     }
@@ -151,50 +141,36 @@ class FilterSettingsFragment : Fragment() {
         ) {
             renderChangedState(ChangeFilterState.NoChangeFilters)
         }
-        if (check) {
-            binding.filtrationPayCheckbox.isChecked = true
-            renderFullState(FullFilterState.NonEmptyFilters)
-        } else if (viewModel.stateLiveDataFiltration.value == FullFilterState.EmptyFilters) {
-            renderFullState(FullFilterState.EmptyFilters)
-        }
-        viewModel.checkFilters()
+        viewModel.checkBoxEmptyFilter(check)
+        if (check) binding.filtrationPayCheckbox.isChecked = true
     }
 
     private fun setOnClickListeners() {
-        with(binding) {
-            filtrationWorkPlace.setOnClickListener {
-                findNavController().navigate(R.id.action_filterSettingsFragment_to_filterWorkplaceFragment)
-            }
-            filtrationIndustry.setOnClickListener {
-                val arguments = FilterIndustryFragment.createBundle(viewModel.getIndustryFilterId())
-                findNavController().navigate(
-                    R.id.action_filterSettingsFragment_to_filterIndustryFragment,
-                    arguments
-                )
-            }
-            filtrationPayCheckbox.setOnClickListener {
-                viewModel.stateLiveDataCheckBox.postValue(CheckBoxState.IsCheck(filtrationPayCheckbox.isChecked))
-            }
-            applyFilterButton.setOnClickListener {
-                viewModel.setCheckboxOnlyWithSalary(filtrationPayCheckbox.isChecked)
-                findNavController().navigate(
-                    R.id.action_filterSettingsFragment_to_searchFragment,
-                    SearchFragment.createArgsFilter(viewModel.createFilterFromShared())
-                )
-            }
-
-            resetSalaryButton.setOnClickListener {
-                salaryEditText.setText("")
-            }
-
-            resetFilterButton.setOnClickListener {
-                viewModel.clearAllFilters()
-                viewModel.setSalaryIsEmpty()
-                filtrationPayCheckbox.isChecked = false
-                binding.salaryEditText.setText("")
-                binding.resetFilterButton.isVisible = false
-                viewModel.setNoChangedState()
-            }
+        binding.filtrationWorkPlace.setOnClickListener {
+            findNavController().navigate(R.id.action_filterSettingsFragment_to_filterWorkplaceFragment)
+        }
+        binding.filtrationIndustry.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_filterSettingsFragment_to_filterIndustryFragment,
+                FilterIndustryFragment.createBundle(viewModel.getIndustryFilterId())
+            )
+        }
+        binding.filtrationPayCheckbox.setOnClickListener {
+            viewModel.stateLiveDataCheckBox.postValue(CheckBoxState.IsCheck(binding.filtrationPayCheckbox.isChecked))
+        }
+        binding.applyFilterButton.setOnClickListener {
+            viewModel.setCheckboxOnlyWithSalary(binding.filtrationPayCheckbox.isChecked)
+            findNavController().navigate(
+                R.id.action_filterSettingsFragment_to_searchFragment,
+                SearchFragment.createArgsFilter(viewModel.createFilterFromShared())
+            )
+        }
+        binding.resetSalaryButton.setOnClickListener { binding.salaryEditText.setText("") }
+        binding.resetFilterButton.setOnClickListener {
+            viewModel.resetConfigure()
+            binding.filtrationPayCheckbox.isChecked = false
+            binding.salaryEditText.setText("")
+            binding.resetFilterButton.isVisible = false
         }
     }
 
@@ -203,7 +179,6 @@ class FilterSettingsFragment : Fragment() {
             if (!binding.salaryEditText.text.isNullOrEmpty()) {
                 binding.resetSalaryButton.isVisible = hasFocus
             }
-
             if (hasFocus) {
                 val textColorHint = ContextCompat.getColor(requireContext(), R.color.blue)
                 binding.salaryDescriptionField.setDefaultHintTextColor(ColorStateList.valueOf(textColorHint))
@@ -213,8 +188,6 @@ class FilterSettingsFragment : Fragment() {
 
     private fun setOnTextChangedListener() {
         binding.salaryEditText.addTextChangedListener(
-            beforeTextChanged = { s, start, count, after -> },
-            onTextChanged = { s, start, before, count -> },
             afterTextChanged = { s ->
                 if (!s.isNullOrEmpty()) {
                     if (!binding.salaryEditText.hasFocus()) {
@@ -243,15 +216,8 @@ class FilterSettingsFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.filtrationVacancyToolbar)
-        (activity as? AppCompatActivity)?.supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.icon_back)
-        }
-
         val backPath = R.id.action_filterSettingsFragment_to_searchFragment
-        binding.filtrationVacancyToolbar.setTitleTextAppearance(requireContext(), R.style.ToolbarAppStyle)
-        binding.filtrationVacancyToolbar.setNavigationOnClickListener {
+        binding.buttonBack.setOnClickListener {
             viewModel.clearAllFilters()
             findNavController().navigate(backPath)
         }
