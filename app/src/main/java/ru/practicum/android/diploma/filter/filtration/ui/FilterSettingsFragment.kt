@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -200,7 +199,10 @@ class FilterSettingsFragment : Fragment() {
                     }
                     binding.resetSalaryButton.isVisible = binding.salaryEditText.hasFocus()
                     inputTextFromApply = s.toString()
-                    viewModel.setSalaryChanged(inputTextFromApply!!)
+                    viewModel.setSalary(inputTextFromApply!!)
+                    if (viewModel.salary.toString().isNotEmpty() && viewModel.salary.toString() != inputTextFromApply) {
+                        viewModel.setChangedState()
+                    }
                     binding.resetFilterButton.isVisible = true
                 } else {
                     val textColorHint = ContextCompat.getColor(requireContext(), R.color.gray_white_text_color_selector)
@@ -214,14 +216,8 @@ class FilterSettingsFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.filtrationVacancyToolbar)
-        (activity as? AppCompatActivity)?.supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.icon_back)
-        }
         val backPath = R.id.action_filterSettingsFragment_to_searchFragment
-        binding.filtrationVacancyToolbar.setTitleTextAppearance(requireContext(), R.style.ToolbarAppStyle)
-        binding.filtrationVacancyToolbar.setNavigationOnClickListener {
+        binding.buttonBack.setOnClickListener {
             viewModel.clearAllFilters()
             findNavController().navigate(backPath)
         }

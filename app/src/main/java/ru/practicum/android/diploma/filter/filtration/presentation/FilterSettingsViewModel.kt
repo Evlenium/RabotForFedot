@@ -206,9 +206,4 @@ class FilterSettingsViewModel(
         }
         checkFilters()
     }
-
-    fun setSalaryChanged(inputTextFromApply: String) {
-        setSalary(inputTextFromApply)
-        setChangedState()
-    }
 }
