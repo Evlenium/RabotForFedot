@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.search.ui
 
-import android.app.Activity
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -31,6 +30,7 @@ import ru.practicum.android.diploma.search.domain.model.SimpleVacancy
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.search.presentation.VacanciesState
 import ru.practicum.android.diploma.util.Constants
+import ru.practicum.android.diploma.util.Creator.hideKeyboard
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
@@ -303,15 +303,6 @@ class SearchFragment : Fragment() {
             delay(CLICK_DEBOUNCE_DELAY)
         }
         return true
-    }
-
-    private fun hideKeyboard(activity: Activity) {
-        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        var view = activity.currentFocus
-        if (view == null) {
-            view = View(activity)
-        }
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onDestroyView() {
