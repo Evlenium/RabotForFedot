@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.region.ui
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,6 +20,7 @@ import ru.practicum.android.diploma.filter.region.presentation.RegionViewModel
 import ru.practicum.android.diploma.filter.region.presentation.model.RegionState
 import ru.practicum.android.diploma.filter.workplace.ui.WorkplaceFragment
 import ru.practicum.android.diploma.search.domain.model.Area
+import ru.practicum.android.diploma.util.Creator.hideKeyboard
 import java.util.Locale
 
 class RegionFragment : Fragment() {
@@ -175,15 +175,6 @@ class RegionFragment : Fragment() {
         } else {
             hideEmptyPlaceholder()
         }
-    }
-
-    private fun hideKeyboard(activity: Activity) {
-        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        var view = activity.currentFocus
-        if (view == null) {
-            view = View(activity)
-        }
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun showErrorListDownload() {

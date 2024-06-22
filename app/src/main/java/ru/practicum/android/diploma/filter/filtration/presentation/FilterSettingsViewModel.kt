@@ -106,7 +106,7 @@ class FilterSettingsViewModel(
         workplaceIsEmpty = false
     }
 
-    fun clearWorkplace() {
+    private fun clearWorkplace() {
         temporarySharedInteractor.clearCountry()
         temporarySharedInteractor.clearArea()
         filterSettingsInteractor.clearCountry()
@@ -170,7 +170,7 @@ class FilterSettingsViewModel(
         stateLiveDataChanged.postValue(ChangeFilterState.ChangedFilter)
     }
 
-    fun setNoChangedState() {
+    private fun setNoChangedState() {
         stateLiveDataChanged.postValue(ChangeFilterState.NoChangeFilters)
     }
 
@@ -180,4 +180,30 @@ class FilterSettingsViewModel(
     }
 
     fun getFilter(): Filter? = filterSettingsInteractor.getFilter()
+    fun resetConfigure() {
+        clearAllFilters()
+        setSalaryIsEmpty()
+        setNoChangedState()
+    }
+
+    fun resetWorkplace() {
+        setChangedState()
+        clearWorkplace()
+        checkFilters()
+    }
+
+    fun resetIndustry() {
+        setChangedState()
+        setIndustryIsEmpty()
+        checkFilters()
+    }
+
+    fun checkBoxEmptyFilter(check: Boolean) {
+        if (check) {
+            stateLiveDataFiltration.postValue(FullFilterState.NonEmptyFilters)
+        } else if (stateLiveDataFiltration.value == FullFilterState.EmptyFilters) {
+            stateLiveDataFiltration.postValue(FullFilterState.EmptyFilters)
+        }
+        checkFilters()
+    }
 }

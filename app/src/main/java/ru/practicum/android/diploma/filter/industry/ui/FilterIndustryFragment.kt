@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.industry.ui
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,17 +21,16 @@ import ru.practicum.android.diploma.filter.industry.presentation.FilterIndustryV
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustriesState
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustryState
 import ru.practicum.android.diploma.search.domain.model.Industry
+import ru.practicum.android.diploma.util.Creator.hideKeyboard
 import java.util.Locale
 
 class FilterIndustryFragment : Fragment() {
     private var _binding: FragmentFilterIndustryBinding? = null
     private val binding get() = _binding!!
-
     private var inputTextFromSearch: String? = null
     private var industryAdapter: FilterIndustryAdapter? = null
     private var listIndustries = emptyList<Industry>()
     private var industryId: String? = null
-
     private val viewModel by viewModel<FilterIndustryViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +73,6 @@ class FilterIndustryFragment : Fragment() {
                 findNavController().navigate(backPath)
             }
         })
-
         industryAdapter = FilterIndustryAdapter { viewModel.saveIndustryFromAdapter(it) }
         binding.recyclerView.adapter = industryAdapter
         inputEditTextInit()
@@ -214,15 +211,6 @@ class FilterIndustryFragment : Fragment() {
         }
     }
 
-    private fun hideKeyboard(activity: Activity) {
-        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        var view = activity.currentFocus
-        if (view == null) {
-            view = View(activity)
-        }
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
     private fun showErrorListDownload() {
         with(binding) {
             hideKeyboard(requireActivity())
@@ -253,7 +241,6 @@ class FilterIndustryFragment : Fragment() {
 
     companion object {
         private const val INDUSTRY_ID = "INDUSTRY_ID"
-
         fun createBundle(industryId: String?) = Bundle().apply {
             putString(INDUSTRY_ID, industryId)
         }
