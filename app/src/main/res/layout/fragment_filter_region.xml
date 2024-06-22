@@ -155,11 +155,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimens_size_16"
+                android:gravity="center"
                 android:textSize="@dimen/text_size_22"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/placeholder_image"
-                tools:text="@string/there_is_no_such_region" />
+                tools:text="@string/failed_to_get_list" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

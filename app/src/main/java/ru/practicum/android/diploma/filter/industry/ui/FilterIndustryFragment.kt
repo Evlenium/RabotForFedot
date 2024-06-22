@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filter.industry.ui
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -129,6 +130,7 @@ class FilterIndustryFragment : Fragment() {
     }
 
     private fun showEmptyPlaceholder() {
+        hideKeyboard(requireActivity())
         binding.placeholderContainer.isVisible = true
         binding.placeholderImage.isVisible = true
         binding.placeholderMessage.isVisible = true
@@ -157,7 +159,6 @@ class FilterIndustryFragment : Fragment() {
                 }
             }
         }
-
         listIndustries = industries
         industryAdapter?.setItems(listIndustries)
     }
@@ -167,12 +168,11 @@ class FilterIndustryFragment : Fragment() {
             beforeTextChanged = { s, start, count, after -> },
             onTextChanged = { s, start, before, count ->
                 binding.resetImageButton.visibility = clearButtonVisibility(s)
-                if (!s.isNullOrEmpty()) {
-                    inputTextFromSearch = s.toString()
-                    containsMethod(inputTextFromSearch)
-                } else {
+                if (s.isNullOrEmpty()) {
                     industryAdapter?.setItems(listIndustries)
                 }
+                inputTextFromSearch = s.toString()
+                containsMethod(inputTextFromSearch)
             },
             afterTextChanged = { s ->
                 inputTextFromSearch = s.toString()
@@ -190,7 +190,9 @@ class FilterIndustryFragment : Fragment() {
     }
 
     private fun containsMethod(inputTextFromSearch: String?) {
-        if (!inputTextFromSearch.isNullOrEmpty()) {
+        if (!viewModel.getInternetConnection()) {
+            showErrorListDownload()
+        } else if (!inputTextFromSearch.isNullOrEmpty()) {
             inputTextFromSearch.replaceFirstChar {
                 if (it.isLowerCase()) {
                     it.titlecase(Locale.getDefault())
@@ -198,18 +200,39 @@ class FilterIndustryFragment : Fragment() {
                     it.toString()
                 }
             }
-
             val filteredList = listIndustries.filter { industry ->
                 industry.name.lowercase().contains(inputTextFromSearch)
             }
-
             if (filteredList.isEmpty()) {
                 showEmptyPlaceholder()
             } else {
                 hideEmptyPlaceholder()
             }
-
             industryAdapter?.setItems(filteredList)
+        } else {
+            hideEmptyPlaceholder()
+        }
+    }
+
+    private fun hideKeyboard(activity: Activity) {
+        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = activity.currentFocus
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    private fun showErrorListDownload() {
+        with(binding) {
+            hideKeyboard(requireActivity())
+            progressBar.isVisible = false
+            recyclerView.isVisible = false
+            placeholderContainer.isVisible = true
+            placeholderImage.isVisible = true
+            placeholderMessage.isVisible = true
+            placeholderImage.setImageResource(R.drawable.placeholder_empty_region_list)
+            placeholderMessage.text = requireContext().getString(R.string.failed_to_get_list)
         }
     }
 

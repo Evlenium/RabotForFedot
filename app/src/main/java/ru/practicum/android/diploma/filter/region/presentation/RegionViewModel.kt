@@ -10,10 +10,12 @@ import ru.practicum.android.diploma.filter.workplace.domain.api.AreasInteractor
 import ru.practicum.android.diploma.filter.workplace.domain.api.TemporarySharedInteractor
 import ru.practicum.android.diploma.search.domain.model.Area
 import ru.practicum.android.diploma.search.domain.model.Country
+import ru.practicum.android.diploma.sharing.data.ResourceProvider
 
 class RegionViewModel(
     private val searchAreasInteractor: AreasInteractor,
     private val temporarySharedInteractor: TemporarySharedInteractor,
+    private val resourceProvider: ResourceProvider,
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<RegionState>()
     private var parentId: String = ""
@@ -117,6 +119,8 @@ class RegionViewModel(
         }
         return stringRegionCountry
     }
+
+    fun getInternetConnection() = resourceProvider.checkInternetConnection()
 
     fun setCountryFilter(area: Area) {
         temporarySharedInteractor.updateRegion(area)

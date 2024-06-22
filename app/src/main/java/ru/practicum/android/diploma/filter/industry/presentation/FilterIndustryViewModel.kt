@@ -10,10 +10,12 @@ import ru.practicum.android.diploma.filter.industry.domain.api.FilterIndustryInt
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustriesState
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustryState
 import ru.practicum.android.diploma.search.domain.model.Industry
+import ru.practicum.android.diploma.sharing.data.ResourceProvider
 
 class FilterIndustryViewModel(
     private val industryInteractor: FilterIndustryInteractor,
     private val filterInteractor: FilterSettingsInteractor,
+    private val resourceProvider: ResourceProvider,
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<IndustriesState>()
@@ -49,6 +51,8 @@ class FilterIndustryViewModel(
                 }
         }
     }
+
+    fun getInternetConnection() = resourceProvider.checkInternetConnection()
 
     private fun renderState(state: IndustriesState) {
         stateLiveData.postValue(state)
