@@ -170,6 +170,10 @@ class FilterSettingsViewModel(
         stateLiveDataChanged.postValue(ChangeFilterState.ChangedFilter)
     }
 
+    fun setNoChangedState() {
+        stateLiveDataChanged.postValue(ChangeFilterState.NoChangeFilters)
+    }
+
     fun getIndustryFilterId(): String? {
         val filter = getFilter()
         return filter?.industryId

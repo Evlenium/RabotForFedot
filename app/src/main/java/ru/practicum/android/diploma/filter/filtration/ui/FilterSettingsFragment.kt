@@ -193,6 +193,7 @@ class FilterSettingsFragment : Fragment() {
                 filtrationPayCheckbox.isChecked = false
                 binding.salaryEditText.setText("")
                 binding.resetFilterButton.isVisible = false
+                viewModel.setNoChangedState()
             }
         }
     }
@@ -235,7 +236,6 @@ class FilterSettingsFragment : Fragment() {
                     binding.salaryDescriptionField.setDefaultHintTextColor(ColorStateList.valueOf(textColorHint))
                     binding.resetSalaryButton.isVisible = false
                     viewModel.setSalaryIsEmpty()
-                    viewModel.setChangedState()
                 }
                 viewModel.checkFilters()
             }
