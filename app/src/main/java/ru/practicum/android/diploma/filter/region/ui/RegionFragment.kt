@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filter.region.ui
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -102,6 +103,7 @@ class RegionFragment : Fragment() {
     }
 
     private fun showEmptyPlaceholder() {
+        hideKeyboard(requireActivity())
         binding.placeholderContainer.isVisible = true
         binding.placeholderImage.isVisible = true
         binding.placeholderMessage.isVisible = true
@@ -121,7 +123,6 @@ class RegionFragment : Fragment() {
             placeholderContainer.isVisible = false
             recyclerView.isVisible = true
         }
-
         listRegion = regions
         regionAdapter?.setItems(regions)
     }
@@ -176,8 +177,18 @@ class RegionFragment : Fragment() {
         }
     }
 
+    private fun hideKeyboard(activity: Activity) {
+        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = activity.currentFocus
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
     private fun showErrorListDownload() {
         with(binding) {
+            hideKeyboard(requireActivity())
             progressBar.isVisible = false
             recyclerView.isVisible = false
             placeholderContainer.isVisible = true
