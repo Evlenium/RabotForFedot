@@ -185,7 +185,11 @@ class VacancyDetailsFragment : Fragment() {
             vacancyDetailsNestedScrollView.isVisible = false
             placeholderContainer.isVisible = true
             placeholderMessage.text = message
-            placeholderImage.setImageResource(R.drawable.placeholder_no_internet)
+            if (message == requireContext().getString(R.string.no_internet)) {
+                placeholderImage.setImageResource(R.drawable.placeholder_no_internet)
+            } else {
+                placeholderImage.setImageResource(R.drawable.placeholder_error_vacancy_details)
+            }
         }
     }
 

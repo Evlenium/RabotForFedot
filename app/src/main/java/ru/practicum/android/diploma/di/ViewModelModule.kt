@@ -15,7 +15,13 @@ val viewModelModule = module {
     viewModel { SearchViewModel(resourceInteractor = get(), searchInteractor = get()) }
     viewModel { FavoriteViewModel(favoriteInteractor = get()) }
     viewModel { FilterSettingsViewModel(filterSettingsInteractor = get(), temporarySharedInteractor = get()) }
-    viewModel { FilterIndustryViewModel(industryInteractor = get(), filterInteractor = get()) }
+    viewModel {
+        FilterIndustryViewModel(
+            industryInteractor = get(),
+            filterInteractor = get(),
+            resourceProvider = get()
+        )
+    }
     viewModel {
         VacancyDetailsViewModel(
             resourceInteractor = get(),
@@ -24,7 +30,13 @@ val viewModelModule = module {
             favoriteInteractor = get()
         )
     }
-    viewModel { RegionViewModel(searchAreasInteractor = get(), temporarySharedInteractor = get()) }
+    viewModel {
+        RegionViewModel(
+            searchAreasInteractor = get(),
+            temporarySharedInteractor = get(),
+            resourceProvider = get()
+        )
+    }
     viewModel { CountryViewModel(searchAreasInteractor = get(), temporarySharedInteractor = get()) }
     viewModel { WorkplaceViewModel(filtrationInteractor = get(), temporarySharedInteractor = get()) }
 }

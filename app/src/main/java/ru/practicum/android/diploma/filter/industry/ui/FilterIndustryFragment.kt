@@ -167,12 +167,11 @@ class FilterIndustryFragment : Fragment() {
             beforeTextChanged = { s, start, count, after -> },
             onTextChanged = { s, start, before, count ->
                 binding.resetImageButton.visibility = clearButtonVisibility(s)
-                if (!s.isNullOrEmpty()) {
-                    inputTextFromSearch = s.toString()
-                    containsMethod(inputTextFromSearch)
-                } else {
+                if (s.isNullOrEmpty()) {
                     industryAdapter?.setItems(listIndustries)
                 }
+                inputTextFromSearch = s.toString()
+                containsMethod(inputTextFromSearch)
             },
             afterTextChanged = { s ->
                 inputTextFromSearch = s.toString()
@@ -190,7 +189,9 @@ class FilterIndustryFragment : Fragment() {
     }
 
     private fun containsMethod(inputTextFromSearch: String?) {
-        if (!inputTextFromSearch.isNullOrEmpty()) {
+        if (!viewModel.getInternetConnection()) {
+            showErrorListDownload()
+        } else if (!inputTextFromSearch.isNullOrEmpty()) {
             inputTextFromSearch.replaceFirstChar {
                 if (it.isLowerCase()) {
                     it.titlecase(Locale.getDefault())
@@ -198,18 +199,29 @@ class FilterIndustryFragment : Fragment() {
                     it.toString()
                 }
             }
-
             val filteredList = listIndustries.filter { industry ->
                 industry.name.lowercase().contains(inputTextFromSearch)
             }
-
             if (filteredList.isEmpty()) {
                 showEmptyPlaceholder()
             } else {
                 hideEmptyPlaceholder()
             }
-
             industryAdapter?.setItems(filteredList)
+        } else {
+            hideEmptyPlaceholder()
+        }
+    }
+
+    private fun showErrorListDownload() {
+        with(binding) {
+            progressBar.isVisible = false
+            recyclerView.isVisible = false
+            placeholderContainer.isVisible = true
+            placeholderImage.isVisible = true
+            placeholderMessage.isVisible = true
+            placeholderImage.setImageResource(R.drawable.placeholder_empty_region_list)
+            placeholderMessage.text = requireContext().getString(R.string.failed_to_get_list)
         }
     }
 
