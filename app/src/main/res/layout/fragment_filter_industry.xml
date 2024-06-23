@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_black"
-    tools:context=".filter.ui.FilterIndustryFragment"
+    tools:context=".filter.industry.ui.FilterIndustryFragment"
     tools:ignore="HardcodedText">
 
     <LinearLayout
@@ -56,11 +55,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dimens_size_16"
             android:layout_marginVertical="@dimen/dimens_size_8"
-            android:textColorHint="?attr/gray_white"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:cursorColor="@color/blue"
-            app:hintTextColor="@color/blue"
+            app:hintEnabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -79,6 +77,8 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:paddingVertical="@dimen/dimens_size_20"
+                android:textColor="@color/black"
+                android:textColorHint="?attr/gray_white"
                 app:colorControlActivated="@color/blue" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -160,6 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimens_size_16"
+                android:gravity="center"
                 android:textSize="@dimen/text_size_22"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -169,18 +170,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/select_button"
         android:layout_width="0dp"
         android:layout_height="@dimen/dimens_size_60"
         android:layout_marginHorizontal="@dimen/dimens_size_16"
         android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/blue"
+        android:background="@drawable/shape_button_filter_background"
         android:fontFamily="@font/ys_text_medium"
-        android:letterSpacing="0"
         android:text="@string/choose"
         android:textAllCaps="false"
         android:textColor="@color/white"
+        android:textFontWeight="500"
         android:textSize="@dimen/text_size_16"
         android:visibility="gone"
         app:cornerRadius="@dimen/dimens_size_12"

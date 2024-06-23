@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/filter_region_container"
@@ -9,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="?attr/white_black"
     android:orientation="vertical"
-    tools:context=".filter.ui.FilterRegionFragment"
+    tools:context=".filter.region.ui.RegionFragment"
     tools:ignore="HardcodedText">
 
     <LinearLayout
@@ -55,11 +54,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dimens_size_16"
             android:layout_marginVertical="@dimen/dimens_size_8"
-            android:textColorHint="?attr/gray_white"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:cursorColor="@color/blue"
-            app:hintTextColor="@color/blue"
+            app:hintEnabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -78,6 +76,8 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:paddingVertical="@dimen/dimens_size_20"
+                android:textColor="@color/black"
+                android:textColorHint="?attr/gray_white"
                 app:colorControlActivated="@color/blue" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,11 +155,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimens_size_16"
+                android:gravity="center"
                 android:textSize="@dimen/text_size_22"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/placeholder_image"
-                tools:text="@string/there_is_no_such_region" />
+                tools:text="@string/failed_to_get_list" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

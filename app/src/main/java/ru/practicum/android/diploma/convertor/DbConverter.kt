@@ -46,4 +46,12 @@ class DbConverter {
         employer = vacancy.employer,
         salary = vacancy.salary
     )
+
+    fun convertFromVacancyEntity(entityList: List<FavoriteVacancyEntity>): List<Vacancy> {
+        return entityList.map { vacancyEntity -> map(vacancyEntity) }
+    }
+
+    fun convertFromFavoriteVacancy(vacancyList: List<Vacancy>): List<SimpleVacancy> {
+        return vacancyList.map { favoriteVacancy -> mapFavoriteToSimple(favoriteVacancy) }
+    }
 }

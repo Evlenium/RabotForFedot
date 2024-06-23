@@ -9,18 +9,20 @@ import ru.practicum.android.diploma.favorite.domain.api.FavoriteVacancyInteracto
 import java.io.IOException
 
 class FavoriteViewModel(
-    private val favoriteInteractor: FavoriteVacancyInteractor
+    private val favoriteInteractor: FavoriteVacancyInteractor,
 ) : ViewModel() {
     private val screenState = MutableLiveData<FavoriteScreenState>()
     fun observeScreenState(): LiveData<FavoriteScreenState> = screenState
-    private fun renderState(state: FavoriteScreenState) { screenState.postValue(state) }
+    private fun renderState(state: FavoriteScreenState) {
+        screenState.postValue(state)
+    }
 
     fun updateData() {
         renderState(FavoriteScreenState.Loading)
         viewModelScope.launch {
             try {
                 favoriteInteractor.getAllVacancies().collect { data ->
-                    if (data.isEmpty()) {
+                    if (data.isNullOrEmpty()) {
                         renderState(FavoriteScreenState.Empty)
                     } else {
                         renderState(FavoriteScreenState.Content(data))
