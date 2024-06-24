@@ -52,4 +52,17 @@ class TemporarySharedRepositoryImpl(
         storage.updateWorkplace(gson.toJson(clearedFilter))
     }
 
+    override fun validateRegion(country: Country) {
+        val workplace = getWorkplace()
+        val clearedFilter = workplace?.copy(regionName = null, regionId = null)
+        var validate = true
+        country.areas?.forEach {
+            validate = it?.id.equals(workplace?.regionId)
+        }
+        if (!validate) {
+            storage.updateWorkplace(gson.toJson(clearedFilter))
+        } else {
+            return
+        }
+    }
 }

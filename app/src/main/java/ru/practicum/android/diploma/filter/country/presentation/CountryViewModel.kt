@@ -48,6 +48,10 @@ class CountryViewModel(
         temporarySharedInteractor.updateCountry(country)
     }
 
+    fun validateRegion(country: Country){
+        temporarySharedInteractor.validateRegion(country)
+    }
+
     private fun renderState(state: CountryState) {
         stateLiveData.postValue(state)
     }
