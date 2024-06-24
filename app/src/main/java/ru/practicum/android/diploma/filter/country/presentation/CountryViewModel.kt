@@ -48,7 +48,7 @@ class CountryViewModel(
         temporarySharedInteractor.updateCountry(country)
     }
 
-    fun validateRegion(country: Country){
+    fun validateRegion(country: Country) {
         temporarySharedInteractor.validateRegion(country)
     }
 
