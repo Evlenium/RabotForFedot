@@ -31,7 +31,6 @@ import ru.practicum.android.diploma.search.domain.model.SimpleVacancy
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.search.presentation.VacanciesState
 import ru.practicum.android.diploma.util.Constants
-import ru.practicum.android.diploma.util.Creator.hideKeyboard
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
@@ -250,7 +249,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showErrorConnection(errorMessage: String) {
-        hideKeyboard(requireActivity())
         with(binding) {
             centerProgressBar.isVisible = false
             bottomProgressBar.isVisible = false
@@ -270,7 +268,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showEmptyResult(message: String) {
-        hideKeyboard(requireActivity())
         with(binding) {
             centerProgressBar.isVisible = false
             bottomProgressBar.isVisible = false

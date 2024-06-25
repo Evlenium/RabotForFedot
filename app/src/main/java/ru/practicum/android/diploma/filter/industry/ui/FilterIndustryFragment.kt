@@ -21,7 +21,6 @@ import ru.practicum.android.diploma.filter.industry.presentation.FilterIndustryV
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustriesState
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustryState
 import ru.practicum.android.diploma.search.domain.model.Industry
-import ru.practicum.android.diploma.util.Creator.hideKeyboard
 import java.util.Locale
 
 class FilterIndustryFragment : Fragment() {
@@ -127,7 +126,6 @@ class FilterIndustryFragment : Fragment() {
     }
 
     private fun showEmptyPlaceholder() {
-        hideKeyboard(requireActivity())
         binding.placeholderContainer.isVisible = true
         binding.placeholderImage.isVisible = true
         binding.placeholderMessage.isVisible = true
@@ -213,7 +211,6 @@ class FilterIndustryFragment : Fragment() {
 
     private fun showErrorListDownload() {
         with(binding) {
-            hideKeyboard(requireActivity())
             progressBar.isVisible = false
             recyclerView.isVisible = false
             placeholderContainer.isVisible = true
