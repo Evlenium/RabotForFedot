@@ -20,7 +20,6 @@ import ru.practicum.android.diploma.filter.region.presentation.RegionViewModel
 import ru.practicum.android.diploma.filter.region.presentation.model.RegionState
 import ru.practicum.android.diploma.filter.workplace.ui.WorkplaceFragment
 import ru.practicum.android.diploma.search.domain.model.Area
-import ru.practicum.android.diploma.util.Creator.hideKeyboard
 import java.util.Locale
 
 class RegionFragment : Fragment() {
@@ -34,7 +33,7 @@ class RegionFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentFilterRegionBinding.inflate(inflater, container, false)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -103,7 +102,6 @@ class RegionFragment : Fragment() {
     }
 
     private fun showEmptyPlaceholder() {
-        hideKeyboard(requireActivity())
         binding.placeholderContainer.isVisible = true
         binding.placeholderImage.isVisible = true
         binding.placeholderMessage.isVisible = true
@@ -145,7 +143,6 @@ class RegionFragment : Fragment() {
         binding.textInputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 containsMethod(inputTextFromSearch)
-                true
             }
             binding.progressBar.visibility = View.GONE
             false
@@ -179,7 +176,6 @@ class RegionFragment : Fragment() {
 
     private fun showErrorListDownload() {
         with(binding) {
-            hideKeyboard(requireActivity())
             progressBar.isVisible = false
             recyclerView.isVisible = false
             placeholderContainer.isVisible = true
