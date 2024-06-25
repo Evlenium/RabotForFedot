@@ -18,4 +18,5 @@ class TemporarySharedInteractorImpl(private val repository: TemporarySharedRepos
     override fun updateRegion(area: Area) = repository.updateRegion(area)
 
     override fun clearArea() = repository.clearArea()
+    override fun validateRegion(country: Country) = repository.validateRegion(country)
 }

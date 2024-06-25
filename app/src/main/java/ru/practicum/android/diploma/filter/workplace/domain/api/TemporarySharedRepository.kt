@@ -11,4 +11,5 @@ interface TemporarySharedRepository {
     fun clearCountry()
     fun updateRegion(area: Area)
     fun clearArea()
+    fun validateRegion(country: Country)
 }
