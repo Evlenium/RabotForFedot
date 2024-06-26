@@ -204,6 +204,12 @@ class FilterIndustryFragment : Fragment() {
                 showEmptyPlaceholder()
             } else {
                 hideEmptyPlaceholder()
+                filteredList.forEachIndexed { index, industry ->
+                    if (industry.id == industryId) {
+                        binding.selectButton.isVisible = true
+                        industryAdapter?.setPosition(index)
+                    }
+                }
             }
             industryAdapter?.setItems(filteredList)
         } else {
