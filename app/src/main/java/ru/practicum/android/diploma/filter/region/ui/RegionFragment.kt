@@ -20,7 +20,6 @@ import ru.practicum.android.diploma.filter.region.presentation.RegionViewModel
 import ru.practicum.android.diploma.filter.region.presentation.model.RegionState
 import ru.practicum.android.diploma.filter.workplace.ui.WorkplaceFragment
 import ru.practicum.android.diploma.search.domain.model.Area
-import ru.practicum.android.diploma.util.Creator.hideKeyboard
 import java.util.Locale
 
 class RegionFragment : Fragment() {
@@ -103,7 +102,6 @@ class RegionFragment : Fragment() {
     }
 
     private fun showEmptyPlaceholder() {
-        hideKeyboard(requireActivity())
         binding.placeholderContainer.isVisible = true
         binding.placeholderImage.isVisible = true
         binding.placeholderMessage.isVisible = true
@@ -179,7 +177,6 @@ class RegionFragment : Fragment() {
 
     private fun showErrorListDownload() {
         with(binding) {
-            hideKeyboard(requireActivity())
             progressBar.isVisible = false
             recyclerView.isVisible = false
             placeholderContainer.isVisible = true
