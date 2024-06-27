@@ -74,7 +74,7 @@ class FilterIndustryFragment : Fragment() {
             }
         })
         industryAdapter = FilterIndustryAdapter { industry ->
-            industryId = industry.id
+//            industryId = industry.id
             viewModel.saveIndustryFromAdapter(industry)
         }
         binding.recyclerView.adapter = industryAdapter
@@ -87,7 +87,7 @@ class FilterIndustryFragment : Fragment() {
     private fun saveIndustry(state: IndustryState) {
         when (state) {
             is IndustryState.ContentIndustry -> {
-                industryId = state.industry.id
+//                industryId = state.industry.id
                 viewModel.saveIndustry(state.industry)
             }
         }
