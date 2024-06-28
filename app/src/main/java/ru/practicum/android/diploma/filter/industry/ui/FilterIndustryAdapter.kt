@@ -14,14 +14,17 @@ class FilterIndustryAdapter(
 
     private var industries: MutableList<Industry> = mutableListOf()
     private var selectedPosition = RecyclerView.NO_POSITION
+    private var selectedIndustryId: String? = null
 
     fun setPosition(position: Int) {
         selectedPosition = position
+        selectedIndustryId = industries.getOrNull(position)?.id
     }
 
     fun setItems(items: List<Industry>) {
         industries.clear()
-        industries = items.toMutableList()
+        industries.addAll(items)
+        selectedPosition = industries.indexOfFirst { it.id == selectedIndustryId }
         notifyDataSetChanged()
     }
 
@@ -40,6 +43,7 @@ class FilterIndustryAdapter(
                 if (position != RecyclerView.NO_POSITION) {
                     val previousPosition = selectedPosition
                     selectedPosition = position
+                    selectedIndustryId = industries.getOrNull(position)?.id
                     notifyItemChanged(previousPosition)
                     notifyItemChanged(selectedPosition)
                     industries.getOrNull(position)?.let { industry ->
@@ -64,7 +68,7 @@ class FilterIndustryAdapter(
 
     class IndustryDiffCallBack : DiffUtil.ItemCallback<Industry>() {
         override fun areItemsTheSame(oldItem: Industry, newItem: Industry): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Industry, newItem: Industry): Boolean {

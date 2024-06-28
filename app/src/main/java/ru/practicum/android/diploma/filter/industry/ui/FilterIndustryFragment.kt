@@ -72,7 +72,9 @@ class FilterIndustryFragment : Fragment() {
                 findNavController().navigate(backPath)
             }
         })
-        industryAdapter = FilterIndustryAdapter { viewModel.saveIndustryFromAdapter(it) }
+        industryAdapter = FilterIndustryAdapter { industry ->
+            viewModel.saveIndustryFromAdapter(industry)
+        }
         binding.recyclerView.adapter = industryAdapter
         inputEditTextInit()
         viewModel.searchRequest()
@@ -82,7 +84,9 @@ class FilterIndustryFragment : Fragment() {
 
     private fun saveIndustry(state: IndustryState) {
         when (state) {
-            is IndustryState.ContentIndustry -> viewModel.saveIndustry(state.industry)
+            is IndustryState.ContentIndustry -> {
+                viewModel.saveIndustry(state.industry)
+            }
         }
     }
 
@@ -146,16 +150,17 @@ class FilterIndustryFragment : Fragment() {
             recyclerView.isVisible = true
         }
 
-        if (!industryId.isNullOrEmpty()) {
-            industries.forEachIndexed { index, industry ->
-                if (industry.id == industryId) {
-                    binding.selectButton.isVisible = true
-                    industryAdapter?.setPosition(index)
-                }
-            }
-        }
         listIndustries = industries
         industryAdapter?.setItems(listIndustries)
+
+        if (!industryId.isNullOrEmpty()) {
+            val position = listIndustries.indexOfFirst { it.id == industryId }
+            if (position != -1) {
+                binding.selectButton.isVisible = true
+                industryAdapter?.setPosition(position)
+                industryAdapter?.notifyItemChanged(position)
+            }
+        }
     }
 
     private fun inputEditTextInit() {
@@ -188,24 +193,28 @@ class FilterIndustryFragment : Fragment() {
         if (!viewModel.getInternetConnection()) {
             showErrorListDownload()
         } else if (!inputTextFromSearch.isNullOrEmpty()) {
-            inputTextFromSearch.replaceFirstChar {
-                if (it.isLowerCase()) {
-                    it.titlecase(Locale.getDefault())
-                } else {
-                    it.toString()
-                }
-            }
+            val searchText = inputTextFromSearch.lowercase(Locale.getDefault())
             val filteredList = listIndustries.filter { industry ->
-                industry.name.lowercase().contains(inputTextFromSearch)
+                industry.name.lowercase(Locale.getDefault()).contains(searchText)
             }
             if (filteredList.isEmpty()) {
                 showEmptyPlaceholder()
             } else {
                 hideEmptyPlaceholder()
+                industryAdapter?.setItems(filteredList)
+                val selectedIndustry = filteredList.find { it.id == industryId }
+                if (selectedIndustry != null) {
+                    val position = filteredList.indexOf(selectedIndustry)
+                    industryAdapter?.setPosition(position)
+                    industryAdapter?.notifyItemChanged(position)
+                    binding.selectButton.isVisible = true
+                } else {
+                    binding.selectButton.isVisible = false
+                }
             }
-            industryAdapter?.setItems(filteredList)
         } else {
             hideEmptyPlaceholder()
+            industryAdapter?.setItems(listIndustries)
         }
     }
 
