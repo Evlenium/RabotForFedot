@@ -60,10 +60,10 @@ class FilterIndustryFragment : Fragment() {
             viewModel.observeStateIndustry().observe(viewLifecycleOwner) {
                 saveIndustry(it)
             }
-            val requireArgs = industryId != viewModel.getIndustryId()
+            val isIndustrySelected = viewModel.observeStateIndustry().value is IndustryState.ContentIndustry
             findNavController().navigate(
                 backPath,
-                FilterSettingsFragment.createArgsFromIndustry(requireArgs)
+                FilterSettingsFragment.createArgsFromIndustry(isIndustrySelected)
             )
         }
         binding.buttonBack.setOnClickListener { findNavController().navigate(backPath) }
@@ -73,6 +73,7 @@ class FilterIndustryFragment : Fragment() {
             }
         })
         industryAdapter = FilterIndustryAdapter { industry ->
+            industryId = industry.id
             viewModel.saveIndustryFromAdapter(industry)
         }
         binding.recyclerView.adapter = industryAdapter
@@ -85,6 +86,7 @@ class FilterIndustryFragment : Fragment() {
     private fun saveIndustry(state: IndustryState) {
         when (state) {
             is IndustryState.ContentIndustry -> {
+                industryId = state.industry.id
                 viewModel.saveIndustry(state.industry)
             }
         }
@@ -130,6 +132,7 @@ class FilterIndustryFragment : Fragment() {
     }
 
     private fun showEmptyPlaceholder() {
+        binding.recyclerView.isVisible = false
         binding.placeholderContainer.isVisible = true
         binding.placeholderImage.isVisible = true
         binding.placeholderMessage.isVisible = true
@@ -138,6 +141,7 @@ class FilterIndustryFragment : Fragment() {
     }
 
     private fun hideEmptyPlaceholder() {
+        binding.recyclerView.isVisible = true
         binding.placeholderContainer.isVisible = false
         binding.placeholderImage.isVisible = false
         binding.placeholderMessage.isVisible = false
@@ -215,6 +219,16 @@ class FilterIndustryFragment : Fragment() {
         } else {
             hideEmptyPlaceholder()
             industryAdapter?.setItems(listIndustries)
+
+            when(viewModel.observeStateIndustry().value) {
+                is IndustryState.ContentIndustry -> binding.selectButton.isVisible = true
+                is IndustryState.Empty -> binding.selectButton.isVisible = false
+            }
+
+            if (!industryId.isNullOrEmpty()) {
+                val position = listIndustries.indexOfFirst { it.id == industryId }
+                if (position != -1) binding.selectButton.isVisible = true
+            }
         }
     }
 
