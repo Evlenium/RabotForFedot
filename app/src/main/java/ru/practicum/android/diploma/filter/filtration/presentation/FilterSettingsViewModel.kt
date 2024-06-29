@@ -142,7 +142,7 @@ class FilterSettingsViewModel(
         filterSettingsInteractor.updateCheckBox(checkbox)
     }
 
-    fun clearAllFilters() {
+    private fun clearAllFilters() {
         industryIsEmpty = true
         workplaceIsEmpty = true
         salaryIsEmpty = true
