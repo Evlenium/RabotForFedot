@@ -216,16 +216,9 @@ class FilterSettingsFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        val backPath = R.id.action_filterSettingsFragment_to_searchFragment
-        binding.buttonBack.setOnClickListener {
-            viewModel.clearAllFilters()
-            findNavController().navigate(backPath)
-        }
+        binding.buttonBack.setOnClickListener { findNavController().navigateUp() }
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                viewModel.clearAllFilters()
-                findNavController().navigate(backPath)
-            }
+            override fun handleOnBackPressed() { findNavController().navigateUp() }
         })
     }
 

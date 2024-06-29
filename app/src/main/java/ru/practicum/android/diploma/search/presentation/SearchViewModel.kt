@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.model.FilterSearch
 import ru.practicum.android.diploma.search.domain.model.SimpleVacancy
@@ -15,6 +16,7 @@ import ru.practicum.android.diploma.util.debounce
 class SearchViewModel(
     private val searchInteractor: SearchInteractor,
     private val resourceInteractor: ResourceInteractor,
+    private val filterSettingsInteractor: FilterSettingsInteractor
 ) : ViewModel() {
     var lastText: String = ""
     private var currentPage = 0
@@ -174,6 +176,21 @@ class SearchViewModel(
 
     fun setFilterSearch(filterSearch: FilterSearch?) {
         this.filterSearch = filterSearch
+    }
+
+    fun createFilterFromShared(): FilterSearch {
+        val industryId = filterSettingsInteractor.getFilter()?.industryId
+        val onlyWithSalary = filterSettingsInteractor.getFilter()?.isOnlyWithSalary
+        val countryId = filterSettingsInteractor.getFilter()?.countryId
+        val regionId = filterSettingsInteractor.getFilter()?.regionId
+        val salary = filterSettingsInteractor.getFilter()?.expectedSalary
+        return FilterSearch(
+            industryId = industryId,
+            countryId = countryId,
+            regionId = regionId,
+            isOnlyWithSalary = onlyWithSalary,
+            expectedSalary = salary
+        )
     }
 
     companion object {
