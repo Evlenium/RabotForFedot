@@ -38,12 +38,18 @@ class SearchFragment : Fragment() {
     private var inputTextFromSearch: String? = null
     private var searchAdapter: SearchVacancyAdapter? = null
     private val viewModel by viewModel<SearchViewModel>()
+    private var filterSearch: FilterSearch? = null
+    private var doWeHaveToSearch = false
 
-    private val filterSearch by lazy(LazyThreadSafetyMode.NONE) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(ARGS_FILTER, FilterSearch::class.java)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (arguments != null) {
+            doWeHaveToSearch = arguments?.getBoolean(FLAG) ?: false
+            filterSearch = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arguments?.getParcelable(FILTER, FilterSearch::class.java)
+            } else { arguments?.getParcelable(FILTER) }
         } else {
-            arguments?.getParcelable(ARGS_FILTER)
+            filterSearch = viewModel.createFilterFromShared()
         }
     }
 
@@ -57,7 +63,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (arguments != null) {
+        if (filterSearch != null) {
             viewModel.setFilterSearch(filterSearch)
             val isWorkplaceFilter = filterSearch?.countryId != null || filterSearch?.regionId != null
             val isIndustryFilter = filterSearch?.industryId != null
@@ -90,14 +96,6 @@ class SearchFragment : Fragment() {
                 }
                 showPlaceholderSearch()
             }
-            val editText = viewModel.getText()
-            if (!editText.isNullOrEmpty()) {
-                placeholderViewGroup.isVisible = false
-                textInputEditText.setText(editText)
-                textInputEndIcon.setImageResource(R.drawable.icon_close)
-                textInputEndIcon.isVisible = true
-                viewModel.downloadData(editText)
-            }
         }
         inputEditTextInit()
         viewModel.observeState().observe(viewLifecycleOwner) { render(it) }
@@ -111,6 +109,17 @@ class SearchFragment : Fragment() {
                 requireActivity().finish()
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val editText = viewModel.getText()
+        if (!editText.isNullOrEmpty()) {
+            binding.textInputEditText.setText(editText)
+            binding.placeholderViewGroup.isVisible = false
+            binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
+            binding.textInputEndIcon.isVisible = true
+        }
     }
 
     private fun scrollListener() {
@@ -144,7 +153,7 @@ class SearchFragment : Fragment() {
                         binding.vacancyMessageTextView.isVisible = false
                         binding.placeholderViewGroup.isVisible = false
                         searchAdapterReset()
-                        viewModel.searchDebounce(inputTextFromSearch!!)
+                        if (doWeHaveToSearch) viewModel.searchDebounce(inputTextFromSearch!!)
                     } else if (stringIsNotEmpty && viewModel.lastText.isEmpty()) {
                         binding.textInputEndIcon.setImageResource(R.drawable.icon_search)
                         showPlaceholderSearch()
@@ -316,11 +325,11 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        private const val ARGS_FILTER = "from_workplace"
-        fun createArgsFilter(createFilterFromShared: FilterSearch): Bundle =
-            bundleOf(
-                ARGS_FILTER to createFilterFromShared,
-            )
+        private const val FILTER = "filter"
+        private const val FLAG = "flag"
+
+        fun createArgsFilter(filter: FilterSearch, flag: Boolean = false) =
+            bundleOf(FILTER to filter, FLAG to flag)
 
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
