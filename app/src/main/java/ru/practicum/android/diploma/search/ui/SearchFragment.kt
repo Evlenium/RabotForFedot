@@ -328,8 +328,7 @@ class SearchFragment : Fragment() {
         private const val FILTER = "filter"
         private const val FLAG = "flag"
 
-        fun createArgsFilter(
-            filter: FilterSearch, flag: Boolean = false) =
+        fun createArgsFilter(filter: FilterSearch, flag: Boolean = false) =
             bundleOf(FILTER to filter, FLAG to flag)
 
         private const val CLICK_DEBOUNCE_DELAY = 1000L
