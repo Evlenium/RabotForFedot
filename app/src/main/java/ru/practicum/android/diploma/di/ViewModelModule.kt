@@ -12,7 +12,13 @@ import ru.practicum.android.diploma.filter.workplace.presentation.WorkplaceViewM
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 
 val viewModelModule = module {
-    viewModel { SearchViewModel(resourceInteractor = get(), searchInteractor = get(), filterSettingsInteractor = get()) }
+    viewModel {
+        SearchViewModel(
+            resourceInteractor = get(),
+            searchInteractor = get(),
+            filterSettingsInteractor = get()
+        )
+    }
     viewModel { FavoriteViewModel(favoriteInteractor = get()) }
     viewModel { FilterSettingsViewModel(filterSettingsInteractor = get(), temporarySharedInteractor = get()) }
     viewModel {

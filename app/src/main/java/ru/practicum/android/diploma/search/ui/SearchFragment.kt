@@ -45,10 +45,8 @@ class SearchFragment : Fragment() {
         if (arguments != null) {
             filterSearch = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arguments?.getParcelable(FILTER, FilterSearch::class.java)
-            } else arguments?.getParcelable(FILTER)
-        } else {
-            filterSearch = viewModel.createFilterFromShared()
-        }
+            } else { arguments?.getParcelable(FILTER) }
+        } else { filterSearch = viewModel.createFilterFromShared() }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
