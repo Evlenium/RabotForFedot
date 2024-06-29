@@ -162,7 +162,7 @@ class FilterSettingsFragment : Fragment() {
             viewModel.setCheckboxOnlyWithSalary(binding.filtrationPayCheckbox.isChecked)
             findNavController().navigate(
                 R.id.action_filterSettingsFragment_to_searchFragment,
-                SearchFragment.createArgsFilter(viewModel.createFilterFromShared())
+                SearchFragment.createArgsFilter(viewModel.createFilterFromShared(), true)
             )
         }
         binding.resetSalaryButton.setOnClickListener { binding.salaryEditText.setText("") }
@@ -237,14 +237,10 @@ class FilterSettingsFragment : Fragment() {
     companion object {
         private const val ARGS_FROM_WORKPLACE = "from_workplace"
         fun createArgsFromWorkplace(isFromWorkplace: Boolean): Bundle =
-            bundleOf(
-                ARGS_FROM_WORKPLACE to isFromWorkplace,
-            )
+            bundleOf(ARGS_FROM_WORKPLACE to isFromWorkplace)
 
         private const val ARGS_FROM_INDUSTRY = "from_industry"
         fun createArgsFromIndustry(isFromIndustry: Boolean): Bundle =
-            bundleOf(
-                ARGS_FROM_INDUSTRY to isFromIndustry,
-            )
+            bundleOf(ARGS_FROM_INDUSTRY to isFromIndustry,)
     }
 }

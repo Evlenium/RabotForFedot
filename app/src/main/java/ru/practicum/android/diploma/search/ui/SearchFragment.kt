@@ -39,15 +39,17 @@ class SearchFragment : Fragment() {
     private var searchAdapter: SearchVacancyAdapter? = null
     private val viewModel by viewModel<SearchViewModel>()
     private var filterSearch: FilterSearch? = null
+    private var doWeHaveToSearch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        filterSearch = if (arguments != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (arguments != null) {
+            doWeHaveToSearch = arguments?.getBoolean(FLAG) ?: false
+            filterSearch = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arguments?.getParcelable(FILTER, FilterSearch::class.java)
             } else { arguments?.getParcelable(FILTER) }
         } else {
-            viewModel.createFilterFromShared()
+            filterSearch = viewModel.createFilterFromShared()
         }
     }
 
@@ -94,14 +96,6 @@ class SearchFragment : Fragment() {
                 }
                 showPlaceholderSearch()
             }
-            val editText = viewModel.getText()
-            if (!editText.isNullOrEmpty()) {
-                placeholderViewGroup.isVisible = false
-                textInputEditText.setText(editText)
-                textInputEndIcon.setImageResource(R.drawable.icon_close)
-                textInputEndIcon.isVisible = true
-                viewModel.downloadData(editText)
-            }
         }
         inputEditTextInit()
         viewModel.observeState().observe(viewLifecycleOwner) { render(it) }
@@ -115,6 +109,17 @@ class SearchFragment : Fragment() {
                 requireActivity().finish()
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val editText = viewModel.getText()
+        if (!editText.isNullOrEmpty()) {
+            binding.textInputEditText.setText(editText)
+            binding.placeholderViewGroup.isVisible = false
+            binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
+            binding.textInputEndIcon.isVisible = true
+        }
     }
 
     private fun scrollListener() {
@@ -148,7 +153,7 @@ class SearchFragment : Fragment() {
                         binding.vacancyMessageTextView.isVisible = false
                         binding.placeholderViewGroup.isVisible = false
                         searchAdapterReset()
-                        viewModel.searchDebounce(inputTextFromSearch!!)
+                        if (doWeHaveToSearch) viewModel.searchDebounce(inputTextFromSearch!!)
                     } else if (stringIsNotEmpty && viewModel.lastText.isEmpty()) {
                         binding.textInputEndIcon.setImageResource(R.drawable.icon_search)
                         showPlaceholderSearch()
@@ -320,8 +325,12 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        const val FILTER = "filter"
-        fun createArgsFilter(filter: FilterSearch) = bundleOf(FILTER to filter)
+        private const val FILTER = "filter"
+        private const val FLAG = "flag"
+
+        fun createArgsFilter(
+            filter: FilterSearch, flag: Boolean = false) =
+            bundleOf(FILTER to filter, FLAG to flag)
 
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
