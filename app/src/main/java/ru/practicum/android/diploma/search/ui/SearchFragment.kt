@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.search.ui
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,11 +43,13 @@ class SearchFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            filterSearch = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        filterSearch = if (arguments != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arguments?.getParcelable(FILTER, FilterSearch::class.java)
             } else { arguments?.getParcelable(FILTER) }
-        } else { filterSearch = viewModel.createFilterFromShared() }
+        } else {
+            viewModel.createFilterFromShared()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -318,7 +321,7 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        private const val FILTER = "filter"
+        const val FILTER = "filter"
         fun createArgsFilter(filter: FilterSearch) = bundleOf(FILTER to filter)
 
         private const val CLICK_DEBOUNCE_DELAY = 1000L
