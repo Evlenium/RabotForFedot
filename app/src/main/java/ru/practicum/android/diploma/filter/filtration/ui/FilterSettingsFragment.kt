@@ -216,13 +216,20 @@ class FilterSettingsFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        val backPath = R.id.action_filterSettingsFragment_to_searchFragment
         binding.buttonBack.setOnClickListener {
-            findNavController().navigate(backPath)
+            viewModel.setCheckboxOnlyWithSalary(binding.filtrationPayCheckbox.isChecked)
+            findNavController().navigate(
+                R.id.action_filterSettingsFragment_to_searchFragment,
+                SearchFragment.createArgsFilter(viewModel.createFilterFromShared())
+            )
         }
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                findNavController().navigate(backPath)
+                viewModel.setCheckboxOnlyWithSalary(binding.filtrationPayCheckbox.isChecked)
+                findNavController().navigate(
+                    R.id.action_filterSettingsFragment_to_searchFragment,
+                    SearchFragment.createArgsFilter(viewModel.createFilterFromShared())
+                )
             }
         })
     }

@@ -38,12 +38,16 @@ class SearchFragment : Fragment() {
     private var inputTextFromSearch: String? = null
     private var searchAdapter: SearchVacancyAdapter? = null
     private val viewModel by viewModel<SearchViewModel>()
+    private var filterSearch: FilterSearch? = null
 
-    private val filterSearch by lazy(LazyThreadSafetyMode.NONE) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(ARGS_FILTER, FilterSearch::class.java)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        filterSearch = if (arguments != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arguments?.getParcelable(FILTER, FilterSearch::class.java)
+            } else { arguments?.getParcelable(FILTER) }
         } else {
-            arguments?.getParcelable(ARGS_FILTER)
+            viewModel.createFilterFromShared()
         }
     }
 
@@ -57,7 +61,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (arguments != null) {
+        if (filterSearch != null) {
             viewModel.setFilterSearch(filterSearch)
             val isWorkplaceFilter = filterSearch?.countryId != null || filterSearch?.regionId != null
             val isIndustryFilter = filterSearch?.industryId != null
@@ -316,11 +320,8 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        private const val ARGS_FILTER = "from_workplace"
-        fun createArgsFilter(createFilterFromShared: FilterSearch): Bundle =
-            bundleOf(
-                ARGS_FILTER to createFilterFromShared,
-            )
+        const val FILTER = "filter"
+        fun createArgsFilter(filter: FilterSearch) = bundleOf(FILTER to filter)
 
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
