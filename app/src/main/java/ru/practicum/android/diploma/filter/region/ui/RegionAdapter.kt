@@ -12,11 +12,11 @@ class RegionAdapter(
     private val itemClickListener: ItemClickListener
 ) : ListAdapter<Area, RecyclerView.ViewHolder>(CountryDiffCallBack()) {
 
-    private var areas: MutableList<Area> = mutableListOf()
+    private val areas: MutableList<Area> = mutableListOf()
 
     fun setItems(items: List<Area>) {
         areas.clear()
-        areas = items.toMutableList()
+        areas.addAll(items.toMutableList())
         notifyDataSetChanged()
     }
 
