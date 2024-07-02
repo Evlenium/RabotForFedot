@@ -84,7 +84,7 @@ class SearchViewModel(
             renderState(VacanciesState.Empty(message = resourceInteractor.getErrorEmptyListVacancy()))
             return
         }
-
+        setOption(filterSearch)
         if (lastText != changedText) {
             currentPage = 0
             lastText = changedText

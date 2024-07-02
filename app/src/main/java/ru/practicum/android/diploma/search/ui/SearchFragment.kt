@@ -157,16 +157,6 @@ class SearchFragment : Fragment() {
         )
 
         binding.textInputEditText.setOnEditorActionListener { _, actionId, _ ->
-            val isActionDone = actionId == EditorInfo.IME_ACTION_DONE
-            val isSearchTextNotEmpty = binding.textInputEditText.text!!.trim().isNotEmpty()
-            val isDownloadNotInProgress = !viewModel.flagSuccessfulDownload
-
-            if (isActionDone && isSearchTextNotEmpty && isDownloadNotInProgress) {
-                inputTextFromSearch?.let {
-                    searchAdapterReset()
-                    viewModel.downloadData(it)
-                }
-            }
             binding.centerProgressBar.visibility = View.GONE
             false
         }
