@@ -60,7 +60,7 @@ class SearchFragment : Fragment() {
 
                 if (doWeHaveToSearch) {
                     binding.placeholderViewGroup.isVisible = false
-                    viewModel.downloadData(text)
+                    viewModel.searchDebounce(text, true)
                 }
             }
         }

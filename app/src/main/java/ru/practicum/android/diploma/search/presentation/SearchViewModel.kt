@@ -29,12 +29,7 @@ class SearchViewModel(
     private var filterSearch: FilterSearch? = null
 
     private fun setOption(filterSearch: FilterSearch?) {
-        maxPages = totalVacanciesCount / Constants.VACANCIES_PER_PAGE + 1
-
-        if (totalVacanciesCount > Constants.VACANCIES_PER_PAGE && currentPage < maxPages) {
-            options[Constants.PAGE] = currentPage.toString()
-            options[Constants.PER_PAGE] = Constants.VACANCIES_PER_PAGE.toString()
-        }
+        updatePage()
 
         if (filterSearch?.countryId != null) {
             options[Constants.AREA] = filterSearch.countryId
@@ -79,13 +74,22 @@ class SearchViewModel(
             }
         }
 
-    fun searchDebounce(changedText: String) {
+    fun searchDebounce(changedText: String, forceSearch: Boolean = false) {
         if (changedText.trim().isEmpty()) {
             renderState(VacanciesState.Empty(message = resourceInteractor.getErrorEmptyListVacancy()))
             return
         }
         setOption(filterSearch)
-        if (lastText != changedText) {
+
+        if (!forceSearch) {
+            if (lastText != changedText) {
+                currentPage = 0
+                lastText = changedText
+                flagDebounce = true
+                vacancySearchDebounce(changedText)
+                flagDebounce = false
+            }
+        } else {
             currentPage = 0
             lastText = changedText
             flagDebounce = true
@@ -100,6 +104,7 @@ class SearchViewModel(
             return
         }
         lastText = newSearchText
+        updatePage()
         viewModelScope.launch {
             searchInteractor
                 .searchVacancies(newSearchText, options)
@@ -193,6 +198,14 @@ class SearchViewModel(
             isOnlyWithSalary = onlyWithSalary,
             expectedSalary = salary
         )
+    }
+
+    private fun updatePage() {
+        maxPages = totalVacanciesCount / Constants.VACANCIES_PER_PAGE + 1
+        if (totalVacanciesCount > Constants.VACANCIES_PER_PAGE && currentPage < maxPages) {
+            options[Constants.PAGE] = currentPage.toString()
+            options[Constants.PER_PAGE] = Constants.VACANCIES_PER_PAGE.toString()
+        }
     }
 
     companion object {
