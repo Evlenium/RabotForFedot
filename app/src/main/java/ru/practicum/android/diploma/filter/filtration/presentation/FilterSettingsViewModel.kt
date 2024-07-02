@@ -12,8 +12,8 @@ class FilterSettingsViewModel(
     private val filterSettingsInteractor: FilterSettingsInteractor,
     private val temporarySharedInteractor: TemporarySharedInteractor,
 ) : ViewModel() {
-    val stateLiveDataFiltration = MutableLiveData<FullFilterState>()
-    val stateLiveDataChanged = MutableLiveData<ChangeFilterState>()
+    private val stateLiveDataFiltration = MutableLiveData<FullFilterState>()
+    private val stateLiveDataChanged = MutableLiveData<ChangeFilterState>()
     private val stateLiveDataArea = MutableLiveData<AreaState>()
     private val stateLiveDataSalary = MutableLiveData<SalaryState>()
     private val stateLiveDataIndustry = MutableLiveData<IndustryState>()
@@ -26,6 +26,7 @@ class FilterSettingsViewModel(
     private var industryIsEmpty = true
     private var workplaceIsEmpty = true
     private var salaryIsEmpty = true
+    private var isSomethingChange = false
 
     fun observeFiltrationState(): LiveData<FullFilterState> = stateLiveDataFiltration
     fun observeFiltrationStateChanged(): LiveData<ChangeFilterState> = stateLiveDataChanged
@@ -167,10 +168,12 @@ class FilterSettingsViewModel(
     }
 
     fun setChangedState() {
+        isSomethingChange = true
         stateLiveDataChanged.postValue(ChangeFilterState.ChangedFilter)
     }
 
     private fun setNoChangedState() {
+        isSomethingChange = false
         stateLiveDataChanged.postValue(ChangeFilterState.NoChangeFilters)
     }
 
@@ -205,5 +208,14 @@ class FilterSettingsViewModel(
             stateLiveDataFiltration.postValue(FullFilterState.EmptyFilters)
         }
         checkFilters()
+    }
+
+    fun setCheckBox(check: Boolean) {
+        val lastState = getFilter()?.isOnlyWithSalary
+        if (lastState != null && check != lastState) {
+            stateLiveDataChanged.postValue(ChangeFilterState.ChangedFilter)
+        } else if (!isSomethingChange) {
+            setNoChangedState()
+        }
     }
 }

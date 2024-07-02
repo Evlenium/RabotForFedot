@@ -133,14 +133,7 @@ class FilterSettingsFragment : Fragment() {
     }
 
     private fun setCheckBox(check: Boolean) {
-        val lastState = viewModel.getFilter()?.isOnlyWithSalary
-        if (lastState != null && check != lastState) {
-            renderChangedState(ChangeFilterState.ChangedFilter)
-        } else if (viewModel.stateLiveDataFiltration.value == FullFilterState.EmptyFilters ||
-            viewModel.stateLiveDataChanged.value == null
-        ) {
-            renderChangedState(ChangeFilterState.NoChangeFilters)
-        }
+        viewModel.setCheckBox(check)
         viewModel.checkBoxEmptyFilter(check)
         if (check) binding.filtrationPayCheckbox.isChecked = true
     }
@@ -241,6 +234,6 @@ class FilterSettingsFragment : Fragment() {
 
         private const val ARGS_FROM_INDUSTRY = "from_industry"
         fun createArgsFromIndustry(isFromIndustry: Boolean): Bundle =
-            bundleOf(ARGS_FROM_INDUSTRY to isFromIndustry,)
+            bundleOf(ARGS_FROM_INDUSTRY to isFromIndustry)
     }
 }
