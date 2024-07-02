@@ -5,11 +5,14 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,6 +23,7 @@ import ru.practicum.android.diploma.details.presentation.model.StateLoadVacancy
 import ru.practicum.android.diploma.search.domain.model.Contacts
 import ru.practicum.android.diploma.search.domain.model.Phone
 import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.search.ui.SearchFragment
 import ru.practicum.android.diploma.util.Creator
 
 class VacancyDetailsFragment : Fragment() {
@@ -202,8 +206,14 @@ class VacancyDetailsFragment : Fragment() {
         }
 
         binding.detailsVacancyToolbar.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
+            findNavController().navigateUp()
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigateUp()
+            }
+        })
     }
 
     override fun onDestroyView() {
