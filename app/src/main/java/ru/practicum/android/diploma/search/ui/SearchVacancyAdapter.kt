@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.ui
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -14,16 +15,24 @@ class SearchVacancyAdapter(
 
     private var vacancyList: MutableList<SimpleVacancy> = mutableListOf()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setItems(items: List<SimpleVacancy>) {
         vacancyList.clear()
         vacancyList = items.toMutableList()
         notifyDataSetChanged()
     }
 
+    private fun filterVacanciesByUniqueNames(vacancies: List<SimpleVacancy>): List<SimpleVacancy> {
+        val uniqueNamesMap = mutableMapOf<String, SimpleVacancy>()
+        for (vacancy in vacancies) uniqueNamesMap[vacancy.name] = vacancy
+        return uniqueNamesMap.values.toList()
+    }
+
     fun addItemsInRecycler(newItems: List<SimpleVacancy>) {
+        val filteredItems = filterVacanciesByUniqueNames(newItems)
         val startPosition = vacancyList.size
-        vacancyList.addAll(newItems)
-        notifyItemRangeInserted(startPosition, newItems.size)
+        vacancyList.addAll(filteredItems)
+        notifyItemRangeInserted(startPosition, filteredItems.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchVacancyViewHolder {
