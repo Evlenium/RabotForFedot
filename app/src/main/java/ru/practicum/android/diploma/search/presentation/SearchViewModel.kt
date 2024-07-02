@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.model.FilterSearch
 import ru.practicum.android.diploma.search.domain.model.SimpleVacancy
@@ -15,6 +16,7 @@ import ru.practicum.android.diploma.util.debounce
 class SearchViewModel(
     private val searchInteractor: SearchInteractor,
     private val resourceInteractor: ResourceInteractor,
+    private val filterSettingsInteractor: FilterSettingsInteractor
 ) : ViewModel() {
     var lastText: String = ""
     private var currentPage = 0
@@ -28,29 +30,44 @@ class SearchViewModel(
 
     private fun setOption(filterSearch: FilterSearch?) {
         maxPages = totalVacanciesCount / Constants.VACANCIES_PER_PAGE + 1
+
         if (totalVacanciesCount > Constants.VACANCIES_PER_PAGE && currentPage < maxPages) {
             options[Constants.PAGE] = currentPage.toString()
             options[Constants.PER_PAGE] = Constants.VACANCIES_PER_PAGE.toString()
         }
+
         if (filterSearch?.countryId != null) {
             options[Constants.AREA] = filterSearch.countryId
+        } else {
+            options.remove(Constants.AREA)
         }
+
         if (filterSearch?.regionId != null) {
             options[Constants.AREA] = filterSearch.regionId
+        } else if (filterSearch?.countryId == null) {
+            options.remove(Constants.AREA)
         }
+
         if (filterSearch?.industryId != null) {
             options[Constants.INDUSTRY] = filterSearch.industryId
+        } else {
+            options.remove(Constants.INDUSTRY)
         }
+
         if (filterSearch?.expectedSalary != null) {
             options[Constants.SALARY] = filterSearch.expectedSalary.toString()
+        } else {
+            options.remove(Constants.SALARY)
         }
+
         if (filterSearch?.isOnlyWithSalary != null && filterSearch.isOnlyWithSalary != false) {
             options[Constants.ONLY_WITH_SALARY] = filterSearch.isOnlyWithSalary.toString()
+        } else {
+            options.remove(Constants.ONLY_WITH_SALARY)
         }
     }
 
     private val stateLiveData = MutableLiveData<VacanciesState>()
-
     fun observeState(): LiveData<VacanciesState> = stateLiveData
 
     private val vacancySearchDebounce =
@@ -67,6 +84,7 @@ class SearchViewModel(
             renderState(VacanciesState.Empty(message = resourceInteractor.getErrorEmptyListVacancy()))
             return
         }
+        setOption(filterSearch)
         if (lastText != changedText) {
             currentPage = 0
             lastText = changedText
@@ -83,7 +101,6 @@ class SearchViewModel(
         }
         lastText = newSearchText
         viewModelScope.launch {
-            setOption(filterSearch)
             searchInteractor
                 .searchVacancies(newSearchText, options)
                 .collect { pair ->
@@ -154,26 +171,28 @@ class SearchViewModel(
     }
 
     fun downloadData(request: String) {
+        setOption(filterSearch)
         renderState(VacanciesState.Loading)
-        if (!flagDebounce) {
-            searchRequest(request)
-        }
-    }
-
-    fun saveText(inputTextFromSearch: String) {
-        resourceInteractor.addToShared(inputTextFromSearch)
-    }
-
-    fun getText(): String? {
-        return resourceInteractor.getShared()
-    }
-
-    fun clearText() {
-        resourceInteractor.clearShared()
+        if (!flagDebounce) searchRequest(request)
     }
 
     fun setFilterSearch(filterSearch: FilterSearch?) {
         this.filterSearch = filterSearch
+    }
+
+    fun createFilterFromShared(): FilterSearch {
+        val industryId = filterSettingsInteractor.getFilter()?.industryId
+        val onlyWithSalary = filterSettingsInteractor.getFilter()?.isOnlyWithSalary
+        val countryId = filterSettingsInteractor.getFilter()?.countryId
+        val regionId = filterSettingsInteractor.getFilter()?.regionId
+        val salary = filterSettingsInteractor.getFilter()?.expectedSalary
+        return FilterSearch(
+            industryId = industryId,
+            countryId = countryId,
+            regionId = regionId,
+            isOnlyWithSalary = onlyWithSalary,
+            expectedSalary = salary
+        )
     }
 
     companion object {

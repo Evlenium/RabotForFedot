@@ -12,6 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -133,14 +134,7 @@ class FilterSettingsFragment : Fragment() {
     }
 
     private fun setCheckBox(check: Boolean) {
-        val lastState = viewModel.getFilter()?.isOnlyWithSalary
-        if (lastState != null && check != lastState) {
-            renderChangedState(ChangeFilterState.ChangedFilter)
-        } else if (viewModel.stateLiveDataFiltration.value == FullFilterState.EmptyFilters ||
-            viewModel.stateLiveDataChanged.value == null
-        ) {
-            renderChangedState(ChangeFilterState.NoChangeFilters)
-        }
+        viewModel.setCheckBox(check)
         viewModel.checkBoxEmptyFilter(check)
         if (check) binding.filtrationPayCheckbox.isChecked = true
     }
@@ -160,10 +154,8 @@ class FilterSettingsFragment : Fragment() {
         }
         binding.applyFilterButton.setOnClickListener {
             viewModel.setCheckboxOnlyWithSalary(binding.filtrationPayCheckbox.isChecked)
-            findNavController().navigate(
-                R.id.action_filterSettingsFragment_to_searchFragment,
-                SearchFragment.createArgsFilter(viewModel.createFilterFromShared())
-            )
+            setFragmentResult("key", bundleOf(SearchFragment.FLAG to true))
+            findNavController().popBackStack(R.id.searchFragment, false)
         }
         binding.resetSalaryButton.setOnClickListener { binding.salaryEditText.setText("") }
         binding.resetFilterButton.setOnClickListener {
@@ -216,13 +208,16 @@ class FilterSettingsFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        val backPath = R.id.action_filterSettingsFragment_to_searchFragment
         binding.buttonBack.setOnClickListener {
-            findNavController().navigate(backPath)
+            viewModel.setCheckboxOnlyWithSalary(binding.filtrationPayCheckbox.isChecked)
+            setFragmentResult("key", bundleOf(SearchFragment.FLAG to false))
+            findNavController().popBackStack(R.id.searchFragment, false)
         }
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                findNavController().navigate(backPath)
+                viewModel.setCheckboxOnlyWithSalary(binding.filtrationPayCheckbox.isChecked)
+                setFragmentResult("key", bundleOf(SearchFragment.FLAG to false))
+                findNavController().popBackStack(R.id.searchFragment, false)
             }
         })
     }
@@ -230,14 +225,10 @@ class FilterSettingsFragment : Fragment() {
     companion object {
         private const val ARGS_FROM_WORKPLACE = "from_workplace"
         fun createArgsFromWorkplace(isFromWorkplace: Boolean): Bundle =
-            bundleOf(
-                ARGS_FROM_WORKPLACE to isFromWorkplace,
-            )
+            bundleOf(ARGS_FROM_WORKPLACE to isFromWorkplace)
 
         private const val ARGS_FROM_INDUSTRY = "from_industry"
         fun createArgsFromIndustry(isFromIndustry: Boolean): Bundle =
-            bundleOf(
-                ARGS_FROM_INDUSTRY to isFromIndustry,
-            )
+            bundleOf(ARGS_FROM_INDUSTRY to isFromIndustry)
     }
 }

@@ -15,7 +15,7 @@ class FilterSettingsRepositoryImpl(
 
     override fun getFilter(): Filter? {
         val filter = storage.getFilter()
-        return if (filter.isEmpty() || filter == "null") {
+        return if (filter.isEmpty()) {
             Filter(isOnlyWithSalary = false)
         } else {
             gson.fromJson(filter, Filter::class.java)
