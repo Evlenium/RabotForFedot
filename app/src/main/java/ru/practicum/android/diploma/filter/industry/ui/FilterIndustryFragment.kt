@@ -220,7 +220,7 @@ class FilterIndustryFragment : Fragment() {
             hideEmptyPlaceholder()
             industryAdapter?.setItems(listIndustries)
 
-            when(viewModel.observeStateIndustry().value) {
+            when (viewModel.observeStateIndustry().value) {
                 is IndustryState.ContentIndustry -> binding.selectButton.isVisible = true
                 is IndustryState.Empty -> binding.selectButton.isVisible = false
             }
