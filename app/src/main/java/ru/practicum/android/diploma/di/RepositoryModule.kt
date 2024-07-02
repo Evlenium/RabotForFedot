@@ -21,13 +21,7 @@ import ru.practicum.android.diploma.sharing.data.ResourceProvider
 
 val repositoryModule = module {
     single<ExternalNavigator> { ExternalNavigator(context = androidContext()) }
-    single<ResourceProvider> {
-        ResourceProvider(
-            context = androidContext(),
-            checkConnection = get(),
-            sharedPreferences = get()
-        )
-    }
+    single<ResourceProvider> { ResourceProvider(context = androidContext(), checkConnection = get()) }
     single<SearchRepository> { SearchRepositoryImpl(client = get(), resourceProvider = get(), convertor = get()) }
     single<VacancyDetailsRepository> { VacancyDetailsRepositoryImpl(client = get(), resourceProvider = get()) }
     single<FavoriteVacancyRepository> { FavoriteVacancyRepositoryImpl(appDatabase = get(), dbConverter = get()) }

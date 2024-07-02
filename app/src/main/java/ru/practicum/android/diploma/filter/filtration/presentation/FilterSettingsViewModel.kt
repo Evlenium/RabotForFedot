@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.filter.filtration.domain.api.FilterSettingsInteractor
 import ru.practicum.android.diploma.filter.workplace.domain.api.TemporarySharedInteractor
 import ru.practicum.android.diploma.search.domain.model.Filter
-import ru.practicum.android.diploma.search.domain.model.FilterSearch
 
 class FilterSettingsViewModel(
     private val filterSettingsInteractor: FilterSettingsInteractor,
@@ -70,21 +69,6 @@ class FilterSettingsViewModel(
         } else {
             stateLiveDataFiltration.postValue(FullFilterState.NonEmptyFilters)
         }
-    }
-
-    fun createFilterFromShared(): FilterSearch {
-        val industryId = filterSettingsInteractor.getFilter()?.industryId
-        val onlyWithSalary = filterSettingsInteractor.getFilter()?.isOnlyWithSalary
-        val countryId = filterSettingsInteractor.getFilter()?.countryId
-        val regionId = filterSettingsInteractor.getFilter()?.regionId
-        val salary = filterSettingsInteractor.getFilter()?.expectedSalary
-        return FilterSearch(
-            industryId = industryId,
-            countryId = countryId,
-            regionId = regionId,
-            isOnlyWithSalary = onlyWithSalary,
-            expectedSalary = salary
-        )
     }
 
     private fun checkOnNull(

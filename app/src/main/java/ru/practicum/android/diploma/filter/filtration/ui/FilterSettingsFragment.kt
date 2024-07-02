@@ -12,6 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -153,10 +154,8 @@ class FilterSettingsFragment : Fragment() {
         }
         binding.applyFilterButton.setOnClickListener {
             viewModel.setCheckboxOnlyWithSalary(binding.filtrationPayCheckbox.isChecked)
-            findNavController().navigate(
-                R.id.action_filterSettingsFragment_to_searchFragment,
-                SearchFragment.createArgsFilter(viewModel.createFilterFromShared(), true)
-            )
+            setFragmentResult("key", bundleOf(SearchFragment.FLAG to true))
+            findNavController().popBackStack(R.id.searchFragment, false)
         }
         binding.resetSalaryButton.setOnClickListener { binding.salaryEditText.setText("") }
         binding.resetFilterButton.setOnClickListener {
@@ -211,18 +210,14 @@ class FilterSettingsFragment : Fragment() {
     private fun setupToolbar() {
         binding.buttonBack.setOnClickListener {
             viewModel.setCheckboxOnlyWithSalary(binding.filtrationPayCheckbox.isChecked)
-            findNavController().navigate(
-                R.id.action_filterSettingsFragment_to_searchFragment,
-                SearchFragment.createArgsFilter(viewModel.createFilterFromShared())
-            )
+            setFragmentResult("key", bundleOf(SearchFragment.FLAG to false))
+            findNavController().popBackStack(R.id.searchFragment, false)
         }
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 viewModel.setCheckboxOnlyWithSalary(binding.filtrationPayCheckbox.isChecked)
-                findNavController().navigate(
-                    R.id.action_filterSettingsFragment_to_searchFragment,
-                    SearchFragment.createArgsFilter(viewModel.createFilterFromShared())
-                )
+                setFragmentResult("key", bundleOf(SearchFragment.FLAG to false))
+                findNavController().popBackStack(R.id.searchFragment, false)
             }
         })
     }

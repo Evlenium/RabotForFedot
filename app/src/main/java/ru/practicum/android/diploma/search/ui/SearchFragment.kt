@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.search.ui
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +15,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,18 +41,6 @@ class SearchFragment : Fragment() {
     private var filterSearch: FilterSearch? = null
     private var doWeHaveToSearch = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            doWeHaveToSearch = arguments?.getBoolean(FLAG) ?: false
-            filterSearch = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                arguments?.getParcelable(FILTER, FilterSearch::class.java)
-            } else { arguments?.getParcelable(FILTER) }
-        } else {
-            filterSearch = viewModel.createFilterFromShared()
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         binding.searchRecyclerView.layoutManager =
@@ -63,17 +51,32 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (filterSearch != null) {
-            viewModel.setFilterSearch(filterSearch)
-            val isWorkplaceFilter = filterSearch?.countryId != null || filterSearch?.regionId != null
-            val isIndustryFilter = filterSearch?.industryId != null
-            val isSalaryFilter = filterSearch?.expectedSalary != null || filterSearch?.isOnlyWithSalary != false
+        setFragmentResultListener("key") { _, bundle ->
+            doWeHaveToSearch = bundle.getBoolean(FLAG)
 
-            if (isWorkplaceFilter || isIndustryFilter || isSalaryFilter) {
-                binding.filterButton.setImageResource(R.drawable.icon_filter_on)
-            } else {
-                binding.filterButton.setImageResource(R.drawable.icon_filter_off)
+            if (doWeHaveToSearch) {
+                val text = binding.textInputEditText.text.toString()
+                val isNotEmpty = text.isNotBlank()
+                if (isNotEmpty) {
+                    binding.placeholderViewGroup.isVisible = false
+                    binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
+                    binding.textInputEndIcon.isVisible = true
+                    viewModel.downloadData(text)
+                }
             }
+        }
+
+        filterSearch = viewModel.createFilterFromShared()
+
+        viewModel.setFilterSearch(filterSearch)
+        val isWorkplaceFilter = filterSearch?.countryId != null || filterSearch?.regionId != null
+        val isIndustryFilter = filterSearch?.industryId != null
+        val isSalaryFilter = filterSearch?.expectedSalary != null || filterSearch?.isOnlyWithSalary != false
+
+        if (isWorkplaceFilter || isIndustryFilter || isSalaryFilter) {
+            binding.filterButton.setImageResource(R.drawable.icon_filter_on)
+        } else {
+            binding.filterButton.setImageResource(R.drawable.icon_filter_off)
         }
 
         scrollListener()
@@ -85,7 +88,6 @@ class SearchFragment : Fragment() {
 
         with(binding) {
             textInputEndIcon.setOnClickListener {
-                viewModel.clearText()
                 textInputEditText.setText("")
                 textInputEndIcon.setImageResource(R.drawable.icon_search)
                 viewModel.lastText = ""
@@ -109,17 +111,6 @@ class SearchFragment : Fragment() {
                 requireActivity().finish()
             }
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val editText = viewModel.getText()
-        if (!editText.isNullOrEmpty()) {
-            binding.textInputEditText.setText(editText)
-            binding.placeholderViewGroup.isVisible = false
-            binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
-            binding.textInputEndIcon.isVisible = true
-        }
     }
 
     private fun scrollListener() {
@@ -153,7 +144,8 @@ class SearchFragment : Fragment() {
                         binding.vacancyMessageTextView.isVisible = false
                         binding.placeholderViewGroup.isVisible = false
                         searchAdapterReset()
-                        if (doWeHaveToSearch) viewModel.searchDebounce(inputTextFromSearch!!)
+
+                        viewModel.searchDebounce(inputTextFromSearch!!)
                     } else if (stringIsNotEmpty && viewModel.lastText.isEmpty()) {
                         binding.textInputEndIcon.setImageResource(R.drawable.icon_search)
                         showPlaceholderSearch()
@@ -161,10 +153,7 @@ class SearchFragment : Fragment() {
                     }
                 }
             },
-            afterTextChanged = { s ->
-                inputTextFromSearch = s.toString()
-                viewModel.saveText(inputTextFromSearch!!)
-            }
+            afterTextChanged = { s -> inputTextFromSearch = s.toString() }
         )
 
         binding.textInputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -325,12 +314,7 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        private const val FILTER = "filter"
-        private const val FLAG = "flag"
-
-        fun createArgsFilter(filter: FilterSearch, flag: Boolean = false) =
-            bundleOf(FILTER to filter, FLAG to flag)
-
+        const val FLAG = "flag"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
