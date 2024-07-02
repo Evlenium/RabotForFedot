@@ -11,7 +11,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -23,7 +22,6 @@ import ru.practicum.android.diploma.details.presentation.model.StateLoadVacancy
 import ru.practicum.android.diploma.search.domain.model.Contacts
 import ru.practicum.android.diploma.search.domain.model.Phone
 import ru.practicum.android.diploma.search.domain.model.Vacancy
-import ru.practicum.android.diploma.search.ui.SearchFragment
 import ru.practicum.android.diploma.util.Creator
 
 class VacancyDetailsFragment : Fragment() {
