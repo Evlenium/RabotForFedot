@@ -101,7 +101,7 @@ class RegionViewModel(
         val regions = ArrayList<Area>()
         countryList.forEach { country ->
             country.areas?.forEach { area ->
-                if (area!!.parentId != "1001") {
+                if (area!!.parentId != OTHER_AREA_ID) {
                     regions.add(area)
                 }
             }
@@ -134,5 +134,9 @@ class RegionViewModel(
         if (parentId != null) {
             this.parentId = parentId
         }
+    }
+
+    companion object {
+        private const val OTHER_AREA_ID = "1001"
     }
 }
