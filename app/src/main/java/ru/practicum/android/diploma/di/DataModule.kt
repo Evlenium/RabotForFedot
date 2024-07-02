@@ -20,7 +20,16 @@ import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.search.data.network.SearchAPI
 import ru.practicum.android.diploma.util.CheckConnection
-import ru.practicum.android.diploma.util.Constants
+
+class DataConstants {
+    companion object {
+        const val APPLICATION_NAME = "RabotforFedot"
+        const val BASE_URL = "https://api.hh.ru"
+        const val HH_USER_AGENT = "HH-User-Agent"
+        const val AUTO_BEARER = "AuthorizationBearer"
+        const val PREFERENCES = "filtration_preferences"
+    }
+}
 
 val dataModule = module {
 
@@ -28,7 +37,7 @@ val dataModule = module {
 
     single<SearchAPI> {
         Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl(DataConstants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(
                 OkHttpClient.Builder()
@@ -37,8 +46,8 @@ val dataModule = module {
                             proceed(
                                 request()
                                     .newBuilder()
-                                    .addHeader(Constants.AUTO_BEARER, SearchAPI.TOKEN)
-                                    .addHeader(Constants.HH_USER_AGENT, Constants.APPLICATION_NAME)
+                                    .addHeader(DataConstants.AUTO_BEARER, SearchAPI.TOKEN)
+                                    .addHeader(DataConstants.HH_USER_AGENT, DataConstants.APPLICATION_NAME)
                                     .build()
                             )
                         }
@@ -63,7 +72,7 @@ val dataModule = module {
     single<ModelsConvertor> { ModelsConvertor() }
     single<DbConverter> { DbConverter() }
 
-    single { androidContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE) }
+    single { androidContext().getSharedPreferences(DataConstants.PREFERENCES, Context.MODE_PRIVATE) }
     single<FilterSettingsStorage> { FilterSettingsStorageImpl(prefs = get()) }
     single<TemporaryShared> { TemporarySharedImpl(sharedPreferences = get()) }
     factory { Gson() }

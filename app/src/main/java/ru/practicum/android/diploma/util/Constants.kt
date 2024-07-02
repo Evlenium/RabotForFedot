@@ -1,12 +1,6 @@
 package ru.practicum.android.diploma.util
 
 object Constants {
-
-    const val APPLICATION_NAME = "RabotforFedot"
-    const val BASE_URL = "https://api.hh.ru"
-    const val HH_USER_AGENT = "HH-User-Agent"
-    const val AUTO_BEARER = "AuthorizationBearer"
-
     const val CONNECTION_ERROR = -1
     const val SUCCESS = 200
     const val NOT_FOUND = 400
@@ -18,6 +12,5 @@ object Constants {
     const val INDUSTRY = "industry"
     const val SALARY = "salary"
     const val ONLY_WITH_SALARY = "only_with_salary"
-    const val PREFERENCES = "filtration_preferences"
     const val VACANCIES_PER_PAGE = 20
 }
