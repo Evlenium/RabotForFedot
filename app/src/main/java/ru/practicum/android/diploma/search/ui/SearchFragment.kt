@@ -51,13 +51,15 @@ class SearchFragment : Fragment() {
         setFragmentResultListener("key") { _, bundle ->
             doWeHaveToSearch = bundle.getBoolean(FLAG)
 
-            if (doWeHaveToSearch) {
-                val text = binding.textInputEditText.text.toString()
-                val isNotEmpty = text.isNotBlank()
-                if (isNotEmpty) {
+            val text = binding.textInputEditText.text.toString()
+            val isNotEmpty = text.isNotBlank()
+
+            if (isNotEmpty) {
+                binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
+                binding.textInputEndIcon.isVisible = true
+
+                if (doWeHaveToSearch) {
                     binding.placeholderViewGroup.isVisible = false
-                    binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
-                    binding.textInputEndIcon.isVisible = true
                     viewModel.downloadData(text)
                 }
             }
