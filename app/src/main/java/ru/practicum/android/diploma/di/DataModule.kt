@@ -21,16 +21,6 @@ import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.search.data.network.SearchAPI
 import ru.practicum.android.diploma.util.CheckConnection
 
-class DataConstants {
-    companion object {
-        const val APPLICATION_NAME = "RabotforFedot"
-        const val BASE_URL = "https://api.hh.ru"
-        const val HH_USER_AGENT = "HH-User-Agent"
-        const val AUTO_BEARER = "AuthorizationBearer"
-        const val PREFERENCES = "filtration_preferences"
-    }
-}
-
 val dataModule = module {
 
     factory { CheckConnection(get()) }
@@ -76,4 +66,12 @@ val dataModule = module {
     single<FilterSettingsStorage> { FilterSettingsStorageImpl(prefs = get()) }
     single<TemporaryShared> { TemporarySharedImpl(sharedPreferences = get()) }
     factory { Gson() }
+}
+
+object DataConstants {
+    const val APPLICATION_NAME = "RabotforFedot"
+    const val BASE_URL = "https://api.hh.ru"
+    const val HH_USER_AGENT = "HH-User-Agent"
+    const val AUTO_BEARER = "AuthorizationBearer"
+    const val PREFERENCES = "filtration_preferences"
 }
