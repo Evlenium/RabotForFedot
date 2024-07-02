@@ -6,12 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -50,7 +48,6 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setFragmentResultListener("key") { _, bundle ->
             doWeHaveToSearch = bundle.getBoolean(FLAG)
 
@@ -67,7 +64,6 @@ class SearchFragment : Fragment() {
         }
 
         filterSearch = viewModel.createFilterFromShared()
-
         viewModel.setFilterSearch(filterSearch)
         val isWorkplaceFilter = filterSearch?.countryId != null || filterSearch?.regionId != null
         val isIndustryFilter = filterSearch?.industryId != null
@@ -78,14 +74,11 @@ class SearchFragment : Fragment() {
         } else {
             binding.filterButton.setImageResource(R.drawable.icon_filter_off)
         }
-
         scrollListener()
         searchAdapterReset()
         setupToolbar()
-
         binding.placeholderViewGroup.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         binding.placeholderViewGroup.animate()
-
         with(binding) {
             textInputEndIcon.setOnClickListener {
                 textInputEditText.setText("")
