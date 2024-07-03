@@ -5,11 +5,13 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -202,8 +204,14 @@ class VacancyDetailsFragment : Fragment() {
         }
 
         binding.detailsVacancyToolbar.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
+            findNavController().navigateUp()
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigateUp()
+            }
+        })
     }
 
     override fun onDestroyView() {

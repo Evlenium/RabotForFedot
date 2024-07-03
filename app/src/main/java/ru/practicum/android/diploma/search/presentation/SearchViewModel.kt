@@ -29,12 +29,7 @@ class SearchViewModel(
     private var filterSearch: FilterSearch? = null
 
     private fun setOption(filterSearch: FilterSearch?) {
-        maxPages = totalVacanciesCount / Constants.VACANCIES_PER_PAGE + 1
-
-        if (totalVacanciesCount > Constants.VACANCIES_PER_PAGE && currentPage < maxPages) {
-            options[Constants.PAGE] = currentPage.toString()
-            options[Constants.PER_PAGE] = Constants.VACANCIES_PER_PAGE.toString()
-        }
+        updatePage()
 
         if (filterSearch?.countryId != null) {
             options[Constants.AREA] = filterSearch.countryId
@@ -67,7 +62,7 @@ class SearchViewModel(
         }
     }
 
-    private val stateLiveData = MutableLiveData<VacanciesState>()
+    val stateLiveData = MutableLiveData<VacanciesState>()
     fun observeState(): LiveData<VacanciesState> = stateLiveData
 
     private val vacancySearchDebounce =
@@ -78,18 +73,35 @@ class SearchViewModel(
                 searchRequest(changedText)
             }
         }
+    private val vacancySearch =
+        debounce<String>(SEARCH_TIMER, viewModelScope, true) { changedText ->
+            run {
+                SearchViewModel
+                renderState(VacanciesState.Loading)
+                searchRequest(changedText)
+            }
+        }
 
-    fun searchDebounce(changedText: String) {
+    fun searchDebounce(changedText: String, forceSearch: Boolean = false) {
         if (changedText.trim().isEmpty()) {
             renderState(VacanciesState.Empty(message = resourceInteractor.getErrorEmptyListVacancy()))
             return
         }
         setOption(filterSearch)
-        if (lastText != changedText) {
+
+        if (!forceSearch) {
+            if (lastText != changedText) {
+                currentPage = 0
+                lastText = changedText
+                flagDebounce = true
+                vacancySearchDebounce(changedText)
+                flagDebounce = false
+            }
+        } else {
             currentPage = 0
             lastText = changedText
             flagDebounce = true
-            vacancySearchDebounce(changedText)
+            vacancySearch(changedText)
             flagDebounce = false
         }
     }
@@ -100,6 +112,7 @@ class SearchViewModel(
             return
         }
         lastText = newSearchText
+        updatePage()
         viewModelScope.launch {
             searchInteractor
                 .searchVacancies(newSearchText, options)
@@ -142,6 +155,10 @@ class SearchViewModel(
         )
     }
 
+    fun setDefaultState() {
+        stateLiveData.value = VacanciesState.Default
+    }
+
     private fun setContent(vacancies: ArrayList<SimpleVacancy>, numberOfVacancies: Int) {
         flagSuccessfulDownload = true
         renderState(
@@ -170,12 +187,6 @@ class SearchViewModel(
         }
     }
 
-    fun downloadData(request: String) {
-        setOption(filterSearch)
-        renderState(VacanciesState.Loading)
-        if (!flagDebounce) searchRequest(request)
-    }
-
     fun setFilterSearch(filterSearch: FilterSearch?) {
         this.filterSearch = filterSearch
     }
@@ -195,7 +206,16 @@ class SearchViewModel(
         )
     }
 
+    private fun updatePage() {
+        maxPages = totalVacanciesCount / Constants.VACANCIES_PER_PAGE + 1
+        if (totalVacanciesCount > Constants.VACANCIES_PER_PAGE && currentPage < maxPages) {
+            options[Constants.PAGE] = currentPage.toString()
+            options[Constants.PER_PAGE] = Constants.VACANCIES_PER_PAGE.toString()
+        }
+    }
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val SEARCH_TIMER = 0L
     }
 }

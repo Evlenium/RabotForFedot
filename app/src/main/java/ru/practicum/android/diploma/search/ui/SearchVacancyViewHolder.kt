@@ -20,7 +20,12 @@ class SearchVacancyViewHolder(
     }
 
     fun bind(model: SimpleVacancy) {
-        binding.vacancyTitle.text = model.name
+        val stringMain: String = if (model.address == null) {
+            model.name
+        } else {
+            "${model.name}, ${model.address}"
+        }
+        binding.vacancyTitle.text = stringMain
         binding.employer.text = model.employer!!.name
         binding.salary.text = Creator.getSalary(context = itemView.context, salary = model.salary)
 
