@@ -62,11 +62,19 @@ class SearchViewModel(
         }
     }
 
-    private val stateLiveData = MutableLiveData<VacanciesState>()
+    val stateLiveData = MutableLiveData<VacanciesState>()
     fun observeState(): LiveData<VacanciesState> = stateLiveData
 
     private val vacancySearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
+            run {
+                SearchViewModel
+                renderState(VacanciesState.Loading)
+                searchRequest(changedText)
+            }
+        }
+    private val vacancySearch =
+        debounce<String>(SEARCH_TIMER, viewModelScope, true) { changedText ->
             run {
                 SearchViewModel
                 renderState(VacanciesState.Loading)
@@ -93,7 +101,7 @@ class SearchViewModel(
             currentPage = 0
             lastText = changedText
             flagDebounce = true
-            vacancySearchDebounce(changedText)
+            vacancySearch(changedText)
             flagDebounce = false
         }
     }
@@ -147,6 +155,10 @@ class SearchViewModel(
         )
     }
 
+    fun setDefaultState() {
+        stateLiveData.value = VacanciesState.Default
+    }
+
     private fun setContent(vacancies: ArrayList<SimpleVacancy>, numberOfVacancies: Int) {
         flagSuccessfulDownload = true
         renderState(
@@ -173,12 +185,6 @@ class SearchViewModel(
         } else {
             renderState(VacanciesState.ErrorToast(errorMessage = resourceInteractor.getErrorInternetConnection()))
         }
-    }
-
-    fun downloadData(request: String) {
-        setOption(filterSearch)
-        renderState(VacanciesState.Loading)
-        if (!flagDebounce) searchRequest(request)
     }
 
     fun setFilterSearch(filterSearch: FilterSearch?) {
@@ -210,5 +216,6 @@ class SearchViewModel(
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val SEARCH_TIMER = 0L
     }
 }

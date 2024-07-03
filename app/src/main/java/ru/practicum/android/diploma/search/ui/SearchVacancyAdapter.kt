@@ -24,7 +24,7 @@ class SearchVacancyAdapter(
 
     private fun filterVacanciesByUniqueNames(vacancies: List<SimpleVacancy>): List<SimpleVacancy> {
         val uniqueNamesMap = mutableMapOf<String, SimpleVacancy>()
-        for (vacancy in vacancies) uniqueNamesMap[vacancy.name] = vacancy
+        for (vacancy in vacancies) uniqueNamesMap[vacancy.id] = vacancy
         return uniqueNamesMap.values.toList()
     }
 

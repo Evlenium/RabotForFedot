@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.search.presentation
 import ru.practicum.android.diploma.search.domain.model.SimpleVacancy
 
 sealed interface VacanciesState {
+    object Default : VacanciesState
     object Loading : VacanciesState
 
     object BottomLoading : VacanciesState
