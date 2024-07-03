@@ -27,7 +27,9 @@ class SearchRepositoryImpl(
             Constants.SUCCESS -> emit(
                 Resource.Success(
                     ServerVacanciesResponse(
-                        (response as SearchResponse).vacancies.map { vacancyDTO -> convertor.map(vacancyDTO) },
+                        (response as SearchResponse).vacancies.map { vacancyDTO ->
+                            convertor.map(vacancyDTO)
+                        },
                         response.numberOfVacancies
                     )
                 )
