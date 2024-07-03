@@ -36,7 +36,7 @@ val dataModule = module {
                             proceed(
                                 request()
                                     .newBuilder()
-                                    .addHeader(DataConstants.AUTO_BEARER, SearchAPI.TOKEN)
+                                    .addHeader(DataConstants.AUTHORIZATION, SearchAPI.TOKEN)
                                     .addHeader(DataConstants.HH_USER_AGENT, DataConstants.APPLICATION_NAME)
                                     .build()
                             )
@@ -72,6 +72,6 @@ object DataConstants {
     const val APPLICATION_NAME = "RabotforFedot"
     const val BASE_URL = "https://api.hh.ru"
     const val HH_USER_AGENT = "HH-User-Agent"
-    const val AUTO_BEARER = "AuthorizationBearer"
+    const val AUTHORIZATION = "Authorization"
     const val PREFERENCES = "filtration_preferences"
 }

@@ -50,25 +50,23 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setFragmentResultListener("key") { _, bundle ->
             doWeHaveToSearch = bundle.getBoolean(FLAG)
-
-            if (doWeHaveToSearch) {
-                val text = binding.textInputEditText.text.toString()
-                val isNotEmpty = text.isNotBlank()
-                if (isNotEmpty) {
+            val text = binding.textInputEditText.text.toString()
+            val isNotEmpty = text.isNotBlank()
+            if (isNotEmpty) {
+                binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
+                binding.textInputEndIcon.isVisible = true
+                if (doWeHaveToSearch) {
+                    viewModel.setDefaultState()
                     binding.placeholderViewGroup.isVisible = false
-                    binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
-                    binding.textInputEndIcon.isVisible = true
-                    viewModel.downloadData(text)
+                    viewModel.searchDebounce(text, true)
                 }
             }
         }
-
         filterSearch = viewModel.createFilterFromShared()
         viewModel.setFilterSearch(filterSearch)
         val isWorkplaceFilter = filterSearch?.countryId != null || filterSearch?.regionId != null
         val isIndustryFilter = filterSearch?.industryId != null
         val isSalaryFilter = filterSearch?.expectedSalary != null || filterSearch?.isOnlyWithSalary != false
-
         if (isWorkplaceFilter || isIndustryFilter || isSalaryFilter) {
             binding.filterButton.setImageResource(R.drawable.icon_filter_on)
         } else {
@@ -129,18 +127,20 @@ class SearchFragment : Fragment() {
         binding.textInputEditText.addTextChangedListener(
             beforeTextChanged = { s, start, count, after -> },
             onTextChanged = { s, start, before, count ->
+                if (s.isNullOrEmpty()) {
+                    binding.textInputEndIcon.setImageResource(R.drawable.icon_search)
+                } else {
+                    binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
+                }
                 if (s != null) {
                     val stringIsNotEmpty = s.trim().isNotEmpty()
                     if (stringIsNotEmpty && viewModel.lastText != s.toString()) {
-                        binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
                         inputTextFromSearch = s.toString()
                         binding.vacancyMessageTextView.isVisible = false
                         binding.placeholderViewGroup.isVisible = false
                         searchAdapterReset()
-
                         viewModel.searchDebounce(inputTextFromSearch!!)
                     } else if (stringIsNotEmpty && viewModel.lastText.isEmpty()) {
-                        binding.textInputEndIcon.setImageResource(R.drawable.icon_search)
                         showPlaceholderSearch()
                         binding.vacancyMessageTextView.visibility = View.GONE
                     }
@@ -194,6 +194,18 @@ class SearchFragment : Fragment() {
             is VacanciesState.Error -> showErrorConnection(state.errorMessage)
             is VacanciesState.Loading -> showLoading()
             is VacanciesState.BottomLoading -> showBottomLoading()
+            is VacanciesState.Default -> hideAll()
+        }
+    }
+
+    private fun hideAll() {
+        with(binding) {
+            centerProgressBar.isVisible = false
+            vacancyMessageTextView.isVisible = false
+            bottomProgressBar.isVisible = false
+            placeholderViewGroup.isVisible = false
+            placeholderTextView.isVisible = false
+            searchRecyclerView.isVisible = false
         }
     }
 
