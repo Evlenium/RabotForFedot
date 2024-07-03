@@ -157,7 +157,14 @@ class FilterSettingsFragment : Fragment() {
             setFragmentResult("key", bundleOf(SearchFragment.FLAG to true))
             findNavController().popBackStack(R.id.searchFragment, false)
         }
-        binding.resetSalaryButton.setOnClickListener { binding.salaryEditText.setText("") }
+
+        binding.resetSalaryButton.setOnClickListener {
+            binding.salaryEditText.setText("")
+            inputTextFromApply = null
+            viewModel.setSalaryIsEmpty()
+            viewModel.setChangedState()
+        }
+
         binding.resetFilterButton.setOnClickListener {
             viewModel.resetConfigure()
             binding.filtrationPayCheckbox.isChecked = false
