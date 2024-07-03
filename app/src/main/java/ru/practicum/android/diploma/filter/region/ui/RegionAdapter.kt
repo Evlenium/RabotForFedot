@@ -1,26 +1,26 @@
 package ru.practicum.android.diploma.filter.region.ui
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemCountryBinding
 import ru.practicum.android.diploma.search.domain.model.Area
 
 class RegionAdapter(
     private val itemClickListener: ItemClickListener
-) : ListAdapter<Area, RecyclerView.ViewHolder>(CountryDiffCallBack()) {
+) : RecyclerView.Adapter<RegionViewHolder>() {
 
-    private var areas: MutableList<Area> = mutableListOf()
+    private val areas: MutableList<Area> = mutableListOf()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setItems(items: List<Area>) {
         areas.clear()
-        areas = items.toMutableList()
+        areas.addAll(items.toMutableList())
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RegionViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
         return RegionViewHolder(ItemCountryBinding.inflate(layoutInspector, parent, false)) { position: Int ->
             if (position != RecyclerView.NO_POSITION) {
@@ -31,25 +31,13 @@ class RegionAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        areas.getOrNull(position)?.let { area ->
-            (holder as RegionViewHolder).bind(area)
-        }
+    override fun onBindViewHolder(holder: RegionViewHolder, position: Int) {
+        areas.getOrNull(position)?.let { holder.bind(it) }
     }
 
     override fun getItemCount() = areas.size
 
     fun interface ItemClickListener {
         fun onItemClick(country: Area)
-    }
-
-    class CountryDiffCallBack : DiffUtil.ItemCallback<Area>() {
-        override fun areItemsTheSame(oldItem: Area, newItem: Area): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: Area, newItem: Area): Boolean {
-            return oldItem == newItem
-        }
     }
 }

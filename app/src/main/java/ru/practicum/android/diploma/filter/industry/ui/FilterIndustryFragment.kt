@@ -21,7 +21,6 @@ import ru.practicum.android.diploma.filter.industry.presentation.FilterIndustryV
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustriesState
 import ru.practicum.android.diploma.filter.industry.presentation.model.IndustryState
 import ru.practicum.android.diploma.search.domain.model.Industry
-import ru.practicum.android.diploma.util.Creator.hideKeyboard
 import java.util.Locale
 
 class FilterIndustryFragment : Fragment() {
@@ -61,10 +60,10 @@ class FilterIndustryFragment : Fragment() {
             viewModel.observeStateIndustry().observe(viewLifecycleOwner) {
                 saveIndustry(it)
             }
-            val requireArgs = industryId != viewModel.getIndustryId()
+            val isIndustrySelected = viewModel.observeStateIndustry().value is IndustryState.ContentIndustry
             findNavController().navigate(
                 backPath,
-                FilterSettingsFragment.createArgsFromIndustry(requireArgs)
+                FilterSettingsFragment.createArgsFromIndustry(isIndustrySelected)
             )
         }
         binding.buttonBack.setOnClickListener { findNavController().navigate(backPath) }
@@ -73,7 +72,10 @@ class FilterIndustryFragment : Fragment() {
                 findNavController().navigate(backPath)
             }
         })
-        industryAdapter = FilterIndustryAdapter { viewModel.saveIndustryFromAdapter(it) }
+        industryAdapter = FilterIndustryAdapter { industry ->
+            industryId = industry.id
+            viewModel.saveIndustryFromAdapter(industry)
+        }
         binding.recyclerView.adapter = industryAdapter
         inputEditTextInit()
         viewModel.searchRequest()
@@ -83,7 +85,10 @@ class FilterIndustryFragment : Fragment() {
 
     private fun saveIndustry(state: IndustryState) {
         when (state) {
-            is IndustryState.ContentIndustry -> viewModel.saveIndustry(state.industry)
+            is IndustryState.ContentIndustry -> {
+                industryId = state.industry.id
+                viewModel.saveIndustry(state.industry)
+            }
         }
     }
 
@@ -127,7 +132,7 @@ class FilterIndustryFragment : Fragment() {
     }
 
     private fun showEmptyPlaceholder() {
-        hideKeyboard(requireActivity())
+        binding.recyclerView.isVisible = false
         binding.placeholderContainer.isVisible = true
         binding.placeholderImage.isVisible = true
         binding.placeholderMessage.isVisible = true
@@ -136,6 +141,7 @@ class FilterIndustryFragment : Fragment() {
     }
 
     private fun hideEmptyPlaceholder() {
+        binding.recyclerView.isVisible = true
         binding.placeholderContainer.isVisible = false
         binding.placeholderImage.isVisible = false
         binding.placeholderMessage.isVisible = false
@@ -148,16 +154,17 @@ class FilterIndustryFragment : Fragment() {
             recyclerView.isVisible = true
         }
 
-        if (!industryId.isNullOrEmpty()) {
-            industries.forEachIndexed { index, industry ->
-                if (industry.id == industryId) {
-                    binding.selectButton.isVisible = true
-                    industryAdapter?.setPosition(index)
-                }
-            }
-        }
         listIndustries = industries
         industryAdapter?.setItems(listIndustries)
+
+        if (!industryId.isNullOrEmpty()) {
+            val position = listIndustries.indexOfFirst { it.id == industryId }
+            if (position != -1) {
+                binding.selectButton.isVisible = true
+                industryAdapter?.setPosition(position)
+                industryAdapter?.notifyItemChanged(position)
+            }
+        }
     }
 
     private fun inputEditTextInit() {
@@ -190,30 +197,43 @@ class FilterIndustryFragment : Fragment() {
         if (!viewModel.getInternetConnection()) {
             showErrorListDownload()
         } else if (!inputTextFromSearch.isNullOrEmpty()) {
-            inputTextFromSearch.replaceFirstChar {
-                if (it.isLowerCase()) {
-                    it.titlecase(Locale.getDefault())
-                } else {
-                    it.toString()
-                }
-            }
+            val searchText = inputTextFromSearch.lowercase(Locale.getDefault())
             val filteredList = listIndustries.filter { industry ->
-                industry.name.lowercase().contains(inputTextFromSearch)
+                industry.name.lowercase(Locale.getDefault()).contains(searchText)
             }
             if (filteredList.isEmpty()) {
                 showEmptyPlaceholder()
             } else {
                 hideEmptyPlaceholder()
+                industryAdapter?.setItems(filteredList)
+                val selectedIndustry = filteredList.find { it.id == industryId }
+                if (selectedIndustry != null) {
+                    val position = filteredList.indexOf(selectedIndustry)
+                    industryAdapter?.setPosition(position)
+                    industryAdapter?.notifyItemChanged(position)
+                    binding.selectButton.isVisible = true
+                } else {
+                    binding.selectButton.isVisible = false
+                }
             }
-            industryAdapter?.setItems(filteredList)
         } else {
             hideEmptyPlaceholder()
+            industryAdapter?.setItems(listIndustries)
+
+            when (viewModel.observeStateIndustry().value) {
+                is IndustryState.ContentIndustry -> binding.selectButton.isVisible = true
+                is IndustryState.Empty -> binding.selectButton.isVisible = false
+            }
+
+            if (!industryId.isNullOrEmpty()) {
+                val position = listIndustries.indexOfFirst { it.id == industryId }
+                if (position != -1) binding.selectButton.isVisible = true
+            }
         }
     }
 
     private fun showErrorListDownload() {
         with(binding) {
-            hideKeyboard(requireActivity())
             progressBar.isVisible = false
             recyclerView.isVisible = false
             placeholderContainer.isVisible = true

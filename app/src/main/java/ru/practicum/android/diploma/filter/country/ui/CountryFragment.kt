@@ -99,6 +99,7 @@ class CountryFragment : Fragment() {
         countryAdapter = CountryAdapter { country ->
             if (country.name != null) {
                 viewModel.setCountryFilter(country)
+                viewModel.validateRegion(country)
                 findNavController().navigate(
                     R.id.action_filterCountryFragment_to_filterWorkplaceFragment,
                 )

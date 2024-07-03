@@ -1,20 +1,19 @@
 package ru.practicum.android.diploma.search.ui
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +29,6 @@ import ru.practicum.android.diploma.search.domain.model.SimpleVacancy
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.search.presentation.VacanciesState
 import ru.practicum.android.diploma.util.Constants
-import ru.practicum.android.diploma.util.Creator.hideKeyboard
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
@@ -38,14 +36,8 @@ class SearchFragment : Fragment() {
     private var inputTextFromSearch: String? = null
     private var searchAdapter: SearchVacancyAdapter? = null
     private val viewModel by viewModel<SearchViewModel>()
-
-    private val filterSearch by lazy(LazyThreadSafetyMode.NONE) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(ARGS_FILTER, FilterSearch::class.java)
-        } else {
-            arguments?.getParcelable(ARGS_FILTER)
-        }
-    }
+    private var filterSearch: FilterSearch? = null
+    private var doWeHaveToSearch = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
@@ -56,30 +48,39 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setFragmentResultListener("key") { _, bundle ->
+            doWeHaveToSearch = bundle.getBoolean(FLAG)
 
-        if (arguments != null) {
-            viewModel.setFilterSearch(filterSearch)
-            val isWorkplaceFilter = filterSearch?.countryId != null || filterSearch?.regionId != null
-            val isIndustryFilter = filterSearch?.industryId != null
-            val isSalaryFilter = filterSearch?.expectedSalary != null || filterSearch?.isOnlyWithSalary != false
-
-            if (isWorkplaceFilter || isIndustryFilter || isSalaryFilter) {
-                binding.filterButton.setImageResource(R.drawable.icon_filter_on)
-            } else {
-                binding.filterButton.setImageResource(R.drawable.icon_filter_off)
+            if (doWeHaveToSearch) {
+                val text = binding.textInputEditText.text.toString()
+                val isNotEmpty = text.isNotBlank()
+                if (isNotEmpty) {
+                    binding.placeholderViewGroup.isVisible = false
+                    binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
+                    binding.textInputEndIcon.isVisible = true
+                    viewModel.downloadData(text)
+                }
             }
         }
 
+        filterSearch = viewModel.createFilterFromShared()
+        viewModel.setFilterSearch(filterSearch)
+        val isWorkplaceFilter = filterSearch?.countryId != null || filterSearch?.regionId != null
+        val isIndustryFilter = filterSearch?.industryId != null
+        val isSalaryFilter = filterSearch?.expectedSalary != null || filterSearch?.isOnlyWithSalary != false
+
+        if (isWorkplaceFilter || isIndustryFilter || isSalaryFilter) {
+            binding.filterButton.setImageResource(R.drawable.icon_filter_on)
+        } else {
+            binding.filterButton.setImageResource(R.drawable.icon_filter_off)
+        }
         scrollListener()
         searchAdapterReset()
         setupToolbar()
-
         binding.placeholderViewGroup.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         binding.placeholderViewGroup.animate()
-
         with(binding) {
             textInputEndIcon.setOnClickListener {
-                viewModel.clearText()
                 textInputEditText.setText("")
                 textInputEndIcon.setImageResource(R.drawable.icon_search)
                 viewModel.lastText = ""
@@ -90,14 +91,6 @@ class SearchFragment : Fragment() {
                 }
                 showPlaceholderSearch()
             }
-            val editText = viewModel.getText()
-            if (!editText.isNullOrEmpty()) {
-                placeholderViewGroup.isVisible = false
-                textInputEditText.setText(editText)
-                textInputEndIcon.setImageResource(R.drawable.icon_close)
-                textInputEndIcon.isVisible = true
-                viewModel.downloadData(editText)
-            }
         }
         inputEditTextInit()
         viewModel.observeState().observe(viewLifecycleOwner) { render(it) }
@@ -106,6 +99,11 @@ class SearchFragment : Fragment() {
                 R.id.action_searchFragment_to_filterSettingsFragment
             )
         }
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        })
     }
 
     private fun scrollListener() {
@@ -139,6 +137,7 @@ class SearchFragment : Fragment() {
                         binding.vacancyMessageTextView.isVisible = false
                         binding.placeholderViewGroup.isVisible = false
                         searchAdapterReset()
+
                         viewModel.searchDebounce(inputTextFromSearch!!)
                     } else if (stringIsNotEmpty && viewModel.lastText.isEmpty()) {
                         binding.textInputEndIcon.setImageResource(R.drawable.icon_search)
@@ -147,23 +146,10 @@ class SearchFragment : Fragment() {
                     }
                 }
             },
-            afterTextChanged = { s ->
-                inputTextFromSearch = s.toString()
-                viewModel.saveText(inputTextFromSearch!!)
-            }
+            afterTextChanged = { s -> inputTextFromSearch = s.toString() }
         )
 
         binding.textInputEditText.setOnEditorActionListener { _, actionId, _ ->
-            val isActionDone = actionId == EditorInfo.IME_ACTION_DONE
-            val isSearchTextNotEmpty = binding.textInputEditText.text!!.trim().isNotEmpty()
-            val isDownloadNotInProgress = !viewModel.flagSuccessfulDownload
-
-            if (isActionDone && isSearchTextNotEmpty && isDownloadNotInProgress) {
-                inputTextFromSearch?.let {
-                    searchAdapterReset()
-                    viewModel.downloadData(it)
-                }
-            }
             binding.centerProgressBar.visibility = View.GONE
             false
         }
@@ -244,7 +230,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showErrorConnection(errorMessage: String) {
-        hideKeyboard(requireActivity())
         with(binding) {
             centerProgressBar.isVisible = false
             bottomProgressBar.isVisible = false
@@ -264,7 +249,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showEmptyResult(message: String) {
-        hideKeyboard(requireActivity())
         with(binding) {
             centerProgressBar.isVisible = false
             bottomProgressBar.isVisible = false
@@ -313,12 +297,7 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        private const val ARGS_FILTER = "from_workplace"
-        fun createArgsFilter(createFilterFromShared: FilterSearch): Bundle =
-            bundleOf(
-                ARGS_FILTER to createFilterFromShared,
-            )
-
+        const val FLAG = "flag"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

@@ -1,11 +1,8 @@
 package ru.practicum.android.diploma.util
 
-import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.util.TypedValue
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.search.domain.model.Salary
 import java.text.NumberFormat
@@ -53,14 +50,5 @@ object Creator {
 
             else -> context.getString(R.string.salary_not_specified)
         }
-    }
-
-    fun hideKeyboard(activity: Activity) {
-        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        var view = activity.currentFocus
-        if (view == null) {
-            view = View(activity)
-        }
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
