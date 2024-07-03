@@ -39,10 +39,10 @@ class DbConverter {
         area = entity.area
     )
 
-    fun mapFavoriteToSimple(vacancy: Vacancy): SimpleVacancy = SimpleVacancy(
+    private fun mapFavoriteToSimple(vacancy: Vacancy): SimpleVacancy = SimpleVacancy(
         id = vacancy.id,
         name = vacancy.name,
-        address = vacancy.address,
+        address = vacancy.area,
         employer = vacancy.employer,
         salary = vacancy.salary
     )
