@@ -127,9 +127,11 @@ class SearchFragment : Fragment() {
         binding.textInputEditText.addTextChangedListener(
             beforeTextChanged = { s, start, count, after -> },
             onTextChanged = { s, start, before, count ->
-                if (s.isNullOrEmpty()) binding.textInputEndIcon.setImageResource(R.drawable.icon_search)
-                else binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
-
+                if (s.isNullOrEmpty()) {
+                    binding.textInputEndIcon.setImageResource(R.drawable.icon_search)
+                } else {
+                    binding.textInputEndIcon.setImageResource(R.drawable.icon_close)
+                }
                 if (s != null) {
                     val stringIsNotEmpty = s.trim().isNotEmpty()
                     if (stringIsNotEmpty && viewModel.lastText != s.toString()) {
